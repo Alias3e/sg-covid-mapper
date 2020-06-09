@@ -1,6 +1,6 @@
 //region Map Events
 import 'package:equatable/equatable.dart';
-import 'package:sgcovidmapper/models/visited_place.dart';
+import 'package:sgcovidmapper/models/place_marker.dart';
 
 abstract class MapEvent extends Equatable {
   const MapEvent();
@@ -8,7 +8,7 @@ abstract class MapEvent extends Equatable {
 
 // Event when Firestore stream has new places data.
 class HasPlacesData extends MapEvent {
-  final List<VisitedPlace> visitedPlaces;
+  final List<PlaceMarker> visitedPlaces;
 
   HasPlacesData(this.visitedPlaces);
 

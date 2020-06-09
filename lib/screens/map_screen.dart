@@ -54,6 +54,9 @@ class MapScreen extends StatelessWidget {
             ),
             layers: [
               MapConstants.tileLayerOptions,
+              new MarkerLayerOptions(
+                  markers:
+                      state is GpsLocationUpdated ? [state.gpsMarker] : []),
               MarkerClusterLayerOptions(
                 maxClusterRadius: 60,
                 size: Size(55, 55),
@@ -62,7 +65,8 @@ class MapScreen extends StatelessWidget {
                 fitBoundsOptions: FitBoundsOptions(
                   padding: EdgeInsets.all(50),
                 ),
-                markers: state is MapState ? state.markers : [],
+                onMarkerTap: (marker) => print(marker.toString()),
+                markers: state is MapState ? state.places : [],
                 builder: (context, markers) {
                   return Stack(
                     children: [

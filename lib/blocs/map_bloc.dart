@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
@@ -16,7 +18,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   MapBloc(
       {@required this.visitedPlaceRepository, @required this.gpsRepository}) {
-    _subscription = visitedPlaceRepository.visitedPlaces
+    _subscription = visitedPlaceRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));
   }
 
@@ -33,7 +35,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       Position position = await gpsRepository.getCurrentLocation();
       yield GpsLocationUpdated(
           currentGpsPosition: LatLng(position.latitude, position.longitude),
-          visitedPlaces: visitedPlaceRepository.cached);
+          visitedPlaces: visitedPlaceRepository.cached,
+          gpsMarker: Marker(
+              point: LatLng(position.latitude, position.longitude),
+              builder: (context) => FaIcon(
+                    FontAwesomeIcons.mapMarkerAlt,
+                    color: Colors.amber,
+                  )));
     }
   }
 

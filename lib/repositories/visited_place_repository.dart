@@ -1,6 +1,6 @@
-import 'package:sgcovidmapper/models/visited_place.dart';
+import 'package:sgcovidmapper/models/place_marker.dart';
 
 abstract class VisitedPlaceRepository {
-  List<VisitedPlace> cached = [];
-  Stream<List<VisitedPlace>> get visitedPlaces;
+  List<PlaceMarker> cached = [];
+  Stream<List<PlaceMarker>> get placeMarkers;
 }

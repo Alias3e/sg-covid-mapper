@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/map_marker.dart';
 
+//TODO remove deprecated class
 class VisitedPlace extends Equatable with MapMarker {
   // Title/name of the visited place.
   final String title;
