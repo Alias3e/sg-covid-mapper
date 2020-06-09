@@ -5,6 +5,7 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
 class MapScreen extends StatelessWidget {
@@ -65,7 +66,8 @@ class MapScreen extends StatelessWidget {
                 fitBoundsOptions: FitBoundsOptions(
                   padding: EdgeInsets.all(50),
                 ),
-                onMarkerTap: (marker) => print(marker.toString()),
+                onMarkerTap: (Marker marker) =>
+                    _showPlaceBottomSheet(context, marker),
                 markers: state is MapState ? state.places : [],
                 builder: (context, markers) {
                   return Stack(
@@ -119,5 +121,74 @@ class MapScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  _showPlaceBottomSheet(BuildContext context, PlaceMarker marker) {
+    print(marker.endDate.toDate());
+    PersistentBottomSheetController controller;
+    List<Widget> widgets = [];
+    widgets.add(
+      Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () => controller.close(),
+              child: Container(
+                padding: EdgeInsets.only(top: 10.0, bottom: 4.0),
+                width: double.infinity,
+                child: Center(
+                  child: FaIcon(
+                    FontAwesomeIcons.angleDoubleDown,
+                    color: Colors.teal,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
+              child: Text(
+                marker.title,
+                style: Styles.kTitleTextStyle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (marker.subLocation.isNotEmpty) {
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Text(
+            marker.subLocation,
+            style: Styles.kDetailsTextStyle,
+          ),
+        ),
+      );
+    }
+
+    widgets.add(
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+        child: Text(
+          '${Styles.kStartDateFormat.format(marker.startDate.toDate())} - ${Styles.kEndTimeFormat.format(marker.endDate.toDate())}',
+          style: Styles.kDetailsTextStyle,
+        ),
+      ),
+    );
+
+    controller = showBottomSheet(
+        backgroundColor: Colors.teal,
+        context: context,
+        builder: (context) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: widgets,
+          );
+        });
   }
 }

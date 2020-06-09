@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
@@ -64,4 +67,21 @@ class MapConstants {
         break;
     }
   }
+}
+
+class Styles {
+  static const TextStyle kTitleTextStyle = TextStyle(
+    fontSize: 24,
+    color: Colors.teal,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle kDetailsTextStyle = TextStyle(
+    fontSize: 16,
+    color: Colors.white,
+  );
+
+  static final DateFormat kStartDateFormat = DateFormat("dd/MM/yyyy HH:mm");
+
+  static final DateFormat kEndTimeFormat = DateFormat("HH:mm");
 }
