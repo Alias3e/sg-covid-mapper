@@ -13,7 +13,7 @@ enum BaseMap {
 
 class MapConstants {
   static BaseMap baseMap = BaseMap.OSM;
-  static const double zoom = 12.5;
+  static const double zoom = 10;
   static final LatLng mapCenter = LatLng(1.354, 103.82);
 
   static const Map<BaseMap, double> _maxZoomMap = {
@@ -23,9 +23,9 @@ class MapConstants {
   };
 
   static const Map<BaseMap, double> _minZoomMap = {
-    BaseMap.OneMap: 11.5,
-    BaseMap.MapTiler: 11.5,
-    BaseMap.OSM: 11.5,
+    BaseMap.OneMap: 8,
+    BaseMap.MapTiler: 8,
+    BaseMap.OSM: 8,
   };
 
   static const Map<BaseMap, String> _tileUrl = {

@@ -35,10 +35,17 @@ class MapScreen extends StatelessWidget {
         },
       ),
       body: BlocConsumer<MapBloc, MapState>(
-        listenWhen: (previous, current) => current is GpsLocationUpdated,
+        listenWhen: (previous, current) =>
+            current is GpsLocationUpdated ||
+            (previous is PlacesLoading && current is PlacesUpdated),
         listener: (context, state) {
           if (state is GpsLocationUpdated) {
             mapController.move(state.currentGpsPosition, MapConstants.maxZoom);
+          }
+          if (state is PlacesUpdated) {
+            LatLngBounds bounds = LatLngBounds.fromPoints(
+                state.places.map((e) => e.point).toList());
+            mapController.fitBounds(bounds);
           }
         },
         builder: (BuildContext context, state) {
