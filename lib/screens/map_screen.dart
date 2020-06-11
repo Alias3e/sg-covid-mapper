@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -7,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/cluster_widget.dart';
 
 class MapScreen extends StatelessWidget {
   final MapController mapController;
@@ -67,7 +70,7 @@ class MapScreen extends StatelessWidget {
                       state is GpsLocationUpdated ? [state.gpsMarker] : []),
               MarkerClusterLayerOptions(
                 maxClusterRadius: 60,
-                size: Size(55, 55),
+                size: Size(50, 50),
                 anchor: AnchorPos.align(AnchorAlign.center),
                 showPolygon: false,
                 fitBoundsOptions: FitBoundsOptions(
@@ -85,51 +88,14 @@ class MapScreen extends StatelessWidget {
                             .toList());
                   }
                 },
+                computeSize: (markers) {
+                  double size = (log(markers.length)) * 25.0 + 15;
+                  return Size(size, size);
+                },
                 markers: state is MapState ? state.places : [],
                 builder: (context, markers) {
-                  return Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.teal, shape: BoxShape.circle),
-                        ),
-                      ),
-                      Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.viruses,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.teal,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2.0,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: markers.length < 10
-                                ? EdgeInsets.all(4)
-                                : EdgeInsets.all(2),
-                            child: Text(
-//                                '99',
-                              markers.length < 100
-                                  ? markers.length.toString()
-                                  : '99',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  return ClusterWidget(
+                    markers: markers,
                   );
                 },
               ),

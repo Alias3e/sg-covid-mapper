@@ -23,9 +23,9 @@ class MapConstants {
   };
 
   static const Map<BaseMap, double> _minZoomMap = {
-    BaseMap.OneMap: 8,
-    BaseMap.MapTiler: 8,
-    BaseMap.OSM: 8,
+    BaseMap.OneMap: 10.5,
+    BaseMap.MapTiler: 10.5,
+    BaseMap.OSM: 10.5,
   };
 
   static const Map<BaseMap, String> _tileUrl = {
@@ -35,17 +35,9 @@ class MapConstants {
     BaseMap.OSM: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   };
 
-  static double get maxZoom {
-    if (baseMap == BaseMap.OSM) return _maxZoomMap[baseMap];
-    if (baseMap == BaseMap.MapTiler) return _maxZoomMap[baseMap];
-    return _maxZoomMap[baseMap];
-  }
+  static double get maxZoom => _maxZoomMap[baseMap];
 
-  static double get minZoom {
-    if (baseMap == BaseMap.OSM) return _minZoomMap[baseMap];
-    if (baseMap == BaseMap.MapTiler) return _minZoomMap[baseMap];
-    return _minZoomMap[baseMap];
-  }
+  static double get minZoom => _minZoomMap[baseMap];
 
   static TileLayerOptions get tileLayerOptions {
     switch (baseMap) {
