@@ -38,5 +38,5 @@ class PlaceMarker extends Marker with EquatableMixin {
   }
 
   @override
-  List<Object> get props => [title, subLocation, startDate, endDate, point];
+  List<Object> get props => [title, point.longitude, point.longitude];
 }

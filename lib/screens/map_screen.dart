@@ -74,7 +74,17 @@ class MapScreen extends StatelessWidget {
                   padding: EdgeInsets.all(50),
                 ),
                 onMarkerTap: (Marker marker) =>
-                    _showPlaceBottomSheet(context, marker),
+                    _showPlaceBottomSheet(context, [marker]),
+                onClusterTap: (node) {
+                  if (node.bounds.east == node.bounds.west &&
+                      node.bounds.north == node.bounds.south) {
+                    _showPlaceBottomSheet(
+                        context,
+                        node.markers
+                            .map((e) => e.marker as PlaceMarker)
+                            .toList());
+                  }
+                },
                 markers: state is MapState ? state.places : [],
                 builder: (context, markers) {
                   return Stack(
@@ -130,9 +140,9 @@ class MapScreen extends StatelessWidget {
     );
   }
 
-  _showPlaceBottomSheet(BuildContext context, PlaceMarker marker) {
-    print(marker.endDate.toDate());
+  _showPlaceBottomSheet(BuildContext context, List<PlaceMarker> markers) {
     PersistentBottomSheetController controller;
+    PlaceMarker marker = markers[0];
     List<Widget> widgets = [];
     widgets.add(
       Container(
@@ -165,27 +175,31 @@ class MapScreen extends StatelessWidget {
         ),
       ),
     );
-    if (marker.subLocation.isNotEmpty) {
+    widgets.add(SizedBox(height: 16.0));
+
+    for (PlaceMarker currentMarker in markers) {
+      if (marker.subLocation.isNotEmpty) {
+        widgets.add(
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            child: Text(
+              currentMarker.subLocation,
+              style: Styles.kDetailsTextStyle,
+            ),
+          ),
+        );
+      }
       widgets.add(
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 16.0),
           child: Text(
-            marker.subLocation,
+            '${Styles.kStartDateFormat.format(currentMarker.startDate.toDate())} - ${Styles.kEndTimeFormat.format(currentMarker.endDate.toDate())}',
             style: Styles.kDetailsTextStyle,
           ),
         ),
       );
     }
-
-    widgets.add(
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-        child: Text(
-          '${Styles.kStartDateFormat.format(marker.startDate.toDate())} - ${Styles.kEndTimeFormat.format(marker.endDate.toDate())}',
-          style: Styles.kDetailsTextStyle,
-        ),
-      ),
-    );
 
     controller = showBottomSheet(
         backgroundColor: Colors.teal,

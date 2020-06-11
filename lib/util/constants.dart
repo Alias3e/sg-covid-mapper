@@ -71,7 +71,7 @@ class MapConstants {
 
 class Styles {
   static const TextStyle kTitleTextStyle = TextStyle(
-    fontSize: 24,
+    fontSize: 28,
     color: Colors.teal,
     fontWeight: FontWeight.bold,
   );
