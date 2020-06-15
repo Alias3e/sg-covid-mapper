@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<VisitedPlaceRepository>(
-          create: (BuildContext context) => FirestoreVisitedPlaceRepository(),
+          create: (BuildContext context) => FirestoreVisitedPlaceRepository(
+              Firestore.instance.collection('places')),
         ),
         RepositoryProvider<GpsRepository>(
           create: (BuildContext context) => GpsRepository(),

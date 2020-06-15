@@ -18,39 +18,44 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   MapBloc(
       {@required this.visitedPlaceRepository, @required this.gpsRepository}) {
+    assert(visitedPlaceRepository != null);
+    assert(gpsRepository != null);
     _subscription = visitedPlaceRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));
-  }
-
-  @override
-  Stream<MapState> mapEventToState(MapEvent event) async* {
-    if (event is HasPlacesData) {
-//      List<VisitedPlace> places = repository.visitedPlaces;
-      visitedPlaceRepository.cached = event.visitedPlaces;
-      yield PlacesUpdated(event.visitedPlaces);
-    }
-
-    if (event is GetGPS) {
-      yield GpsLocationAcquiring(visitedPlaceRepository.cached);
-      Position position = await gpsRepository.getCurrentLocation();
-      yield GpsLocationUpdated(
-          currentGpsPosition: LatLng(position.latitude, position.longitude),
-          visitedPlaces: visitedPlaceRepository.cached,
-          gpsMarker: Marker(
-              point: LatLng(position.latitude, position.longitude),
-              builder: (context) => FaIcon(
-                    FontAwesomeIcons.mapMarkerAlt,
-                    color: Colors.amber,
-                  )));
-    }
   }
 
   @override
   MapState get initialState => PlacesLoading();
 
   @override
+  Stream<MapState> mapEventToState(MapEvent event) async* {
+    if (event is HasPlacesData) {
+      visitedPlaceRepository.cached = event.visitedPlaces;
+      yield PlacesUpdated(event.visitedPlaces);
+    }
+
+    if (event is GetGPS) {
+      yield GpsLocationAcquiring(visitedPlaceRepository.cached);
+      try {
+        Position position = await gpsRepository.getCurrentLocation();
+        yield GpsLocationUpdated(
+            currentGpsPosition: LatLng(position.latitude, position.longitude),
+            visitedPlaces: visitedPlaceRepository.cached,
+            gpsMarker: Marker(
+                point: LatLng(position.latitude, position.longitude),
+                builder: (context) => FaIcon(
+                      FontAwesomeIcons.mapMarkerAlt,
+                      color: Colors.amber,
+                    )));
+      } catch (exception) {
+        yield GpsLocationFailed(visitedPlaceRepository.cached);
+      }
+    }
+  }
+
+  @override
   Future<void> close() {
-    _subscription.cancel();
+    _subscription?.cancel();
     return super.close();
   }
 }

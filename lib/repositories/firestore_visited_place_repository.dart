@@ -3,7 +3,9 @@ import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 
 class FirestoreVisitedPlaceRepository extends VisitedPlaceRepository {
-  final collection = Firestore.instance.collection('places');
+  final CollectionReference collection;
+
+  FirestoreVisitedPlaceRepository(this.collection) : assert(collection != null);
 
   @override
   Stream<List<PlaceMarker>> get placeMarkers {

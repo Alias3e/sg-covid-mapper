@@ -21,7 +21,9 @@ class MapScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: BlocBuilder<MapBloc, MapState>(
         condition: (previous, current) =>
-            current is GpsLocationAcquiring || current is GpsLocationUpdated,
+            current is GpsLocationAcquiring ||
+            current is GpsLocationUpdated ||
+            current is GpsLocationFailed,
         builder: (BuildContext context, state) {
           return FloatingActionButton(
             child: state is GpsLocationAcquiring

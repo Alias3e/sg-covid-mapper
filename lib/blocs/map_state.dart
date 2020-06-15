@@ -54,4 +54,12 @@ class GpsLocationUpdated extends MapState {
   List<Object> get props => [currentGpsPosition, gpsMarker];
 }
 
+class GpsLocationFailed extends MapState {
+  GpsLocationFailed(List<PlaceMarker> places) : super(places);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
 //endregion
