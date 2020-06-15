@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/cluster_widget.dart';
+import 'package:sgcovidmapper/widgets/map_screen_fab.dart';
 
 class MapScreen extends StatelessWidget {
   final MapController mapController;
 
-  const MapScreen({Key key, this.mapController}) : super(key: key);
+  const MapScreen({this.mapController}) : assert(mapController != null);
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +25,8 @@ class MapScreen extends StatelessWidget {
             current is GpsLocationUpdated ||
             current is GpsLocationFailed,
         builder: (BuildContext context, state) {
-          return FloatingActionButton(
-            child: state is GpsLocationAcquiring
-                ? SpinKitDualRing(
-                    color: Colors.white,
-                    size: 35.0,
-                    lineWidth: 4.0,
-                  )
-                : Icon(Icons.gps_fixed),
-            onPressed: () {
-              BlocProvider.of<MapBloc>(context).add(GetGPS());
-            },
+          return MapScreenFAB(
+            state: state,
           );
         },
       ),

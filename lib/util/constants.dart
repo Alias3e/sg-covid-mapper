@@ -77,3 +77,7 @@ class Styles {
 
   static final DateFormat kEndTimeFormat = DateFormat("HH:mm");
 }
+
+class Keys {
+  static const Key kKeyFABSpinner = Key('key_fab_spinner');
+}
