@@ -80,4 +80,5 @@ class Styles {
 
 class Keys {
   static const Key kKeyFABSpinner = Key('key_fab_spinner');
+  static const Key kKeySubLocationText = Key('key_sub_location_text');
 }

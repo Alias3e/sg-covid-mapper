@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/cluster_widget.dart';
 import 'package:sgcovidmapper/widgets/map_screen_fab.dart';
+import 'package:sgcovidmapper/widgets/place_details_widget.dart';
 
 class MapScreen extends StatelessWidget {
   final MapController mapController;
@@ -101,73 +101,13 @@ class MapScreen extends StatelessWidget {
 
   _showPlaceBottomSheet(BuildContext context, List<PlaceMarker> markers) {
     PersistentBottomSheetController controller;
-    PlaceMarker marker = markers[0];
-    List<Widget> widgets = [];
-    widgets.add(
-      Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () => controller.close(),
-              child: Container(
-                padding: EdgeInsets.only(top: 10.0, bottom: 4.0),
-                width: double.infinity,
-                child: Center(
-                  child: FaIcon(
-                    FontAwesomeIcons.angleDoubleDown,
-                    color: Colors.teal,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
-              child: Text(
-                marker.title,
-                style: Styles.kTitleTextStyle,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-    widgets.add(SizedBox(height: 16.0));
-
-    for (PlaceMarker currentMarker in markers) {
-      if (marker.subLocation.isNotEmpty) {
-        widgets.add(
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-            child: Text(
-              currentMarker.subLocation,
-              style: Styles.kDetailsTextStyle,
-            ),
-          ),
-        );
-      }
-      widgets.add(
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 16.0),
-          child: Text(
-            '${Styles.kStartDateFormat.format(currentMarker.startDate.toDate())} - ${Styles.kEndTimeFormat.format(currentMarker.endDate.toDate())}',
-            style: Styles.kDetailsTextStyle,
-          ),
-        ),
-      );
-    }
-
     controller = showBottomSheet(
         backgroundColor: Colors.teal,
         context: context,
         builder: (context) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: widgets,
+          return PlaceDetailsWidget(
+            markers: markers,
+            bottomSheetController: controller,
           );
         });
   }
