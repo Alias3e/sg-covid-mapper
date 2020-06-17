@@ -5,10 +5,11 @@ import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/map_state.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
-class MapScreenFAB extends StatelessWidget {
+// TODO Deprecated, to be removed.
+class GpsFloatingActionButton extends StatelessWidget {
   final MapState state;
 
-  const MapScreenFAB({
+  const GpsFloatingActionButton({
     @required this.state,
   });
 

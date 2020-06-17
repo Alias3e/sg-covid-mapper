@@ -17,6 +17,10 @@ main() {
       mapBloc = MockMapBloc();
     });
 
+    tearDown(() {
+      mapBloc.close();
+    });
+
     testWidgets(
       'Screen display correctly on startup',
       (WidgetTester tester) async {

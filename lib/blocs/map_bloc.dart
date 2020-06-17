@@ -46,6 +46,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
                 builder: (context) => FaIcon(
                       FontAwesomeIcons.mapMarkerAlt,
                       color: Colors.amber,
+                      size: 50,
                     )));
       } catch (exception) {
         yield GpsLocationFailed(visitedPlaceRepository.cached);

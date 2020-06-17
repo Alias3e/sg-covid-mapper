@@ -8,7 +8,7 @@ import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/cluster_widget.dart';
-import 'package:sgcovidmapper/widgets/map_screen_fab.dart';
+import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
 import 'package:sgcovidmapper/widgets/place_details_widget.dart';
 
 class MapScreen extends StatelessWidget {
@@ -24,11 +24,7 @@ class MapScreen extends StatelessWidget {
             current is GpsLocationAcquiring ||
             current is GpsLocationUpdated ||
             current is GpsLocationFailed,
-        builder: (BuildContext context, state) {
-          return MapScreenFAB(
-            state: state,
-          );
-        },
+        builder: (BuildContext context, state) => MapScreenSpeedDial(),
       ),
       body: BlocConsumer<MapBloc, MapState>(
         listenWhen: (previous, current) =>
