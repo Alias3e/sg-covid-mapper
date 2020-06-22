@@ -6,10 +6,10 @@ import 'package:sgcovidmapper/services/map_service.dart';
 part 'one_map_api_service.g.dart';
 
 @RestApi(baseUrl: 'https://developers.onemap.sg/')
-abstract class OneMapApiService extends MapService {
+abstract class OneMapApiService extends GeocodeService {
   factory OneMapApiService(Dio dio, {String baseUrl}) = _OneMapApiService;
 
   @override
   @GET('commonapi/search')
-  Future<OneMapSearch> search(Map<String, String> queries);
+  Future<OneMapSearch> search(@Queries() Map<String, dynamic> queries);
 }

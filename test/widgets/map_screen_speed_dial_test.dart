@@ -11,7 +11,7 @@ import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
 
-class MockMapBloc extends MockBloc implements MapBloc {}
+class MockMapBloc extends MockBloc<MapEvent, MapState> implements MapBloc {}
 
 main() {
   group('Map screen speed dial', () {

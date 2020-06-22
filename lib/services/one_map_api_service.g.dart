@@ -21,6 +21,7 @@ class _OneMapApiService implements OneMapApiService {
     ArgumentError.checkNotNull(queries, 'queries');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queries ?? <String, dynamic>{});
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
         'commonapi/search',

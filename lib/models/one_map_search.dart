@@ -13,7 +13,13 @@ class OneMapSearch extends Equatable {
 
   Map<String, dynamic> toJson() => _$OneMapSearchToJson(this);
 
+  int get count => results == null ? 0 : results.length;
+
   OneMapSearch(this.results);
   @override
-  List<Object> get props => [results];
+  List<Object> get props {
+    List<Object> props = [];
+    for (OneMapSearchResult result in results) props.add(result);
+    return props;
+  }
 }

@@ -1,3 +1,3 @@
-abstract class MapService {
+abstract class GeocodeService {
   Future<dynamic> search(Map<String, String> queries);
 }

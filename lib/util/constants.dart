@@ -76,6 +76,9 @@ class Styles {
   static final DateFormat kStartDateFormat = DateFormat("dd/MM/yyyy HH:mm");
 
   static final DateFormat kEndTimeFormat = DateFormat("HH:mm");
+
+  static final Color kSearchTextFieldGrayColor =
+      Color.fromARGB(Color.getAlphaFromOpacity(0.6), 111, 111, 111);
 }
 
 class Keys {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -6,8 +7,10 @@ import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/repositories/firestore_visited_place_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
+import 'package:sgcovidmapper/repositories/one_map_repository.dart';
 import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
+import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
 Future<void> main() async {
@@ -31,13 +34,25 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<GpsRepository>(
           create: (BuildContext context) => GpsRepository(),
         ),
-      ],
-      child: BlocProvider<MapBloc>(
-        create: (BuildContext context) => MapBloc(
-          visitedPlaceRepository:
-              RepositoryProvider.of<VisitedPlaceRepository>(context),
-          gpsRepository: RepositoryProvider.of<GpsRepository>(context),
+        RepositoryProvider<GeolocationRepository>(
+          create: (BuildContext context) =>
+              GeolocationRepository(OneMapApiService(Dio())),
         ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<SearchBloc>(
+            create: (BuildContext context) => SearchBloc(
+                RepositoryProvider.of<GeolocationRepository>(context)),
+          ),
+          BlocProvider<MapBloc>(
+              create: (BuildContext context) => MapBloc(
+                    visitedPlaceRepository:
+                        RepositoryProvider.of<VisitedPlaceRepository>(context),
+                    gpsRepository:
+                        RepositoryProvider.of<GpsRepository>(context),
+                  )),
+        ],
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
