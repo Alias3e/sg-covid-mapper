@@ -4,7 +4,7 @@ import 'package:sgcovidmapper/models/one_map_search.dart';
 class SearchState extends Equatable {
   @override
   // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [];
 }
 
 class SearchEmpty extends SearchState {

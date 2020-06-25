@@ -22,10 +22,3 @@ class SearchUpdated extends SearchEvent {
 }
 
 class StopSearch extends SearchEvent {}
-
-/// This event is fired when the user picked a result.
-class SearchResultSelected extends SearchEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}

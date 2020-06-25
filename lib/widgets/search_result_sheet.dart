@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/models/one_map_search_result.dart';
 
 class SearchResultSheet extends StatefulWidget {
   @override
@@ -55,16 +57,27 @@ class _SearchResultSheetState extends State<SearchResultSheet>
                             itemCount:
                                 state.result != null ? state.result.count : 0,
                             itemBuilder: (BuildContext context, int index) {
+                              OneMapSearchResult result =
+                                  state.result.results[index];
                               return ListTile(
-                                title: Text(
-                                    '${state.result.results[index].searchValue}'),
-                                subtitle: Text(
-                                    '${state.result.results[index].address}'),
+                                title: Text('${result.searchValue}'),
+                                subtitle: Text('${result.address}'),
+                                onTap: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                  BlocProvider.of<MapBloc>(context).add(
+                                      CenterOnLocation(
+                                          location: LatLng(result.latitude,
+                                              result.longitude)));
+                                },
                               );
                             });
                       } else {
                         return Center(
-                          child: CircularProgressIndicator(),
+                          child: Container(
+                            width: 0,
+                            height: 0,
+                          ),
                         );
                       }
                     },

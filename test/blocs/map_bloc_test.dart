@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
@@ -23,6 +24,7 @@ main() {
     MockVisitedPlaceRepository mockVisitedPlaceRepository;
     Position position = Position(longitude: 103.1, latitude: 1.42);
     LatLng latLng = LatLng(position.latitude, position.longitude);
+    List<Marker> nearbyPlaces = [];
     List<List<PlaceMarker>> markers = [
       [
         PlaceMarker(
@@ -88,9 +90,23 @@ main() {
               gpsRepository: mockGpsRepository);
         },
         act: (bloc) async => bloc.add(HasPlacesData(markers[0])),
-        expect: [PlacesUpdated(markers[0])],
+        expect: [
+          MapUpdated(covidPlaces: markers[0], nearbyPlaces: nearbyPlaces)
+        ],
       );
     });
+
+    blocTest(
+      'Emits MapViewBoundChanged when user taps on a searched location',
+      build: () async {
+        return MapBloc(
+            visitedPlaceRepository: mockVisitedPlaceRepository,
+            gpsRepository: mockGpsRepository);
+      },
+      act: (bloc) async => bloc.add(CenterOnLocation(location: latLng)),
+      expect: [isA<MapViewBoundsChanged>()],
+      skip: 2,
+    );
 
     group('Fetch GPS events', () {
       blocTest(
@@ -104,8 +120,9 @@ main() {
         },
         act: (bloc) async => bloc.add(GetGPS()),
         expect: [
-          GpsLocationAcquiring(markers[0]),
-          isA<GpsLocationUpdated>(),
+          GpsLocationAcquiring(
+              covidPlaces: markers[0], nearbyPlaces: nearbyPlaces),
+          isA<MapViewBoundsChanged>(),
         ],
         skip: 2,
       );
@@ -122,8 +139,9 @@ main() {
       },
       act: (bloc) async => bloc.add(GetGPS()),
       expect: [
-        GpsLocationAcquiring(markers[0]),
-        GpsLocationFailed(markers[0]),
+        GpsLocationAcquiring(
+            covidPlaces: markers[0], nearbyPlaces: nearbyPlaces),
+        GpsLocationFailed(covidPlaces: markers[0], nearbyPlaces: nearbyPlaces),
       ],
       skip: 2,
     );

@@ -27,7 +27,8 @@ main() {
     testWidgets(
       'Display spinner when MapState is GpsLocationAcquiring',
       (WidgetTester tester) async {
-        when(bloc.state).thenAnswer((_) => GpsLocationAcquiring([]));
+        when(bloc.state).thenAnswer(
+            (_) => GpsLocationAcquiring(covidPlaces: [], nearbyPlaces: []));
         await tester.pumpWidget(
           BlocProvider<MapBloc>(
             create: (BuildContext context) => bloc,
@@ -46,11 +47,13 @@ main() {
     testWidgets(
         'Displayed animated menu close icon when MapState is GPSLocationUpdated',
         (WidgetTester tester) async {
-      List<PlaceMarker> markers = [];
-      when(bloc.state).thenAnswer((_) => GpsLocationUpdated(
-            currentGpsPosition: LatLng(1.2, 103.0),
-            visitedPlaces: markers,
-            gpsMarker: Marker(),
+      List<PlaceMarker> covidMarkers = [];
+      List<Marker> nearbyMarkers = [];
+
+      when(bloc.state).thenAnswer((_) => MapViewBoundsChanged(
+            mapCenter: LatLng(1.2, 103.0),
+            nearbyPlaces: nearbyMarkers,
+            covidPlaces: covidMarkers,
           ));
       await tester.pumpWidget(
         BlocProvider<MapBloc>(
@@ -69,7 +72,8 @@ main() {
     testWidgets(
         'Displayed animated menu close icon when MapState is GPSLocationUpdated',
         (WidgetTester tester) async {
-      when(bloc.state).thenAnswer((_) => GpsLocationFailed([]));
+      when(bloc.state).thenAnswer(
+          (_) => GpsLocationFailed(covidPlaces: [], nearbyPlaces: []));
       await tester.pumpWidget(
         BlocProvider<MapBloc>(
           create: (BuildContext context) => bloc,

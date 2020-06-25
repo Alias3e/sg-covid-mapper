@@ -12,10 +12,10 @@ class OneMapSearchResult extends Equatable {
   final String postalCode;
 
   @JsonKey(name: 'LATITUDE')
-  final String latitude;
+  final String latitudeString;
 
   @JsonKey(name: 'LONGITUDE')
-  final String longitude;
+  final String longitudeString;
 
   @JsonKey(name: 'ADDRESS')
   final String address;
@@ -23,8 +23,8 @@ class OneMapSearchResult extends Equatable {
   OneMapSearchResult({
     this.searchValue,
     this.postalCode,
-    this.latitude,
-    this.longitude,
+    this.latitudeString,
+    this.longitudeString,
     this.address,
   });
 
@@ -33,8 +33,12 @@ class OneMapSearchResult extends Equatable {
 
   Map<String, dynamic> toJson() => _$OneMapSearchResultToJson(this);
 
+  double get latitude => double.parse(latitudeString);
+
+  double get longitude => double.parse(longitudeString);
+
   @override
   // TODO: implement props
   List<Object> get props =>
-      [searchValue, postalCode, latitude, longitude, address];
+      [searchValue, postalCode, latitudeString, longitudeString, address];
 }

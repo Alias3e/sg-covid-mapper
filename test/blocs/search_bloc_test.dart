@@ -23,15 +23,15 @@ main() {
         OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
-          longitude: faker.address.buildingNumber(),
-          latitude: faker.address.countryCode(),
+          longitudeString: faker.address.buildingNumber(),
+          latitudeString: faker.address.countryCode(),
           address: faker.address.streetAddress(),
         ),
         OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
-          longitude: faker.address.buildingNumber(),
-          latitude: faker.address.countryCode(),
+          longitudeString: faker.address.buildingNumber(),
+          latitudeString: faker.address.countryCode(),
           address: faker.address.streetAddress(),
         )
       ];
@@ -40,8 +40,8 @@ main() {
         OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
-          longitude: faker.address.buildingNumber(),
-          latitude: faker.address.countryCode(),
+          longitudeString: faker.address.buildingNumber(),
+          latitudeString: faker.address.countryCode(),
           address: faker.address.streetAddress(),
         )
       ]);

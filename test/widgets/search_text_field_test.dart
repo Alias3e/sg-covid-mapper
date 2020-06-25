@@ -105,8 +105,8 @@ main() {
         results.add(OneMapSearchResult(
             searchValue: faker.lorem.word(),
             postalCode: faker.address.zipCode(),
-            latitude: faker.randomGenerator.decimal().toString(),
-            longitude: faker.randomGenerator.decimal().toString()));
+            latitudeString: faker.randomGenerator.decimal().toString(),
+            longitudeString: faker.randomGenerator.decimal().toString()));
       }
 
       when(bloc.state)

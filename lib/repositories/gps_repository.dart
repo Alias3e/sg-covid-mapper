@@ -2,8 +2,14 @@ import 'package:geolocator/geolocator.dart';
 
 class GpsRepository {
   Geolocator _geolocator = Geolocator();
+  Position _lastPosition;
   Future<Position> getCurrentLocation() async {
-    return await _geolocator.getCurrentPosition(
+    _lastPosition = await _geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+    return _lastPosition;
+  }
+
+  Position get lastPosition {
+    return _lastPosition;
   }
 }

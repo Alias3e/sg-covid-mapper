@@ -26,7 +26,7 @@ class MapScreen extends StatelessWidget {
       floatingActionButton: BlocBuilder<MapBloc, MapState>(
         condition: (previous, current) =>
             current is GpsLocationAcquiring ||
-            current is GpsLocationUpdated ||
+            current is MapViewBoundsChanged ||
             current is GpsLocationFailed,
         builder: (BuildContext context, state) => MapScreenSpeedDial(),
       ),
@@ -34,16 +34,15 @@ class MapScreen extends StatelessWidget {
         children: [
           BlocConsumer<MapBloc, MapState>(
             listenWhen: (previous, current) =>
-                current is GpsLocationUpdated ||
-                (previous is PlacesLoading && current is PlacesUpdated),
-            listener: (context, state) {
-              if (state is GpsLocationUpdated) {
-                mapController.move(
-                    state.currentGpsPosition, MapConstants.maxZoom);
+                current is MapViewBoundsChanged ||
+                (previous is PlacesLoading && current is MapUpdated),
+            listener: (context, state) async {
+              if (state is MapViewBoundsChanged) {
+                mapController.move(state.mapCenter, MapConstants.maxZoom);
               }
-              if (state is PlacesUpdated) {
+              if (state is MapUpdated) {
                 LatLngBounds bounds = LatLngBounds.fromPoints(
-                    state.places.map((e) => e.point).toList());
+                    state.covidPlaces.map((e) => e.point).toList());
                 mapController.fitBounds(bounds);
               }
             },
@@ -61,9 +60,7 @@ class MapScreen extends StatelessWidget {
                 ),
                 layers: [
                   MapConstants.tileLayerOptions,
-                  new MarkerLayerOptions(
-                      markers:
-                          state is GpsLocationUpdated ? [state.gpsMarker] : []),
+                  MarkerLayerOptions(markers: state.nearbyPlaces),
                   MarkerClusterLayerOptions(
                     maxClusterRadius: 60,
                     size: Size(50, 50),
@@ -88,7 +85,7 @@ class MapScreen extends StatelessWidget {
                       double size = (log(markers.length)) * 25.0 + 15;
                       return Size(size, size);
                     },
-                    markers: state is MapState ? state.places : [],
+                    markers: state.covidPlaces,
                     builder: (context, markers) {
                       return ClusterWidget(
                         markers: markers,

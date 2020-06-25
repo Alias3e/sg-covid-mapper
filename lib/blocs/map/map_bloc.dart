@@ -14,6 +14,7 @@ import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 class MapBloc extends Bloc<MapEvent, MapState> {
   final VisitedPlaceRepository visitedPlaceRepository;
   final GpsRepository gpsRepository;
+  List<Marker> _myPlaces = [];
   StreamSubscription _subscription;
 
   MapBloc(
@@ -31,25 +32,60 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Stream<MapState> mapEventToState(MapEvent event) async* {
     if (event is HasPlacesData) {
       visitedPlaceRepository.cached = event.visitedPlaces;
-      yield PlacesUpdated(event.visitedPlaces);
+      yield MapUpdated(
+          covidPlaces: event.visitedPlaces, nearbyPlaces: _myPlaces);
+    }
+
+    if (event is CenterOnLocation) {
+      Marker marker = Marker(
+          point: LatLng(event.location.latitude, event.location.longitude),
+          builder: (context) => FaIcon(
+                FontAwesomeIcons.mapMarkerAlt,
+                color: Colors.amber,
+                size: 50,
+              ));
+      updatePlaceMarkers([marker]);
+      yield MapViewBoundsChanged(
+        mapCenter: LatLng(event.location.latitude, event.location.longitude),
+        nearbyPlaces: _myPlaces,
+        covidPlaces: visitedPlaceRepository.cached,
+      );
     }
 
     if (event is GetGPS) {
-      yield GpsLocationAcquiring(visitedPlaceRepository.cached);
+      yield GpsLocationAcquiring(
+          covidPlaces: visitedPlaceRepository.cached, nearbyPlaces: _myPlaces);
       try {
         Position position = await gpsRepository.getCurrentLocation();
-        yield GpsLocationUpdated(
-            currentGpsPosition: LatLng(position.latitude, position.longitude),
-            visitedPlaces: visitedPlaceRepository.cached,
-            gpsMarker: Marker(
-                point: LatLng(position.latitude, position.longitude),
-                builder: (context) => FaIcon(
-                      FontAwesomeIcons.mapMarkerAlt,
-                      color: Colors.amber,
-                      size: 50,
-                    )));
+        Marker gpsMarker = Marker(
+            point: LatLng(position.latitude, position.longitude),
+            builder: (context) => FaIcon(
+                  FontAwesomeIcons.mapMarkerAlt,
+                  color: Colors.amber,
+                  size: 50,
+                ));
+        updatePlaceMarkers([gpsMarker]);
+        yield MapViewBoundsChanged(
+          mapCenter: LatLng(position.latitude, position.longitude),
+          nearbyPlaces: _myPlaces,
+          covidPlaces: visitedPlaceRepository.cached,
+        );
+//        yield GpsLocationUpdated(
+//          currentGpsPosition: LatLng(position.latitude, position.longitude),
+//          covidPlaces: visitedPlaceRepository.cached,
+//          gpsMarker: Marker(
+//              point: LatLng(position.latitude, position.longitude),
+//              builder: (context) => FaIcon(
+//                    FontAwesomeIcons.mapMarkerAlt,
+//                    color: Colors.amber,
+//                    size: 50,
+//                  )),
+//          nearbyPlaces: myPlaces,
+//        );
       } catch (exception) {
-        yield GpsLocationFailed(visitedPlaceRepository.cached);
+        yield GpsLocationFailed(
+            covidPlaces: visitedPlaceRepository.cached,
+            nearbyPlaces: _myPlaces);
       }
     }
   }
@@ -58,5 +94,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Future<void> close() {
     _subscription?.cancel();
     return super.close();
+  }
+
+  void updatePlaceMarkers(List<Marker> markers) {
+    _myPlaces.clear();
+    _myPlaces.addAll(markers);
   }
 }
