@@ -37,14 +37,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     }
 
     if (event is CenterOnLocation) {
-      Marker marker = Marker(
-          point: LatLng(event.location.latitude, event.location.longitude),
-          builder: (context) => FaIcon(
-                FontAwesomeIcons.mapMarkerAlt,
-                color: Colors.amber,
-                size: 50,
-              ));
-      updatePlaceMarkers([marker]);
+      _updatePlaceMarkers(
+          [_makeMarker(event.location.latitude, event.location.longitude)]);
       yield MapViewBoundsChanged(
         mapCenter: LatLng(event.location.latitude, event.location.longitude),
         nearbyPlaces: _myPlaces,
@@ -57,31 +51,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           covidPlaces: visitedPlaceRepository.cached, nearbyPlaces: _myPlaces);
       try {
         Position position = await gpsRepository.getCurrentLocation();
-        Marker gpsMarker = Marker(
-            point: LatLng(position.latitude, position.longitude),
-            builder: (context) => FaIcon(
-                  FontAwesomeIcons.mapMarkerAlt,
-                  color: Colors.amber,
-                  size: 50,
-                ));
-        updatePlaceMarkers([gpsMarker]);
+        _updatePlaceMarkers(
+            [_makeMarker(position.latitude, position.longitude)]);
         yield MapViewBoundsChanged(
           mapCenter: LatLng(position.latitude, position.longitude),
           nearbyPlaces: _myPlaces,
           covidPlaces: visitedPlaceRepository.cached,
         );
-//        yield GpsLocationUpdated(
-//          currentGpsPosition: LatLng(position.latitude, position.longitude),
-//          covidPlaces: visitedPlaceRepository.cached,
-//          gpsMarker: Marker(
-//              point: LatLng(position.latitude, position.longitude),
-//              builder: (context) => FaIcon(
-//                    FontAwesomeIcons.mapMarkerAlt,
-//                    color: Colors.amber,
-//                    size: 50,
-//                  )),
-//          nearbyPlaces: myPlaces,
-//        );
       } catch (exception) {
         yield GpsLocationFailed(
             covidPlaces: visitedPlaceRepository.cached,
@@ -96,8 +72,22 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     return super.close();
   }
 
-  void updatePlaceMarkers(List<Marker> markers) {
+  void _updatePlaceMarkers(List<Marker> markers) {
     _myPlaces.clear();
     _myPlaces.addAll(markers);
+  }
+
+  Marker _makeMarker(double latitude, double longitude) {
+    return Marker(
+      point: LatLng(latitude, longitude),
+      anchorPos: AnchorPos.align(AnchorAlign.top),
+      height: 50,
+      width: 50,
+      builder: (context) => FaIcon(
+        FontAwesomeIcons.mapMarkerAlt,
+        color: Colors.amber,
+        size: 50,
+      ),
+    );
   }
 }
