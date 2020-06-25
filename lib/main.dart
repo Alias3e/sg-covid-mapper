@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/repositories/firestore_visited_place_repository.dart';
@@ -71,9 +70,7 @@ class MyApp extends StatelessWidget {
             // closer together (more dense) than on mobile platforms.
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: MapScreen(
-            mapController: MapController(),
-          ),
+          home: MapScreen(),
         ),
       ),
     );

@@ -4,19 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/cluster_widget.dart';
-import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
-import 'package:sgcovidmapper/widgets/place_details_widget.dart';
-import 'package:sgcovidmapper/widgets/search_result_sheet.dart';
-import 'package:sgcovidmapper/widgets/search_text_field.dart';
+import 'package:sgcovidmapper/widgets/widgets.dart';
 
-class MapScreen extends StatelessWidget {
-  final MapController mapController;
+class MapScreen extends StatefulWidget {
+  @override
+  _MapScreenState createState() => _MapScreenState();
+}
 
-  const MapScreen({this.mapController}) : assert(mapController != null);
+class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
+  MapController _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapController = MapController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +44,17 @@ class MapScreen extends StatelessWidget {
                 (previous is PlacesLoading && current is MapUpdated),
             listener: (context, state) async {
               if (state is MapViewBoundsChanged) {
-                mapController.move(state.mapCenter, MapConstants.maxZoom);
+                _animatedMapMove(state.mapCenter, MapConstants.maxZoom);
               }
               if (state is MapUpdated) {
                 LatLngBounds bounds = LatLngBounds.fromPoints(
                     state.covidPlaces.map((e) => e.point).toList());
-                mapController.fitBounds(bounds);
+                _mapController.fitBounds(bounds);
               }
             },
             builder: (BuildContext context, state) {
               return FlutterMap(
-                mapController: mapController,
+                mapController: _mapController,
                 options: MapOptions(
                   center: MapConstants.mapCenter,
                   zoom: MapConstants.zoom,
@@ -121,5 +127,39 @@ class MapScreen extends StatelessWidget {
             bottomSheetController: controller,
           );
         });
+  }
+
+  void _animatedMapMove(LatLng destLocation, double destZoom) {
+    // Create some tweens. These serve to split up the transition from one location to another.
+    // In our case, we want to split the transition be<tween> our current map center and the destination.
+    final _latTween = Tween<double>(
+        begin: _mapController.center.latitude, end: destLocation.latitude);
+    final _lngTween = Tween<double>(
+        begin: _mapController.center.longitude, end: destLocation.longitude);
+    final _zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
+
+    // Create a animation controller that has a duration and a TickerProvider.
+    var controller = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    // The animation determines what path the animation will take. You can try different Curves values, although I found
+    // fastOutSlowIn to be my favorite.
+    Animation<double> animation =
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+
+    controller.addListener(() {
+      _mapController.move(
+          LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
+          _zoomTween.evaluate(animation));
+    });
+
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        controller.dispose();
+      } else if (status == AnimationStatus.dismissed) {
+        controller.dispose();
+      }
+    });
+
+    controller.forward();
   }
 }

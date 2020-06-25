@@ -40,9 +40,7 @@ main() {
               BlocProvider<SearchBloc>.value(value: searchBloc),
             ],
             child: MaterialApp(
-              home: MapScreen(
-                mapController: MapController(),
-              ),
+              home: MapScreen(),
             ),
           ),
         );

@@ -63,6 +63,7 @@ class _SearchResultSheetState extends State<SearchResultSheet>
                                 title: Text('${result.searchValue}'),
                                 subtitle: Text('${result.address}'),
                                 onTap: () {
+                                  _controller.reverse();
                                   FocusScope.of(context)
                                       .requestFocus(FocusNode());
                                   BlocProvider.of<MapBloc>(context).add(
