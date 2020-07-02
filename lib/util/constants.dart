@@ -63,14 +63,15 @@ class MapConstants {
 
 class Styles {
   static const TextStyle kTitleTextStyle = TextStyle(
-    fontSize: 28,
-    color: Colors.teal,
+    fontSize: 20,
+    color: Colors.black,
     fontWeight: FontWeight.bold,
   );
 
   static const TextStyle kDetailsTextStyle = TextStyle(
     fontSize: 16,
-    color: Colors.white,
+    color: Colors.black54,
+    fontWeight: FontWeight.bold,
   );
 
   static final DateFormat kStartDateFormat = DateFormat("dd/MM/yyyy HH:mm");

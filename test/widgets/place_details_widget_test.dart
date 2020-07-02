@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/place_details_widget.dart';
+import 'package:sgcovidmapper/widgets/places_panel.dart';
 
 main() {
   group('Place details widget', () {
@@ -25,11 +25,14 @@ main() {
             point: LatLng(1.0, 103.0)),
       ];
       await tester.pumpWidget(
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: PlaceDetailsWidget(
-            markers: markers,
-            bottomSheetController: null,
+        MaterialApp(
+          home: Scaffold(
+            body: Directionality(
+              textDirection: TextDirection.ltr,
+              child: PlacesPanel(
+                markers: markers,
+              ),
+            ),
           ),
         ),
       );
@@ -60,17 +63,19 @@ main() {
             point: LatLng(1.0, 103.0)),
       ];
       await tester.pumpWidget(
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: PlaceDetailsWidget(
-            markers: markers,
-            bottomSheetController: null,
+        MaterialApp(
+          home: Scaffold(
+            body: Directionality(
+              textDirection: TextDirection.ltr,
+              child: PlacesPanel(
+                markers: markers,
+              ),
+            ),
           ),
         ),
       );
       await tester.pump();
-      expect(find.text('Toa Payoh'), findsOneWidget);
-      expect(find.byKey(Keys.kKeySubLocationText), findsOneWidget);
+      expect(find.text('Toa Payoh\nNTUC'), findsOneWidget);
       expect(
           find.text(
               '${Styles.kStartDateFormat.format(start.toDate())} - ${Styles.kEndTimeFormat.format(end.toDate())}'),
@@ -121,17 +126,23 @@ main() {
             point: LatLng(1.0, 103.0)),
       ];
       await tester.pumpWidget(
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: PlaceDetailsWidget(
-            markers: markers,
-            bottomSheetController: null,
+        MaterialApp(
+          home: Scaffold(
+            body: Directionality(
+              textDirection: TextDirection.ltr,
+              child: PlacesPanel(
+                markers: markers,
+              ),
+            ),
           ),
         ),
       );
       await tester.pump();
-      expect(find.text('Toa Payoh'), findsOneWidget);
-      expect(find.byKey(Keys.kKeySubLocationText), findsNWidgets(3));
+      expect(find.byType(ListTile), findsNWidgets(3));
+      expect(find.text('Toa Payoh\nNTUC'), findsOneWidget);
+      expect(find.text('Toa Payoh\nGiant'), findsOneWidget);
+      expect(find.text('Toa Payoh\nSheng Siong'), findsOneWidget);
+
       expect(
           find.text(
               '${Styles.kStartDateFormat.format(startOne.toDate())} - ${Styles.kEndTimeFormat.format(endOne.toDate())}'),

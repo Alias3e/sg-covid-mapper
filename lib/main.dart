@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/repositories/firestore_visited_place_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
@@ -51,6 +52,9 @@ class MyApp extends StatelessWidget {
                     gpsRepository:
                         RepositoryProvider.of<GpsRepository>(context),
                   )),
+          BlocProvider<BottomPanelBloc>(
+            create: (BuildContext context) => BottomPanelBloc(),
+          ),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

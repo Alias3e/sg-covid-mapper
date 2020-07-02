@@ -6,9 +6,14 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_event.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/search_panel.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -17,11 +22,13 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   MapController _mapController;
+  PanelController _panelController;
 
   @override
   void initState() {
     super.initState();
     _mapController = MapController();
+    _panelController = PanelController();
   }
 
   @override
@@ -29,86 +36,131 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     return Scaffold(
       // Prevent markers from being shifted by keyboard.
       resizeToAvoidBottomInset: false,
-      floatingActionButton: BlocBuilder<MapBloc, MapState>(
-        condition: (previous, current) =>
-            current is GpsLocationAcquiring ||
-            current is MapViewBoundsChanged ||
-            current is GpsLocationFailed,
-        builder: (BuildContext context, state) => MapScreenSpeedDial(),
-      ),
       body: Stack(
         children: [
-          BlocConsumer<MapBloc, MapState>(
-            listenWhen: (previous, current) =>
-                current is MapViewBoundsChanged ||
-                (previous is PlacesLoading && current is MapUpdated),
-            listener: (context, state) async {
-              if (state is MapViewBoundsChanged) {
-                _animatedMapMove(state.mapCenter, MapConstants.maxZoom);
-              }
-              if (state is MapUpdated) {
-                LatLngBounds bounds = LatLngBounds.fromPoints(
-                    state.covidPlaces.map((e) => e.point).toList());
-                _mapController.fitBounds(bounds);
-              }
+          BlocConsumer<BottomPanelBloc, BottomPanelState>(
+            listener: (BuildContext context, BottomPanelState state) {
+              if (state is PlacePanelPositionChanging) return;
+
+              if (state is! BottomPanelClosing)
+                _panelController.animatePanelToPosition(
+                  1.0,
+                  duration: Duration(milliseconds: 250),
+                  curve: Curves.linear,
+                );
+              else
+                _panelController.animatePanelToPosition(0.0,
+                    duration: Duration(milliseconds: 250),
+                    curve: Curves.linear);
             },
-            builder: (BuildContext context, state) {
-              return FlutterMap(
-                mapController: _mapController,
-                options: MapOptions(
-                  center: MapConstants.mapCenter,
-                  zoom: MapConstants.zoom,
-                  maxZoom: MapConstants.maxZoom,
-                  minZoom: MapConstants.minZoom,
-                  plugins: [
-                    MarkerClusterPlugin(),
-                  ],
+            buildWhen: (previous, current) =>
+                (current is BottomPanelOpening || current is BottomPanelOpened),
+            builder: (BuildContext context, BottomPanelState state) {
+              return SlidingUpPanel(
+                isDraggable:
+                    state.isDraggable != null ? state.isDraggable : false,
+                panelSnapping: true,
+                parallaxEnabled: true,
+                parallaxOffset: 0.5,
+                controller: _panelController,
+                backdropEnabled: true,
+                backdropOpacity: 0.05,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.0),
+                    topRight: Radius.circular(18.0)),
+                backdropTapClosesPanel: true,
+                minHeight: MediaQuery.of(context).size.height * 0.00,
+                maxHeight: MediaQuery.of(context).size.height * state.maxHeight,
+                onPanelOpened: () {
+                  if (state.data is SearchPanelData)
+                    BlocProvider.of<BottomPanelBloc>(context)
+                        .add(SearchPanelOpened());
+                  if (state.data is PlacePanelData)
+                    BlocProvider.of<BottomPanelBloc>(context)
+                        .add(PlacePanelOpened());
+                },
+                onPanelClosed: () =>
+                    print('onPanelClosed() $state ${state.data}'),
+                onPanelSlide:
+                    state is BottomPanelOpened && state.data is PlacePanelData
+                        ? _onBottomPanelSlide
+                        : null,
+                panelBuilder: (sc) => _getBottomPanel(state, sc),
+                body: BlocConsumer<MapBloc, MapState>(
+                  listenWhen: (previous, current) =>
+                      current is MapViewBoundsChanged ||
+                      (previous is PlacesLoading && current is MapUpdated),
+                  listener: (context, state) async {
+                    if (state is MapViewBoundsChanged) {
+                      _animatedMapMove(state.mapCenter, MapConstants.maxZoom);
+                    }
+                    if (state is MapUpdated) {
+                      LatLngBounds bounds = LatLngBounds.fromPoints(
+                          state.covidPlaces.map((e) => e.point).toList());
+                      _mapController.fitBounds(bounds);
+                    }
+                  },
+                  builder: (BuildContext context, MapState state) {
+                    return FlutterMap(
+                      mapController: _mapController,
+                      options: MapOptions(
+                        center: MapConstants.mapCenter,
+                        zoom: MapConstants.zoom,
+                        maxZoom: MapConstants.maxZoom,
+                        minZoom: MapConstants.minZoom,
+                        plugins: [
+                          MarkerClusterPlugin(),
+                        ],
+                      ),
+                      layers: [
+                        MapConstants.tileLayerOptions,
+                        MarkerLayerOptions(markers: state.nearbyPlaces),
+                        MarkerClusterLayerOptions(
+                          maxClusterRadius: 60,
+                          size: Size(50, 50),
+                          anchor: AnchorPos.align(AnchorAlign.center),
+                          showPolygon: false,
+                          fitBoundsOptions: FitBoundsOptions(
+                            padding: EdgeInsets.all(50),
+                          ),
+                          onMarkerTap: (Marker marker) =>
+                              BlocProvider.of<BottomPanelBloc>(context)
+                                  .add(PlacePanelDisplayed([marker])),
+                          onClusterTap: (node) {
+                            BlocProvider.of<BottomPanelBloc>(context).add(
+                                PlacePanelDisplayed(node.markers
+                                    .map((e) => e.marker as PlaceMarker)
+                                    .toList()));
+                          },
+                          computeSize: (markers) {
+                            double size = (log(markers.length)) * 25.0 + 15;
+                            return Size(size, size);
+                          },
+                          markers: state.covidPlaces,
+                          builder: (context, markers) {
+                            return ClusterWidget(
+                              markers: markers,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 ),
-                layers: [
-                  MapConstants.tileLayerOptions,
-                  MarkerLayerOptions(markers: state.nearbyPlaces),
-                  MarkerClusterLayerOptions(
-                    maxClusterRadius: 60,
-                    size: Size(50, 50),
-                    anchor: AnchorPos.align(AnchorAlign.center),
-                    showPolygon: false,
-                    fitBoundsOptions: FitBoundsOptions(
-                      padding: EdgeInsets.all(50),
-                    ),
-                    onMarkerTap: (Marker marker) =>
-                        _showPlaceBottomSheet(context, [marker]),
-                    onClusterTap: (node) {
-                      if (node.bounds.east == node.bounds.west &&
-                          node.bounds.north == node.bounds.south) {
-                        _showPlaceBottomSheet(
-                            context,
-                            node.markers
-                                .map((e) => e.marker as PlaceMarker)
-                                .toList());
-                      }
-                    },
-                    computeSize: (markers) {
-                      double size = (log(markers.length)) * 25.0 + 15;
-                      return Size(size, size);
-                    },
-                    markers: state.covidPlaces,
-                    builder: (context, markers) {
-                      return ClusterWidget(
-                        markers: markers,
-                      );
-                    },
-                  ),
-                ],
               );
             },
           ),
-          SearchResultSheet(),
+//          SearchResultSheet(),
           Positioned(
             top: 12.0,
             left: 24.0,
             right: 24.0,
             child: SafeArea(
-              child: SearchTextField(),
+              child: BlocProvider<SearchBoxBloc>(
+                create: (BuildContext context) =>
+                    SearchBoxBloc(BlocProvider.of<BottomPanelBloc>(context)),
+                child: SearchTextField(),
+              ),
             ),
           ),
         ],
@@ -116,17 +168,35 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     );
   }
 
-  _showPlaceBottomSheet(BuildContext context, List<PlaceMarker> markers) {
-    PersistentBottomSheetController controller;
-    controller = showBottomSheet(
-        backgroundColor: Colors.teal,
-        context: context,
-        builder: (context) {
-          return PlaceDetailsWidget(
-            markers: markers,
-            bottomSheetController: controller,
-          );
-        });
+  _onBottomPanelSlide(double position) {
+    BlocProvider.of<BottomPanelBloc>(context)
+        .add(PlacePanelDragged(position: position));
+  }
+
+  _getBottomPanel(BottomPanelState state, ScrollController scrollController) {
+    if (state is BottomPanelOpening) {
+      BottomPanelStateData data = state.data;
+      if (data is SearchPanelData) return SearchPanel();
+      if (data is PlacePanelData)
+        return PlacesPanel(
+          markers: data.markers,
+          scrollController: scrollController,
+        );
+    }
+
+    if (state is BottomPanelOpened) {
+      BottomPanelStateData data = state.data;
+      if (data is PlacePanelData)
+        return PlacesPanel(
+          markers: data.markers,
+          scrollController: scrollController,
+        );
+    }
+
+    return Container(
+      width: 0,
+      height: 0,
+    );
   }
 
   void _animatedMapMove(LatLng destLocation, double destZoom) {

@@ -33,10 +33,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {
-    // TODO: implement mapEventToState
     if (event is BeginSearch) yield SearchStarting();
 
-    if (event is StopSearch) yield SearchEmpty();
+    if (event is SearchStopped) yield SearchEmpty();
 
     if (event is SearchUpdated) {
       OneMapSearch result =

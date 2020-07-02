@@ -122,7 +122,7 @@ main() {
       act: (SearchBloc bloc) async {
         bloc.add(BeginSearch());
         await Future.delayed(const Duration(milliseconds: 500));
-        bloc.add(StopSearch());
+        bloc.add(SearchStopped());
       },
       skip: 0,
       wait: const Duration(milliseconds: 500),

@@ -21,4 +21,4 @@ class SearchUpdated extends SearchEvent {
   List<Object> get props => [searchVal];
 }
 
-class StopSearch extends SearchEvent {}
+class SearchStopped extends SearchEvent {}
