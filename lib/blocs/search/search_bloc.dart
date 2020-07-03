@@ -8,6 +8,7 @@ import 'package:sgcovidmapper/repositories/one_map_repository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GeolocationRepository _repository;
+  OneMapSearch _cached;
 
   SearchBloc(this._repository) : assert(_repository != null);
 
@@ -19,12 +20,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
       Stream<SearchEvent> events, transitionFn) {
     final debounceStream = events
-        .where((event) => event is SearchUpdated)
+        .where((event) => event is SearchValueChanged)
         .debounceTime(Duration(milliseconds: 300))
         .switchMap(transitionFn);
 
     final nonDebounceStream = events
-        .where((event) => !(event is SearchUpdated))
+        .where((event) => !(event is SearchValueChanged))
         .asyncExpand(transitionFn);
 //    return super.transformEvents(
 //        MergeStream([debounceStream, nonDebounceStream]), transitionFn);
@@ -37,9 +38,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     if (event is SearchStopped) yield SearchEmpty();
 
-    if (event is SearchUpdated) {
-      OneMapSearch result =
-          await _repository.search(event.searchVal).catchError(
+    if (event is SearchValueChanged) {
+      _cached = await _repository.search(event.searchVal).catchError(
         (Object obj) {
           // non-200 error goes here.
           switch (obj.runtimeType) {
@@ -53,7 +53,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           }
         },
       );
-      yield SearchResultLoaded(result);
+      yield SearchResultLoaded(_cached, -1);
+    }
+
+    if (event is SearchLocationTapped) {
+      yield SearchResultLoaded(_cached, event.index);
     }
   }
 }

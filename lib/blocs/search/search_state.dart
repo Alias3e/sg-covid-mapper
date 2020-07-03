@@ -23,9 +23,10 @@ class SearchResultLoading extends SearchState {}
 
 class SearchResultLoaded extends SearchState {
   final OneMapSearch result;
+  final int selected;
 
-  SearchResultLoaded(this.result);
+  SearchResultLoaded(this.result, this.selected);
   @override
   // TODO: implement props
-  List<Object> get props => [result];
+  List<Object> get props => [result, selected];
 }

@@ -105,7 +105,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                 onChanged: (value) {
                   if (value.isNotEmpty)
                     BlocProvider.of<SearchBloc>(context)
-                        .add(SearchUpdated(value));
+                        .add(SearchValueChanged(value));
                 },
               ),
             ),

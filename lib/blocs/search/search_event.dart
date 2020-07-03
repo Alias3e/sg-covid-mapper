@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 class SearchEvent extends Equatable {
   @override
-  // TODO: implement props
   List<Object> get props => throw UnimplementedError();
 }
 
@@ -12,13 +11,21 @@ class BeginSearch extends SearchEvent {}
 
 /// This event is fired when user starts to input search value into the search
 /// box.
-class SearchUpdated extends SearchEvent {
+class SearchValueChanged extends SearchEvent {
   final String searchVal;
 
-  SearchUpdated(this.searchVal);
+  SearchValueChanged(this.searchVal);
   @override
-  // TODO: implement props
   List<Object> get props => [searchVal];
 }
 
 class SearchStopped extends SearchEvent {}
+
+class SearchLocationTapped extends SearchEvent {
+  final int index;
+
+  SearchLocationTapped(this.index);
+
+  @override
+  List<Object> get props => [index];
+}

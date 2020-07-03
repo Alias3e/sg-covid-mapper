@@ -74,7 +74,7 @@ main() {
         return SearchBloc(repository);
       },
       act: (bloc) async {
-        bloc.add(SearchUpdated('any'));
+        bloc.add(SearchValueChanged('any'));
       },
       wait: const Duration(milliseconds: 301),
       expect: [isA<SearchResultLoaded>()],
@@ -90,9 +90,9 @@ main() {
         return SearchBloc(repository);
       },
       act: (bloc) async {
-        bloc.add(SearchUpdated('any'));
+        bloc.add(SearchValueChanged('any'));
         await Future.delayed(const Duration(milliseconds: 500));
-        bloc.add(SearchUpdated('any 2'));
+        bloc.add(SearchValueChanged('any 2'));
       },
       wait: const Duration(milliseconds: 500),
       expect: [isA<SearchResultLoaded>(), isA<SearchResultLoaded>()],
@@ -108,9 +108,9 @@ main() {
         return SearchBloc(repository);
       },
       act: (bloc) async {
-        bloc.add(SearchUpdated('any'));
+        bloc.add(SearchValueChanged('any'));
         await Future.delayed(const Duration(milliseconds: 100));
-        bloc.add(SearchUpdated('any 2'));
+        bloc.add(SearchValueChanged('any 2'));
       },
       wait: const Duration(milliseconds: 500),
       expect: [isA<SearchResultLoaded>()],
@@ -127,6 +127,13 @@ main() {
       skip: 0,
       wait: const Duration(milliseconds: 500),
       expect: [SearchEmpty(), SearchStarting(), SearchEmpty()],
+    );
+
+    blocTest<SearchBloc, SearchEvent, SearchState>(
+      'emits [] when user clicks on a list tile',
+      build: null,
+      act: null,
+      expect: null,
     );
   });
 }

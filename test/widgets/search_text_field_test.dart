@@ -97,7 +97,7 @@ main() {
         'Search TextField display close icon when user is typing but results is empty',
         (WidgetTester tester) async {
       when(searchBloc.state)
-          .thenAnswer((_) => SearchResultLoaded(OneMapSearch(results)));
+          .thenAnswer((_) => SearchResultLoaded(OneMapSearch(results), -1));
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
@@ -131,7 +131,7 @@ main() {
       }
 
       when(searchBloc.state)
-          .thenAnswer((_) => SearchResultLoaded(OneMapSearch(results)));
+          .thenAnswer((_) => SearchResultLoaded(OneMapSearch(results), -1));
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
@@ -207,7 +207,7 @@ main() {
         await tester.pumpAndSettle();
         String searchVal = faker.randomGenerator.string(1);
         await tester.enterText(find.byType(TextField), searchVal);
-        verify(searchBloc.add(SearchUpdated(searchVal)));
+        verify(searchBloc.add(SearchValueChanged(searchVal)));
       });
     });
   });

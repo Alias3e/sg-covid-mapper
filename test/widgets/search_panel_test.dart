@@ -45,7 +45,7 @@ main() {
         ),
       ];
       OneMapSearch search = OneMapSearch(results);
-      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search));
+      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
       await tester.pumpWidget(
         BlocProvider<SearchBloc>.value(
@@ -93,7 +93,7 @@ main() {
         ),
       ];
       OneMapSearch search = OneMapSearch(results);
-      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search));
+      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
       await tester.pumpWidget(
         BlocProvider<SearchBloc>.value(
@@ -123,7 +123,7 @@ main() {
         (WidgetTester tester) async {
       List<OneMapSearchResult> results = [];
       OneMapSearch search = OneMapSearch(results);
-      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search));
+      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
       await tester.pumpWidget(
         BlocProvider<SearchBloc>.value(
@@ -143,7 +143,8 @@ main() {
       expect(find.byType(ListTile), findsNothing);
     });
 
-    testWidgets('verify CenterOnLocation event called when list tile is tapped',
+    testWidgets(
+        'verify CenterOnLocation, SearchLocationTapped events are fired when list tile is tapped',
         (WidgetTester tester) async {
       List<OneMapSearchResult> results = [
         OneMapSearchResult(
@@ -155,7 +156,7 @@ main() {
         ),
       ];
       OneMapSearch search = OneMapSearch(results);
-      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search));
+      when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, 1));
 
       await tester.pumpWidget(
         MultiBlocProvider(
@@ -183,6 +184,7 @@ main() {
       await tester.tap(find.byType(ListTile));
       verify(mapBloc.add(CenterOnLocation(
           location: LatLng(results[0].latitude, results[0].longitude))));
+      verify(searchBloc.add(SearchLocationTapped(0)));
     });
   });
 }
