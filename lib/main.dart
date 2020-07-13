@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
+import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 import 'package:sgcovidmapper/repositories/firestore_visited_place_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
-import 'package:sgcovidmapper/repositories/one_map_repository.dart';
 import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<VisitedPlaceRepository>(
           create: (BuildContext context) => FirestoreVisitedPlaceRepository(
-              Firestore.instance.collection('places')),
+            locationCollection: Firestore.instance.collection('all_locations'),
+            systemCollection: Firestore.instance.collection('system'),
+          ),
         ),
         RepositoryProvider<GpsRepository>(
           create: (BuildContext context) => GpsRepository(),

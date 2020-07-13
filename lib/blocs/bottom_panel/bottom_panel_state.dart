@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sgcovidmapper/models/models.dart';
+import 'package:sgcovidmapper/models/one_map_search_result.dart';
 
 abstract class BottomPanelStateData extends Equatable {}
 
@@ -21,6 +22,16 @@ class PlacePanelData extends BottomPanelStateData {
   List<Object> get props => [markers];
 }
 
+class CheckInPanelData extends BottomPanelStateData {
+  final OneMapSearchResult location;
+  final DateTime dateTime;
+
+  CheckInPanelData(this.location, this.dateTime);
+
+  @override
+  List<Object> get props => [location, dateTime];
+}
+
 abstract class BottomPanelState<T extends BottomPanelStateData>
     extends Equatable {
   final double maxHeight;
@@ -30,7 +41,7 @@ abstract class BottomPanelState<T extends BottomPanelStateData>
   BottomPanelState(this.maxHeight, this.isDraggable, {this.data});
 
   @override
-  List<Object> get props => [maxHeight, isDraggable];
+  List<Object> get props => [maxHeight, isDraggable, data];
 }
 
 class BottomPanelClosed extends BottomPanelState {
@@ -63,6 +74,14 @@ class BottomPanelOpened<T extends BottomPanelStateData>
     @required bool isDraggable,
     @required BottomPanelStateData data,
   }) : super(maxHeight, isDraggable, data: data);
+}
+
+class BottomPanelContentChanged<T extends BottomPanelStateData>
+    extends BottomPanelState<T> {
+  BottomPanelContentChanged({@required BottomPanelStateData data})
+      : super(0.6, false, data: data);
+
+  List<Object> get props => [data];
 }
 
 class PlacePanelPositionChanging extends BottomPanelState {

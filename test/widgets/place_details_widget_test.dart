@@ -15,10 +15,10 @@ main() {
           Timestamp.fromDate(start.toDate().add(Duration(hours: 1)));
       List<PlaceMarker> markers = [
         PlaceMarker(
-            subLocation: '',
+            subtitle: '',
             title: 'Toa Payoh',
-            startDate: start,
-            endDate: end,
+            startTime: start,
+            endTime: end,
             builder: (context) {
               return Container();
             },
@@ -53,10 +53,10 @@ main() {
           Timestamp.fromDate(start.toDate().add(Duration(hours: 1)));
       List<PlaceMarker> markers = [
         PlaceMarker(
-            subLocation: 'NTUC',
+            subtitle: 'NTUC',
             title: 'Toa Payoh',
-            startDate: start,
-            endDate: end,
+            startTime: start,
+            endTime: end,
             builder: (context) {
               return Container();
             },
@@ -98,28 +98,28 @@ main() {
           Timestamp.fromDate(startOne.toDate().add(Duration(hours: 5)));
       List<PlaceMarker> markers = [
         PlaceMarker(
-            subLocation: 'NTUC',
+            subtitle: 'NTUC',
             title: 'Toa Payoh',
-            startDate: startOne,
-            endDate: endOne,
+            startTime: startOne,
+            endTime: endOne,
             builder: (context) {
               return Container();
             },
             point: LatLng(1.0, 103.0)),
         PlaceMarker(
-            subLocation: 'Giant',
+            subtitle: 'Giant',
             title: 'Toa Payoh',
-            startDate: startTwo,
-            endDate: endTwo,
+            startTime: startTwo,
+            endTime: endTwo,
             builder: (context) {
               return Container();
             },
             point: LatLng(1.0, 103.0)),
         PlaceMarker(
-            subLocation: 'Sheng Siong',
+            subtitle: 'Sheng Siong',
             title: 'Toa Payoh',
-            startDate: startThree,
-            endDate: endThree,
+            startTime: startThree,
+            endTime: endThree,
             builder: (context) {
               return Container();
             },

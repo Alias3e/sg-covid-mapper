@@ -1,3 +1,4 @@
+export 'bottom_panel.dart';
 export 'cluster_widget.dart';
 export 'map_screen_speed_dial.dart';
 export 'places_panel.dart';

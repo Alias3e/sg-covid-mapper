@@ -16,21 +16,27 @@ class MockSearchBloc extends MockBloc<SearchEvent, SearchState>
 
 class MockMapBloc extends MockBloc<MapEvent, MapState> implements MapBloc {}
 
+class MockBottomPanelBloc extends MockBloc<BottomPanelBloc, BottomPanelState>
+    implements BottomPanelBloc {}
+
 main() {
   group('Search Panel Test', () {
     SearchBloc searchBloc;
     MapBloc mapBloc;
+    BottomPanelBloc bottomPanelBloc;
     Faker faker;
 
     setUp(() {
       searchBloc = MockSearchBloc();
       mapBloc = MockMapBloc();
+      bottomPanelBloc = MockBottomPanelBloc();
       faker = Faker();
     });
 
     tearDown(() {
       searchBloc.close();
       mapBloc.close();
+      bottomPanelBloc.close();
     });
 
     testWidgets('search panel populates one search result properly',
@@ -48,8 +54,11 @@ main() {
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
       await tester.pumpWidget(
-        BlocProvider<SearchBloc>.value(
-          value: searchBloc,
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
+            BlocProvider<SearchBloc>.value(value: searchBloc),
+          ],
           child: MaterialApp(
             home: Scaffold(
               body: Directionality(
@@ -96,8 +105,11 @@ main() {
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
       await tester.pumpWidget(
-        BlocProvider<SearchBloc>.value(
-          value: searchBloc,
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
+            BlocProvider<SearchBloc>.value(value: searchBloc),
+          ],
           child: MaterialApp(
             home: Scaffold(
               body: Directionality(
@@ -126,8 +138,11 @@ main() {
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
       await tester.pumpWidget(
-        BlocProvider<SearchBloc>.value(
-          value: searchBloc,
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
+            BlocProvider<SearchBloc>.value(value: searchBloc),
+          ],
           child: MaterialApp(
             home: Scaffold(
               body: Directionality(
@@ -161,6 +176,9 @@ main() {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
+            BlocProvider<BottomPanelBloc>.value(
+              value: bottomPanelBloc,
+            ),
             BlocProvider<MapBloc>.value(
               value: mapBloc,
             ),

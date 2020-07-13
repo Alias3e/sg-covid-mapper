@@ -11,12 +11,6 @@ class PlacesPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    return Column(
-//      crossAxisAlignment: CrossAxisAlignment.stretch,
-//      mainAxisSize: MainAxisSize.min,
-//      children: makeDetailsColumn(),
-//    );
-
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -51,13 +45,13 @@ class PlacesPanel extends StatelessWidget {
               PlaceMarker marker = markers[index - 2];
               return ListTile(
                 title: Text(
-                  marker.subLocation.isEmpty
+                  marker.subtitle.isEmpty
                       ? marker.title
-                      : '${marker.title}\n${marker.subLocation}',
+                      : '${marker.title}\n${marker.subtitle}',
                   style: Styles.kTitleTextStyle,
                 ),
                 subtitle: Text(
-                  '${Styles.kStartDateFormat.format(marker.startDate.toDate())} - ${Styles.kEndTimeFormat.format(marker.endDate.toDate())}',
+                  '${Styles.kStartDateFormat.format(marker.startTime.toDate())} - ${Styles.kEndTimeFormat.format(marker.endTime.toDate())}',
                   style: Styles.kDetailsTextStyle,
                 ),
               );

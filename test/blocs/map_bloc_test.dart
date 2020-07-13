@@ -9,8 +9,8 @@ import 'package:latlong/latlong.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
-import 'package:sgcovidmapper/repositories/firestore_visited_place_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
+import 'package:sgcovidmapper/repositories/repositories.dart';
 import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 
 class MockGpsRepository extends Mock implements GpsRepository {}
@@ -29,16 +29,16 @@ main() {
       [
         PlaceMarker(
             title: 'foo',
-            subLocation: 'foo sub',
-            startDate: Timestamp(1000, 0),
-            endDate: Timestamp(2000, 0),
+            subtitle: 'foo sub',
+            startTime: Timestamp(1000, 0),
+            endTime: Timestamp(2000, 0),
             point: LatLng(1.1, 100),
             builder: (context) => Container()),
         PlaceMarker(
             title: 'bar',
-            subLocation: 'bar sub',
-            startDate: Timestamp(3000, 0),
-            endDate: Timestamp(4000, 0),
+            subtitle: 'bar sub',
+            startTime: Timestamp(3000, 0),
+            endTime: Timestamp(4000, 0),
             point: LatLng(2.2, 125),
             builder: (context) => Container()),
       ]
@@ -52,21 +52,24 @@ main() {
       when(mockVisitedPlaceRepository.cached).thenReturn(markers[0]);
     });
 
-    tearDown(() {});
-
-    test('has a correct initialState', () {
-      MapBloc mapBloc = MapBloc(
-          visitedPlaceRepository: mockVisitedPlaceRepository,
-          gpsRepository: mockGpsRepository);
-      expect(mapBloc.initialState, PlacesLoading());
-      mapBloc.close();
-    });
-
     test('throws AssertionError when visitedPlaceRepository is null', () {
       expect(
           () => MapBloc(
               visitedPlaceRepository: null, gpsRepository: mockGpsRepository),
           throwsAssertionError);
+    });
+
+    test('throws Exception when Firestore CollectionReference is null', () {
+      expect(() => FirestoreVisitedPlaceRepository(), throwsAssertionError);
+    });
+
+    test('has correct initial state', () async {
+      MapBloc mapBloc = MapBloc(
+          visitedPlaceRepository: mockVisitedPlaceRepository,
+          gpsRepository: mockGpsRepository);
+      await untilCalled(mockVisitedPlaceRepository.init());
+      expect(mapBloc.initialState, PlacesLoading());
+      mapBloc.close();
     });
 
     test('throws AssertionError when gpsRepository is null', () {
@@ -75,10 +78,6 @@ main() {
               visitedPlaceRepository: mockVisitedPlaceRepository,
               gpsRepository: null),
           throwsAssertionError);
-    });
-
-    test('throws Exception when Firestore CollectionReference is null', () {
-      expect(() => FirestoreVisitedPlaceRepository(null), throwsAssertionError);
     });
 
     group('Has Place Data event', () {
@@ -103,7 +102,10 @@ main() {
             visitedPlaceRepository: mockVisitedPlaceRepository,
             gpsRepository: mockGpsRepository);
       },
-      act: (bloc) async => bloc.add(CenterOnLocation(location: latLng)),
+      act: (bloc) async {
+        await untilCalled(mockVisitedPlaceRepository.init());
+        bloc.add(CenterOnLocation(location: latLng));
+      },
       expect: [isA<MapViewBoundsChanged>()],
       skip: 2,
     );
@@ -118,7 +120,10 @@ main() {
               gpsRepository: mockGpsRepository,
               visitedPlaceRepository: mockVisitedPlaceRepository);
         },
-        act: (bloc) async => bloc.add(GetGPS()),
+        act: (bloc) async {
+          await untilCalled(mockVisitedPlaceRepository.init());
+          bloc.add(GetGPS());
+        },
         expect: [
           GpsLocationAcquiring(
               covidPlaces: markers[0], nearbyPlaces: nearbyPlaces),
@@ -137,7 +142,10 @@ main() {
             gpsRepository: mockGpsRepository,
             visitedPlaceRepository: mockVisitedPlaceRepository);
       },
-      act: (bloc) async => bloc.add(GetGPS()),
+      act: (bloc) async {
+        await untilCalled(mockVisitedPlaceRepository.init());
+        bloc.add(GetGPS());
+      },
       expect: [
         GpsLocationAcquiring(
             covidPlaces: markers[0], nearbyPlaces: nearbyPlaces),

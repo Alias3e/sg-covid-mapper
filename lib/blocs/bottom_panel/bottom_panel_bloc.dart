@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_event.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
@@ -29,6 +30,15 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
           maxHeight: 0.4,
           isDraggable: true,
           data: PlacePanelData(_currentMarkers));
+    }
+
+    if (event is CheckInPanelSwitched) {
+      yield BottomPanelContentChanged(
+          data: CheckInPanelData(event.result, DateTime.now()));
+    }
+
+    if (event is SearchPanelSwitched) {
+      yield BottomPanelContentChanged(data: SearchPanelData());
     }
 
     if (event is PlacePanelDisplayed) {

@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:sgcovidmapper/blocs/search/search_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
+import 'package:sgcovidmapper/models/one_map_search_result.dart';
 
 class BottomPanelEvent extends Equatable {
   @override
@@ -33,3 +36,15 @@ class PlacePanelDisplayed extends BottomPanelEvent {
 }
 
 class PlacePanelOpened extends BottomPanelEvent {}
+
+class CheckInPanelSwitched extends BottomPanelEvent {
+  final OneMapSearchResult result;
+  final SearchResultLoaded previousState;
+
+  CheckInPanelSwitched({@required this.result, @required this.previousState});
+
+  @override
+  List<Object> get props => [result, previousState];
+}
+
+class SearchPanelSwitched extends BottomPanelEvent {}

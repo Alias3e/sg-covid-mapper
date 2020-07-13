@@ -11,7 +11,6 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_event.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/search_panel.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -53,8 +52,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     duration: Duration(milliseconds: 250),
                     curve: Curves.linear);
             },
-            buildWhen: (previous, current) =>
-                (current is BottomPanelOpening || current is BottomPanelOpened),
+            buildWhen: (previous, current) => (current is BottomPanelOpening ||
+                current is BottomPanelOpened ||
+                current is BottomPanelCollapsed),
             builder: (BuildContext context, BottomPanelState state) {
               return SlidingUpPanel(
                 isDraggable:
@@ -85,7 +85,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     state is BottomPanelOpened && state.data is PlacePanelData
                         ? _onBottomPanelSlide
                         : null,
-                panelBuilder: (sc) => _getBottomPanel(state, sc),
+                panelBuilder: (sc) => BottomPanel(
+                  state: state,
+                  scrollController: sc,
+                ),
                 body: BlocConsumer<MapBloc, MapState>(
                   listenWhen: (previous, current) =>
                       current is MapViewBoundsChanged ||
@@ -173,31 +176,31 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         .add(PlacePanelDragged(position: position));
   }
 
-  _getBottomPanel(BottomPanelState state, ScrollController scrollController) {
-    if (state is BottomPanelOpening) {
-      BottomPanelStateData data = state.data;
-      if (data is SearchPanelData) return SearchPanel();
-      if (data is PlacePanelData)
-        return PlacesPanel(
-          markers: data.markers,
-          scrollController: scrollController,
-        );
-    }
-
-    if (state is BottomPanelOpened) {
-      BottomPanelStateData data = state.data;
-      if (data is PlacePanelData)
-        return PlacesPanel(
-          markers: data.markers,
-          scrollController: scrollController,
-        );
-    }
-
-    return Container(
-      width: 0,
-      height: 0,
-    );
-  }
+//  _getBottomPanel(BottomPanelState state, ScrollController scrollController) {
+//    if (state is BottomPanelOpening) {
+//      BottomPanelStateData data = state.data;
+//      if (data is SearchPanelData) return SearchPanel();
+//      if (data is PlacePanelData)
+//        return PlacesPanel(
+//          markers: data.markers,
+//          scrollController: scrollController,
+//        );
+//    }
+//
+//    if (state is BottomPanelOpened) {
+//      BottomPanelStateData data = state.data;
+//      if (data is PlacePanelData)
+//        return PlacesPanel(
+//          markers: data.markers,
+//          scrollController: scrollController,
+//        );
+//    }
+//
+//    return Container(
+//      width: 0,
+//      height: 0,
+//    );
+//  }
 
   void _animatedMapMove(LatLng destLocation, double destZoom) {
     // Create some tweens. These serve to split up the transition from one location to another.

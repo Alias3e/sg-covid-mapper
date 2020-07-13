@@ -7,15 +7,15 @@ import 'package:latlong/latlong.dart';
 
 class PlaceMarker extends Marker with EquatableMixin {
   final String title;
-  final String subLocation;
-  final Timestamp startDate;
-  final Timestamp endDate;
+  final String subtitle;
+  final Timestamp startTime;
+  final Timestamp endTime;
 
   PlaceMarker(
       {@required this.title,
-      @required this.subLocation,
-      @required this.startDate,
-      @required this.endDate,
+      @required this.subtitle,
+      @required this.startTime,
+      @required this.endTime,
       @required point,
       @required builder})
       : super(
@@ -26,9 +26,9 @@ class PlaceMarker extends Marker with EquatableMixin {
   static PlaceMarker fromFireStoreSnapshot(DocumentSnapshot snapshot) {
     return PlaceMarker(
       title: snapshot['title'],
-      subLocation: snapshot['sub_location'],
-      startDate: snapshot['start_date'],
-      endDate: snapshot['end_date'],
+      subtitle: snapshot['subtitle'],
+      startTime: snapshot['start_time'],
+      endTime: snapshot['end_time'],
       point: LatLng(snapshot['geo'].latitude, snapshot['geo'].longitude),
       builder: (BuildContext context) => FaIcon(
         FontAwesomeIcons.virus,

@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sgcovidmapper/blocs/search/search_event.dart';
 import 'package:sgcovidmapper/blocs/search/search_state.dart';
 import 'package:sgcovidmapper/models/one_map_search.dart';
-import 'package:sgcovidmapper/repositories/one_map_repository.dart';
+import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GeolocationRepository _repository;

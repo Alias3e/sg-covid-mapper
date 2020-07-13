@@ -16,11 +16,17 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   final GpsRepository gpsRepository;
   List<Marker> _myPlaces = [];
   StreamSubscription _subscription;
+  StreamSubscription _settingsSubscription;
 
   MapBloc(
       {@required this.visitedPlaceRepository, @required this.gpsRepository}) {
     assert(visitedPlaceRepository != null);
     assert(gpsRepository != null);
+    getSubscription();
+  }
+
+  Future<void> getSubscription() async {
+    await visitedPlaceRepository.init();
     _subscription = visitedPlaceRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));
   }
@@ -69,6 +75,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   @override
   Future<void> close() {
     _subscription?.cancel();
+    _settingsSubscription?.cancel();
     return super.close();
   }
 
