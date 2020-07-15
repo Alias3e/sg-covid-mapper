@@ -79,7 +79,7 @@ class BottomPanelOpened<T extends BottomPanelStateData>
 class BottomPanelContentChanged<T extends BottomPanelStateData>
     extends BottomPanelState<T> {
   BottomPanelContentChanged({@required BottomPanelStateData data})
-      : super(0.6, false, data: data);
+      : super(0.65, false, data: data);
 
   List<Object> get props => [data];
 }

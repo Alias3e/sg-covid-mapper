@@ -14,45 +14,50 @@ class SearchResultsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      itemCount: searchState.result != null ? searchState.result.count : 0,
-      itemBuilder: (BuildContext context, int index) {
-        OneMapSearchResult result = searchState.result.results[index];
-        return AnimatedContainer(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          decoration: BoxDecoration(
-            border: searchState.selected == index
-                ? Border.all(color: Colors.teal)
-                : null,
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-          ),
-          duration: Duration(milliseconds: 500),
-          child: ListTile(
-            title: Text('${result.searchValue}'),
-            subtitle: Text('${result.address}'),
-            trailing: IconButton(
-              icon: Icon(FontAwesomeIcons.signInAlt),
-              onPressed: () {
+    return SafeArea(
+      minimum: EdgeInsets.only(top: 60),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: searchState.result != null ? searchState.result.count : 0,
+        itemBuilder: (BuildContext context, int index) {
+          OneMapSearchResult result = searchState.result.results[index];
+          return AnimatedContainer(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            decoration: BoxDecoration(
+              border: searchState.selected == index
+                  ? Border.all(color: Colors.teal)
+                  : null,
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            ),
+            duration: Duration(milliseconds: 500),
+            child: ListTile(
+              title: Text('${result.searchValue}'),
+              subtitle: Text('${result.address}'),
+              trailing: IconButton(
+                icon: Icon(FontAwesomeIcons.signInAlt),
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  BlocProvider.of<BottomPanelBloc>(context).add(
+                      CheckInPanelSwitched(
+                          result: result, previousState: searchState));
+                  BlocProvider.of<CheckPanelBloc>(context).add(
+                      DisplayLocationCheckInPanel(
+                          CheckInPanelData(result, DateTime.now())));
+                  BlocProvider.of<SearchBoxBloc>(context)
+                      .add(SearchBoxOpacityChanged(1));
+                },
+              ),
+              onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
-                BlocProvider.of<BottomPanelBloc>(context).add(
-                    CheckInPanelSwitched(
-                        result: result, previousState: searchState));
-                BlocProvider.of<CheckPanelBloc>(context).add(
-                    DisplayLocationCheckInPanel(
-                        CheckInPanelData(result, DateTime.now())));
+                BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
+                    location: LatLng(result.latitude, result.longitude)));
+                BlocProvider.of<SearchBloc>(context)
+                    .add(SearchLocationTapped(index));
               },
             ),
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-              BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
-                  location: LatLng(result.latitude, result.longitude)));
-              BlocProvider.of<SearchBloc>(context)
-                  .add(SearchLocationTapped(index));
-            },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

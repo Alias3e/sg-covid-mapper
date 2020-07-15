@@ -23,7 +23,7 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
 
     if (event is SearchPanelOpenAnimationStarted)
       yield BottomPanelOpening(
-          maxHeight: 0.6, isDraggable: false, data: SearchPanelData());
+          maxHeight: 0.65, isDraggable: false, data: SearchPanelData());
 
     if (event is PlacePanelOpened) {
       yield BottomPanelOpened<PlacePanelData>(

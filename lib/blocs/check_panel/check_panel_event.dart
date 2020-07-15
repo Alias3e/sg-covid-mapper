@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 
 abstract class CheckPanelEvent extends Equatable {}
@@ -34,4 +35,32 @@ class CheckOutDateTimeUpdated extends CheckPanelEvent {
 class CheckOutDateTimeDisplayed extends CheckPanelEvent {
   @override
   List<Object> get props => [];
+}
+
+class AddTag extends CheckPanelEvent {
+  final String tagName;
+
+  AddTag({@required this.tagName});
+
+  @override
+  List<Object> get props => [tagName];
+}
+
+class RemoveTag extends CheckPanelEvent {
+  final String tagName;
+
+  RemoveTag({@required this.tagName});
+
+  @override
+  List<Object> get props => [tagName];
+}
+
+class SaveVisit extends CheckPanelEvent {
+  @override
+  List<Object> get props => throw UnimplementedError();
+}
+
+class CancelVisit extends CheckPanelEvent {
+  @override
+  List<Object> get props => throw UnimplementedError();
 }

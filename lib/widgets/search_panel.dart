@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
@@ -14,41 +15,43 @@ class SearchPanel extends StatefulWidget {
 class _SearchPanelState extends State<SearchPanel> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: BlocBuilder<SearchBloc, SearchState>(
-        condition: (previous, current) => current is SearchResultLoaded,
-        builder: (BuildContext context, searchState) {
-          if (searchState is SearchResultLoaded) {
-            return BlocBuilder<BottomPanelBloc, BottomPanelState>(
-              bloc: BlocProvider.of<BottomPanelBloc>(context),
-              condition: (previous, current) =>
-                  current is BottomPanelContentChanged,
-              builder:
-                  (BuildContext context, BottomPanelState bottomPanelState) {
-                return BlocProvider<CheckPanelBloc>(
-                  create: (BuildContext context) => CheckPanelBloc(),
-                  child: AnimatedSwitcher(
-                    duration: Duration(
-                      milliseconds: 500,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: BlocBuilder<SearchBloc, SearchState>(
+          condition: (previous, current) => current is SearchResultLoaded,
+          builder: (BuildContext context, searchState) {
+            if (searchState is SearchResultLoaded) {
+              return BlocBuilder<BottomPanelBloc, BottomPanelState>(
+                bloc: BlocProvider.of<BottomPanelBloc>(context),
+                condition: (previous, current) =>
+                    current is BottomPanelContentChanged,
+                builder:
+                    (BuildContext context, BottomPanelState bottomPanelState) {
+                  return BlocProvider<CheckPanelBloc>(
+                    create: (BuildContext context) => CheckPanelBloc(),
+                    child: AnimatedSwitcher(
+                      duration: Duration(
+                        milliseconds: 500,
+                      ),
+                      child: bottomPanelState is BottomPanelContentChanged &&
+                              bottomPanelState.data is CheckInPanelData
+                          ? CheckPanel()
+                          : SearchResultsPanel(
+                              searchState: searchState,
+                            ),
                     ),
-                    child: bottomPanelState is BottomPanelContentChanged &&
-                            bottomPanelState.data is CheckInPanelData
-                        ? CheckPanel()
-                        : SearchResultsPanel(
-                            searchState: searchState,
-                          ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return Container(
-              width: 0,
-              height: 0,
-            );
-          }
-        },
+                  );
+                },
+              );
+            } else {
+              return Container(
+                width: 0,
+                height: 0,
+              );
+            }
+          },
+        ),
       ),
     );
   }

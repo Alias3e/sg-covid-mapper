@@ -34,13 +34,12 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       // Prevent markers from being shifted by keyboard.
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           BlocConsumer<BottomPanelBloc, BottomPanelState>(
             listener: (BuildContext context, BottomPanelState state) {
               if (state is PlacePanelPositionChanging) return;
-
               if (state is! BottomPanelClosing)
                 _panelController.animatePanelToPosition(
                   1.0,
@@ -159,11 +158,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
             left: 24.0,
             right: 24.0,
             child: SafeArea(
-              child: BlocProvider<SearchBoxBloc>(
-                create: (BuildContext context) =>
-                    SearchBoxBloc(BlocProvider.of<BottomPanelBloc>(context)),
-                child: SearchTextField(),
-              ),
+              child: SearchTextField(),
             ),
           ),
         ],

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
@@ -13,12 +15,16 @@ import 'package:sgcovidmapper/screens/map_screen.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
-Future<void> main() async {
+void main() async {
+  await init();
+  runApp(MyApp());
+}
+
+Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await Config.loadConfig();
-
-  runApp(MyApp());
+  await Hive.initFlutter();
 }
 
 class MyApp extends StatelessWidget {
@@ -57,6 +63,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<BottomPanelBloc>(
             create: (BuildContext context) => BottomPanelBloc(),
           ),
+          BlocProvider<SearchBoxBloc>(
+              create: (BuildContext context) =>
+                  SearchBoxBloc(BlocProvider.of<BottomPanelBloc>(context))),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

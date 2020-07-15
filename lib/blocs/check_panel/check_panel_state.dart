@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 
 abstract class CheckPanelState extends Equatable {}
@@ -45,4 +46,13 @@ class CheckOutDateTimeWidgetLoaded extends CheckPanelState {
 
   @override
   List<Object> get props => [];
+}
+
+class TagListUpdated extends CheckPanelState {
+  final List<Chip> tags;
+
+  TagListUpdated({@required this.tags});
+
+  @override
+  List<Object> get props => [tags.length];
 }
