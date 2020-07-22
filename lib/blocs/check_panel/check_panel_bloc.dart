@@ -19,7 +19,6 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
   Future<void> _openBox() async {
     Hive.registerAdapter(VisitAdapter());
     await Hive.openBox<Visit>(boxName);
-    print(Hive.box<Visit>(boxName).length);
   }
 
   @override

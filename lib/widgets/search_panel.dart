@@ -5,7 +5,7 @@ import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
 import 'package:sgcovidmapper/widgets/search_results_panel.dart';
 
-import 'check_panel.dart';
+import 'check/check_panel.dart';
 
 class SearchPanel extends StatefulWidget {
   @override

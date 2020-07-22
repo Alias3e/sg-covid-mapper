@@ -35,6 +35,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     return Scaffold(
       // Prevent markers from being shifted by keyboard.
       resizeToAvoidBottomInset: true,
+      floatingActionButton: MapScreenSpeedDial(),
       body: Stack(
         children: [
           BlocConsumer<BottomPanelBloc, BottomPanelState>(

@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -22,10 +23,28 @@ class MapScreenSpeedDial extends StatelessWidget {
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () => BlocProvider.of<MapBloc>(context).add(GetGPS())),
         SpeedDialChild(
-            child: Icon(Icons.favorite_border),
-            backgroundColor: Colors.red,
-            labelStyle: TextStyle(fontSize: 18.0),
-            onTap: () => print('FIRST CHILD')),
+            backgroundColor: Colors.blue,
+            child: OpenContainer(
+              closedColor: Colors.red,
+              closedElevation: 6.0,
+              closedShape: CircleBorder(),
+              closedBuilder: (BuildContext context, void Function() action) {
+                return SizedBox(
+                  child: Center(
+                    child: Icon(
+                      Icons.timeline,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+                  ),
+                );
+              },
+              openBuilder: (BuildContext context,
+                  void Function({Object returnValue}) action) {
+                return Container(
+                  color: Colors.greenAccent,
+                );
+              },
+            ))
       ],
       child: SpinKitDualRing(
         key: Keys.kKeyFABSpinner,

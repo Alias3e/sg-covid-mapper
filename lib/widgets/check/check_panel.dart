@@ -7,9 +7,8 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_state.dart';
 import 'package:sgcovidmapper/models/one_map_search_result.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/check_panel_date_time_picker.dart';
-import 'package:sgcovidmapper/widgets/tags.dart';
 
+import 'check.dart';
 import 'check_panel_button.dart';
 
 class CheckPanel extends StatefulWidget {
