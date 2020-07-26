@@ -9,14 +9,14 @@ import 'package:latlong/latlong.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/models/models.dart';
+import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
 import 'package:sgcovidmapper/repositories/repositories.dart';
-import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 
 class MockGpsRepository extends Mock implements GpsRepository {}
 
-class MockVisitedPlaceRepository extends Mock
-    implements VisitedPlaceRepository {}
+class MockVisitedPlaceRepository extends Mock implements CovidPlacesRepository {
+}
 
 main() {
   group('MapBloc', () {
@@ -49,23 +49,24 @@ main() {
       mockGpsRepository = MockGpsRepository();
       when(mockVisitedPlaceRepository.placeMarkers)
           .thenAnswer((_) => Stream.fromIterable(markers));
-      when(mockVisitedPlaceRepository.cached).thenReturn(markers[0]);
+      when(mockVisitedPlaceRepository.placeMarkersCached)
+          .thenReturn(markers[0]);
     });
 
     test('throws AssertionError when visitedPlaceRepository is null', () {
       expect(
           () => MapBloc(
-              visitedPlaceRepository: null, gpsRepository: mockGpsRepository),
+              covidPlacesRepository: null, gpsRepository: mockGpsRepository),
           throwsAssertionError);
     });
 
     test('throws Exception when Firestore CollectionReference is null', () {
-      expect(() => FirestoreVisitedPlaceRepository(), throwsAssertionError);
+      expect(() => FirestoreCovidPlacesRepository(), throwsAssertionError);
     });
 
     test('has correct initial state', () async {
       MapBloc mapBloc = MapBloc(
-          visitedPlaceRepository: mockVisitedPlaceRepository,
+          covidPlacesRepository: mockVisitedPlaceRepository,
           gpsRepository: mockGpsRepository);
       await untilCalled(mockVisitedPlaceRepository.init());
       expect(mapBloc.initialState, PlacesLoading());
@@ -75,7 +76,7 @@ main() {
     test('throws AssertionError when gpsRepository is null', () {
       expect(
           () => MapBloc(
-              visitedPlaceRepository: mockVisitedPlaceRepository,
+              covidPlacesRepository: mockVisitedPlaceRepository,
               gpsRepository: null),
           throwsAssertionError);
     });
@@ -85,7 +86,7 @@ main() {
         'emits [PlacesUpdated] when visitedPlaceRepository returns places',
         build: () async {
           return MapBloc(
-              visitedPlaceRepository: mockVisitedPlaceRepository,
+              covidPlacesRepository: mockVisitedPlaceRepository,
               gpsRepository: mockGpsRepository);
         },
         act: (bloc) async => bloc.add(HasPlacesData(markers[0])),
@@ -99,7 +100,7 @@ main() {
       'Emits MapViewBoundChanged when user taps on a searched location',
       build: () async {
         return MapBloc(
-            visitedPlaceRepository: mockVisitedPlaceRepository,
+            covidPlacesRepository: mockVisitedPlaceRepository,
             gpsRepository: mockGpsRepository);
       },
       act: (bloc) async {
@@ -118,7 +119,7 @@ main() {
               .thenAnswer((_) => Future.value(position));
           return MapBloc(
               gpsRepository: mockGpsRepository,
-              visitedPlaceRepository: mockVisitedPlaceRepository);
+              covidPlacesRepository: mockVisitedPlaceRepository);
         },
         act: (bloc) async {
           await untilCalled(mockVisitedPlaceRepository.init());
@@ -140,7 +141,7 @@ main() {
             .thenThrow(PlatformException(code: '100'));
         return MapBloc(
             gpsRepository: mockGpsRepository,
-            visitedPlaceRepository: mockVisitedPlaceRepository);
+            covidPlacesRepository: mockVisitedPlaceRepository);
       },
       act: (bloc) async {
         await untilCalled(mockVisitedPlaceRepository.init());

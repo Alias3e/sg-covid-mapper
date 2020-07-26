@@ -8,26 +8,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
-import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
-  final VisitedPlaceRepository visitedPlaceRepository;
+  final CovidPlacesRepository covidPlacesRepository;
   final GpsRepository gpsRepository;
   List<Marker> _myPlaces = [];
   StreamSubscription _subscription;
   StreamSubscription _settingsSubscription;
 
   MapBloc(
-      {@required this.visitedPlaceRepository, @required this.gpsRepository}) {
-    assert(visitedPlaceRepository != null);
+      {@required this.covidPlacesRepository, @required this.gpsRepository}) {
+    assert(covidPlacesRepository != null);
     assert(gpsRepository != null);
     getSubscription();
   }
 
   Future<void> getSubscription() async {
-    await visitedPlaceRepository.init();
-    _subscription = visitedPlaceRepository.placeMarkers
+    await covidPlacesRepository.init();
+    _subscription = covidPlacesRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));
   }
 
@@ -37,7 +37,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   @override
   Stream<MapState> mapEventToState(MapEvent event) async* {
     if (event is HasPlacesData) {
-      visitedPlaceRepository.cached = event.visitedPlaces;
+      covidPlacesRepository.placeMarkersCached = event.visitedPlaces;
       yield MapUpdated(
           covidPlaces: event.visitedPlaces, nearbyPlaces: _myPlaces);
     }
@@ -48,13 +48,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       yield MapViewBoundsChanged(
         mapCenter: LatLng(event.location.latitude, event.location.longitude),
         nearbyPlaces: _myPlaces,
-        covidPlaces: visitedPlaceRepository.cached,
+        covidPlaces: covidPlacesRepository.placeMarkersCached,
       );
     }
 
     if (event is GetGPS) {
       yield GpsLocationAcquiring(
-          covidPlaces: visitedPlaceRepository.cached, nearbyPlaces: _myPlaces);
+          covidPlaces: covidPlacesRepository.placeMarkersCached,
+          nearbyPlaces: _myPlaces);
       try {
         Position position = await gpsRepository.getCurrentLocation();
         _updatePlaceMarkers(
@@ -62,11 +63,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         yield MapViewBoundsChanged(
           mapCenter: LatLng(position.latitude, position.longitude),
           nearbyPlaces: _myPlaces,
-          covidPlaces: visitedPlaceRepository.cached,
+          covidPlaces: covidPlacesRepository.placeMarkersCached,
         );
       } catch (exception) {
         yield GpsLocationFailed(
-            covidPlaces: visitedPlaceRepository.cached,
+            covidPlaces: covidPlacesRepository.placeMarkersCached,
             nearbyPlaces: _myPlaces);
       }
     }

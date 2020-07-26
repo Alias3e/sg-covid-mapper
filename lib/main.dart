@@ -7,10 +7,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
+import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
-import 'package:sgcovidmapper/repositories/firestore_visited_place_repository.dart';
+import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
+import 'package:sgcovidmapper/repositories/firestore_covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
-import 'package:sgcovidmapper/repositories/visited_place_repository.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
@@ -33,8 +34,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<VisitedPlaceRepository>(
-          create: (BuildContext context) => FirestoreVisitedPlaceRepository(
+        RepositoryProvider<CovidPlacesRepository>(
+          create: (BuildContext context) => FirestoreCovidPlacesRepository(
             locationCollection: Firestore.instance.collection('all_locations'),
             systemCollection: Firestore.instance.collection('system'),
           ),
@@ -55,11 +56,16 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<MapBloc>(
               create: (BuildContext context) => MapBloc(
-                    visitedPlaceRepository:
-                        RepositoryProvider.of<VisitedPlaceRepository>(context),
+                    covidPlacesRepository:
+                        RepositoryProvider.of<CovidPlacesRepository>(context),
                     gpsRepository:
                         RepositoryProvider.of<GpsRepository>(context),
                   )),
+          BlocProvider<TimelineBloc>(
+            create: (BuildContext context) => TimelineBloc(
+                repository:
+                    RepositoryProvider.of<CovidPlacesRepository>(context)),
+          ),
           BlocProvider<BottomPanelBloc>(
             create: (BuildContext context) => BottomPanelBloc(),
           ),

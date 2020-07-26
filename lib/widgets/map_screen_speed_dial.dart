@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
+import 'package:sgcovidmapper/blocs/timeline/timeline_state.dart';
+import 'package:sgcovidmapper/screens/timeline_screen.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
 class MapScreenSpeedDial extends StatelessWidget {
@@ -40,8 +43,16 @@ class MapScreenSpeedDial extends StatelessWidget {
               },
               openBuilder: (BuildContext context,
                   void Function({Object returnValue}) action) {
-                return Container(
-                  color: Colors.greenAccent,
+                return BlocBuilder<TimelineBloc, TimelineState>(
+                  builder: (BuildContext context, TimelineState state) {
+                    return state is TimelineLoaded
+                        ? TimelineScreen(
+                            timelineModel: state.model,
+                          )
+                        : Container(
+                            color: Colors.redAccent,
+                          );
+                  },
                 );
               },
             ))
