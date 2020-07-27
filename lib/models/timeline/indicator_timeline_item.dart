@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sgcovidmapper/models/timeline/timeline_item.dart';
 
-abstract class IndicatorTimelineItem extends TimelineItem {
-  final double lineX;
+abstract class ChildTimelineItem extends TimelineItem {
+  final DateTime startTime;
+  final DateTime endTime;
 
-  IndicatorTimelineItem({@required this.lineX});
+  ChildTimelineItem({
+    @required this.startTime,
+    @required this.endTime,
+    @required lineX,
+  }) : super(lineX: lineX);
 
-  Widget get indicator;
+  Widget get child;
 }

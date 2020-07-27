@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
+import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 import 'package:sgcovidmapper/widgets/search_results_panel.dart';
 
 import 'check/check_panel.dart';
@@ -29,7 +30,10 @@ class _SearchPanelState extends State<SearchPanel> {
                 builder:
                     (BuildContext context, BottomPanelState bottomPanelState) {
                   return BlocProvider<CheckPanelBloc>(
-                    create: (BuildContext context) => CheckPanelBloc(),
+                    create: (BuildContext context) => CheckPanelBloc(
+                        repository:
+                            RepositoryProvider.of<MyVisitedPlaceRepository>(
+                                context)),
                     child: AnimatedSwitcher(
                       duration: Duration(
                         milliseconds: 500,

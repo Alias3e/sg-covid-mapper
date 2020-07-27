@@ -5,28 +5,29 @@ import 'package:sgcovidmapper/models/timeline/indicator_timeline_item.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/timeline/location_body.dart';
 import 'package:sgcovidmapper/widgets/timeline/time_indicator.dart';
+import 'package:sgcovidmapper/widgets/timeline/timeline_indicator.dart';
 
-class LocationTimelineItem extends IndicatorTimelineItem {
-  final DateTime startTime;
-  final DateTime endTime;
+class LocationTimelineItem extends ChildTimelineItem with TimelineIndicator {
   final String title;
   final String subtitle;
 
   LocationTimelineItem(
-      {@required this.startTime,
-      @required this.endTime,
+      {@required startTime,
+      @required endTime,
       @required this.title,
       @required this.subtitle,
       @required lineX})
-      : super(lineX: lineX);
+      : super(lineX: lineX, startTime: startTime, endTime: endTime);
 
   @override
   List<Object> get props => [startTime, endTime, title, subtitle];
 
+  @override
   Widget get child => LocationBody(
         item: this,
       );
 
+  @override
   Widget get indicator => TimeIndicator(
         text:
             '${Styles.kEndTimeFormat.format(startTime)}\n${Styles.kEndTimeFormat.format(endTime)}',

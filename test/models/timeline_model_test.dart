@@ -31,18 +31,18 @@ main() {
       expect((model.tiles[1] as DividerTimelineItem).direction,
           DividerDirection.left);
       expect(model.tiles[2], isA<LocationTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
     });
 
     test('single visit model', () {
       List<VisitTimelineItem> myLocationModels = [
         VisitTimelineItem(
           title: faker.lorem.sentence(),
-          subtitle: faker.lorem.sentence(),
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
-          isAlert: false,
+          warningLevel: WarningLevel.none,
+          tags: [],
         ),
       ];
 
@@ -53,18 +53,18 @@ main() {
       expect((model.tiles[1] as DividerTimelineItem).direction,
           DividerDirection.right);
       expect(model.tiles[2], isA<VisitTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
     });
 
     test('single visit single covid location different date model', () {
       List<VisitTimelineItem> myVisitedLocationModels = [
         VisitTimelineItem(
           title: faker.lorem.sentence(),
-          subtitle: faker.lorem.sentence(),
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
-          isAlert: false,
+          warningLevel: WarningLevel.none,
+          tags: [],
         ),
       ];
 
@@ -83,7 +83,7 @@ main() {
       expect(model.tiles.length, 7);
       // Display date indicator.
       expect(model.tiles[0], isA<DateTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
 
       // Divider to link date to visit on the right.
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -100,7 +100,7 @@ main() {
 
       // Display date indicator.
       expect(model.tiles[4], isA<DateTimelineItem>());
-      expect((model.tiles[4] as DateTimelineItem).dateString, '22\nJun');
+      expect((model.tiles[4] as DateTimelineItem).dateString, '22 Jun');
 
       // Divider to link visit to date on the right.
       expect(model.tiles[5], isA<DividerTimelineItem>());
@@ -115,11 +115,11 @@ main() {
       List<VisitTimelineItem> myVisitedLocationModels = [
         VisitTimelineItem(
           title: faker.lorem.sentence(),
-          subtitle: faker.lorem.sentence(),
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
-          isAlert: false,
+          warningLevel: WarningLevel.none,
+          tags: [],
         ),
       ];
 
@@ -138,7 +138,7 @@ main() {
       expect(model.tiles.length, 5);
       // Display date indicator.
       expect(model.tiles[0], isA<DateTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
 
       // Divider to link date to visit on the right.
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -161,11 +161,11 @@ main() {
       List<VisitTimelineItem> myVisitedLocationModels = [
         VisitTimelineItem(
           title: faker.lorem.sentence(),
-          subtitle: faker.lorem.sentence(),
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 22),
           lineX: faker.randomGenerator.decimal(),
-          isAlert: false,
+          warningLevel: WarningLevel.none,
+          tags: [],
         ),
       ];
 
@@ -184,7 +184,7 @@ main() {
       expect(model.tiles.length, 5);
       // Display date indicator.
       expect(model.tiles[0], isA<DateTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
 
       // Divider to link date to covid on the left.
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -237,7 +237,7 @@ main() {
       expect(model.tiles[2], isA<LocationTimelineItem>());
       expect(model.tiles[3], isA<LocationTimelineItem>());
       expect(model.tiles[4], isA<LocationTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
     });
 
     test('three date tile multiple location & visit with across divider', () {
@@ -270,9 +270,9 @@ main() {
           startTime: DateTime(2020, 6, 22),
           endTime: DateTime(2020, 6, 22),
           title: faker.lorem.sentence(),
-          subtitle: faker.lorem.sentence(),
           lineX: faker.randomGenerator.decimal(),
-          isAlert: false,
+          warningLevel: WarningLevel.none,
+          tags: [],
         )
       ];
 
@@ -281,7 +281,7 @@ main() {
       expect(model.tiles.length, 10);
       // Initial timeline set at 21 jun
       expect(model.tiles[0], isA<DateTimelineItem>());
-      expect((model.tiles[0] as DateTimelineItem).dateString, '21\nJun');
+      expect((model.tiles[0] as DateTimelineItem).dateString, '21 Jun');
 
       // Divider line link date to covid on the left.
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -298,7 +298,7 @@ main() {
 
       // date timeline displaying 22 Jun
       expect(model.tiles[5], isA<DateTimelineItem>());
-      expect((model.tiles[5] as DateTimelineItem).dateString, '22\nJun');
+      expect((model.tiles[5] as DateTimelineItem).dateString, '22 Jun');
 
       // Divider line link date to visit on the right.
       expect(model.tiles[6], isA<DividerTimelineItem>());

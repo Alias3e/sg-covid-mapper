@@ -36,7 +36,7 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
   }
 
   @override
-  Stream<List<IndicatorTimelineItem>> get timelineTiles => locationCollection
+  Stream<List<ChildTimelineItem>> get timelineTiles => locationCollection
           .document(version)
           .collection('locations')
           .snapshots()

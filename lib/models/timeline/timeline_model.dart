@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sgcovidmapper/models/timeline/divider_timeline_item.dart';
-import 'package:sgcovidmapper/models/timeline/location_timeline_item.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
 import 'package:sgcovidmapper/models/timeline/timeline_item.dart';
 
@@ -11,52 +10,49 @@ class TimelineModel extends Equatable {
 
   TimelineModel({@required this.tiles});
 
-  factory TimelineModel.fromLocation(List<LocationTimelineItem> covidLocations,
-      List<LocationTimelineItem> myLocations) {
-    covidLocations
-      ..addAll(myLocations)
-      ..sort((LocationTimelineItem a, LocationTimelineItem b) {
-        if (a.startTime.isBefore(b.startTime))
+  factory TimelineModel.fromLocation(List<ChildTimelineItem> locations) {
+    locations.sort((ChildTimelineItem a, ChildTimelineItem b) {
+      if (a.startTime.isBefore(b.startTime))
+        return -1;
+      else if (a.startTime.isAfter(b.startTime))
+        return 1;
+      else {
+        if (a.endTime == null) return 1;
+        if (b.endTime == null) return -1;
+
+        if (a.endTime.isBefore(b.endTime))
           return -1;
-        else if (a.startTime.isAfter(b.startTime))
+        else
           return 1;
-        else {
-          if (a.endTime.isBefore(b.endTime))
-            return -1;
-          else
-            return 1;
-        }
-      });
+      }
+    });
     List<TimelineItem> allTiles = [];
     DateFormat format = DateFormat("dd MMM");
     int lastDay;
 
-    for (int i = 0; i < covidLocations.length; i++) {
+    for (int i = 0; i < locations.length; i++) {
       if (i == 0) {
-        allTiles
-            .add(DateTimelineItem(format.format(covidLocations[i].startTime)));
-        _addDivider(allTiles, covidLocations[i]);
-        lastDay = covidLocations[0].startTime.day;
+        allTiles.add(DateTimelineItem(format.format(locations[i].startTime)));
+        _addDivider(allTiles, locations[i]);
+        lastDay = locations[0].startTime.day;
       } else {
-        if (covidLocations[i].startTime.day != lastDay) {
-          _addDivider(allTiles, covidLocations[i - 1]);
-          allTiles.add(
-              DateTimelineItem(format.format(covidLocations[i].startTime)));
-          _addDivider(allTiles, covidLocations[i]);
+        if (locations[i].startTime.day != lastDay) {
+          _addDivider(allTiles, locations[i - 1]);
+          allTiles.add(DateTimelineItem(format.format(locations[i].startTime)));
+          _addDivider(allTiles, locations[i]);
 
-          lastDay = covidLocations[i].startTime.day;
+          lastDay = locations[i].startTime.day;
         } else {
-          if (covidLocations[i] is LocationTimelineItem &&
-              covidLocations[i - 1] is LocationTimelineItem) {
-            if (covidLocations[i].runtimeType !=
-                covidLocations[i - 1].runtimeType)
+          if (locations[i] is ChildTimelineItem &&
+              locations[i - 1] is ChildTimelineItem) {
+            if (locations[i].runtimeType != locations[i - 1].runtimeType)
               allTiles
                   .add(DividerTimelineItem(direction: DividerDirection.across));
           }
         }
       }
 
-      allTiles.add(covidLocations[i]);
+      allTiles.add(locations[i]);
     }
 //
 //    for (LocationTimelineItem model in covidLocations) {

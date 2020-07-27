@@ -4,7 +4,7 @@ import 'package:sgcovidmapper/models/timeline/timeline.dart';
 abstract class TimelineEvent extends Equatable {}
 
 class HasTimelineData extends TimelineEvent {
-  final List<IndicatorTimelineItem> timelineItems;
+  final List<ChildTimelineItem> timelineItems;
 
   HasTimelineData(this.timelineItems);
 

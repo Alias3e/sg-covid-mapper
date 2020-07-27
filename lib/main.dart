@@ -12,7 +12,9 @@ import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/firestore_covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
+import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
+import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
@@ -34,6 +36,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<MyVisitedPlaceRepository>(
+          create: (BuildContext context) =>
+              MyVisitedPlaceRepository(HiveService('myVisits')),
+        ),
         RepositoryProvider<CovidPlacesRepository>(
           create: (BuildContext context) => FirestoreCovidPlacesRepository(
             locationCollection: Firestore.instance.collection('all_locations'),
@@ -63,7 +69,9 @@ class MyApp extends StatelessWidget {
                   )),
           BlocProvider<TimelineBloc>(
             create: (BuildContext context) => TimelineBloc(
-                repository:
+                visitsRepository:
+                    RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+                covidRepository:
                     RepositoryProvider.of<CovidPlacesRepository>(context)),
           ),
           BlocProvider<BottomPanelBloc>(
