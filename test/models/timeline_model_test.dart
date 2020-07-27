@@ -2,6 +2,7 @@ import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sgcovidmapper/models/timeline/date_timeline_item.dart';
 import 'package:sgcovidmapper/models/timeline/divider_timeline_item.dart';
+import 'package:sgcovidmapper/models/timeline/indicator_timeline_item.dart';
 import 'package:sgcovidmapper/models/timeline/location_timeline_item.dart';
 import 'package:sgcovidmapper/models/timeline/timeline_model.dart';
 import 'package:sgcovidmapper/models/timeline/visit_timeline_item.dart';
@@ -24,7 +25,7 @@ main() {
         ),
       ];
 
-      TimelineModel model = TimelineModel.fromLocation(locationModels, []);
+      TimelineModel model = TimelineModel.fromLocation(locationModels);
       expect(model.tiles.length, 3);
       expect(model.tiles[0], isA<DateTimelineItem>());
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -46,7 +47,7 @@ main() {
         ),
       ];
 
-      TimelineModel model = TimelineModel.fromLocation([], myLocationModels);
+      TimelineModel model = TimelineModel.fromLocation(myLocationModels);
       expect(model.tiles.length, 3);
       expect(model.tiles[0], isA<DateTimelineItem>());
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -78,8 +79,10 @@ main() {
         ),
       ];
 
-      TimelineModel model = TimelineModel.fromLocation(
-          covidLocationModels, myVisitedLocationModels);
+      List<ChildTimelineItem> items = [];
+      items..addAll(myVisitedLocationModels)..addAll(covidLocationModels);
+
+      TimelineModel model = TimelineModel.fromLocation(items);
       expect(model.tiles.length, 7);
       // Display date indicator.
       expect(model.tiles[0], isA<DateTimelineItem>());
@@ -133,8 +136,10 @@ main() {
         ),
       ];
 
-      TimelineModel model = TimelineModel.fromLocation(
-          covidLocationModels, myVisitedLocationModels);
+      List<ChildTimelineItem> items = [];
+      items..addAll(myVisitedLocationModels)..addAll(covidLocationModels);
+
+      TimelineModel model = TimelineModel.fromLocation(items);
       expect(model.tiles.length, 5);
       // Display date indicator.
       expect(model.tiles[0], isA<DateTimelineItem>());
@@ -179,8 +184,10 @@ main() {
         ),
       ];
 
-      TimelineModel model = TimelineModel.fromLocation(
-          covidLocationModels, myVisitedLocationModels);
+      List<ChildTimelineItem> items = [];
+      items..addAll(myVisitedLocationModels)..addAll(covidLocationModels);
+
+      TimelineModel model = TimelineModel.fromLocation(items);
       expect(model.tiles.length, 5);
       // Display date indicator.
       expect(model.tiles[0], isA<DateTimelineItem>());
@@ -228,7 +235,7 @@ main() {
         ),
       ];
 
-      TimelineModel model = TimelineModel.fromLocation(locationModels, []);
+      TimelineModel model = TimelineModel.fromLocation(locationModels);
       expect(model.tiles.length, 5);
       expect(model.tiles[0], isA<DateTimelineItem>());
       expect(model.tiles[1], isA<DividerTimelineItem>());
@@ -276,8 +283,10 @@ main() {
         )
       ];
 
-      TimelineModel model =
-          TimelineModel.fromLocation(locationModels, visitModels);
+      List<ChildTimelineItem> items = [];
+      items..addAll(locationModels)..addAll(visitModels);
+
+      TimelineModel model = TimelineModel.fromLocation(items);
       expect(model.tiles.length, 10);
       // Initial timeline set at 21 jun
       expect(model.tiles[0], isA<DateTimelineItem>());

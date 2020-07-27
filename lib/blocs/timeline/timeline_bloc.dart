@@ -14,7 +14,8 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
 
   StreamSubscription<List<ChildTimelineItem>> _subscription;
 
-  TimelineBloc({this.visitsRepository, @required this.covidRepository})
+  TimelineBloc(
+      {@required this.visitsRepository, @required this.covidRepository})
       : assert(covidRepository != null && visitsRepository != null) {
     getSubscription();
   }
