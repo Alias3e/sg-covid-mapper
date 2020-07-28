@@ -7,6 +7,9 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
+import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
+import 'package:sgcovidmapper/blocs/initialization/initialization_event.dart';
+import 'package:sgcovidmapper/blocs/initialization/initialization_state.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
@@ -15,13 +18,19 @@ import 'package:sgcovidmapper/repositories/firestore_covid_places_repository.dar
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
+import 'package:sgcovidmapper/screens/splash_screen.dart';
 import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
 void main() async {
-  await init();
-  runApp(MyApp());
+//  await init();
+  runApp(
+    BlocProvider<InitializationBloc>(
+      create: (BuildContext context) => InitializationBloc(),
+      child: MyApp(),
+    ),
+  );
 }
 
 Future<void> init() async {
@@ -37,6 +46,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<InitializationBloc>(context).add(BeginInitialization());
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<MyVisitedPlaceRepository>(
@@ -85,25 +95,27 @@ class MyApp extends StatelessWidget {
                   SearchBoxBloc(BlocProvider.of<BottomPanelBloc>(context))),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
-            primarySwatch: Colors.teal,
-            // This makes the visual density adapt to the platform that you run
-            // the app on. For desktop platforms, the controls will be smaller and
-            // closer together (more dense) than on mobile platforms.
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          home: MapScreen(),
-        ),
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              // This is the theme of your application.
+              //
+              // Try running your application with "flutter run". You'll see the
+              // application has a blue toolbar. Then, without quitting the app, try
+              // changing the primarySwatch below to Colors.green and then invoke
+              // "hot reload" (press "r" in the console where you ran "flutter run",
+              // or simply save your changes to "hot reload" in a Flutter IDE).
+              // Notice that the counter didn't reset back to zero; the application
+              // is not restarted.
+              primarySwatch: Colors.teal,
+              // This makes the visual density adapt to the platform that you run
+              // the app on. For desktop platforms, the controls will be smaller and
+              // closer together (more dense) than on mobile platforms.
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            home: BlocBuilder<InitializationBloc, InitializationState>(
+                builder: (context, state) => state is InitializationComplete
+                    ? MapScreen()
+                    : SplashScreen())),
       ),
     );
   }

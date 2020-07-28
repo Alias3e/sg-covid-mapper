@@ -83,6 +83,14 @@ flutter:
   assets:
     - assets/cfg.json
 
+  fonts:
+    - family: Coiny
+      fonts:
+      - asset: fonts/Coiny-Regular.ttf
+    - family: Monofett
+      fonts:
+      - asset: fonts/Monofett-Regular.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
