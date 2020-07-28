@@ -1,9 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_event.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
 
 class MockBottomPanelBloc extends MockBloc<BottomPanelEvent, BottomPanelState>
     implements BottomPanelBloc {}

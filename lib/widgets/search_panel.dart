@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
+import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 import 'package:sgcovidmapper/widgets/search_results_panel.dart';
 

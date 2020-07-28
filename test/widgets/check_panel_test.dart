@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_state.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/models/one_map_search_result.dart';
 
 import 'file:///C:/workspace/flutter/sg_covid_mapper/lib/widgets/check/check_panel.dart';

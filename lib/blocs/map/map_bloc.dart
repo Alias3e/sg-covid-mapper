@@ -7,9 +7,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
+
+import 'map.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
   final CovidPlacesRepository covidPlacesRepository;

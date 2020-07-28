@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sgcovidmapper/blocs/search/search_event.dart';
-import 'package:sgcovidmapper/blocs/search/search_state.dart';
+import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/models/one_map_search.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 

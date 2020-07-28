@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/models/one_map_search.dart';
 import 'package:sgcovidmapper/models/one_map_search_result.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';

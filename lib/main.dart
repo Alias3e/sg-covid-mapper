@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_event.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_state.dart';
+import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
@@ -22,6 +23,8 @@ import 'package:sgcovidmapper/screens/splash_screen.dart';
 import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
+
+import 'blocs/search_box/search_box.dart';
 
 void main() async {
 //  await init();

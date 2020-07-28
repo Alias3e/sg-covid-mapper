@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
-import 'package:sgcovidmapper/blocs/searchbox/search_box_event.dart';
-import 'package:sgcovidmapper/blocs/searchbox/search_box_state.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
 
 class SearchBoxBloc extends Bloc<SearchBoxEvent, SearchBoxState> {
   final BottomPanelBloc _bottomPanelBloc;

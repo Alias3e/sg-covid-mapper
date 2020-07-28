@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/initialization/initialization_event.dart';
-import 'package:sgcovidmapper/blocs/initialization/initialization_state.dart';
+import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
+import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
 class InitializationBloc
