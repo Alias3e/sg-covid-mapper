@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -28,6 +29,8 @@ Future<void> init() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   await Config.loadConfig();
   await Hive.initFlutter();
+  AuthResult result = await FirebaseAuth.instance.signInAnonymously();
+  if (result != null) print('Sign In Successfully');
 }
 
 class MyApp extends StatelessWidget {
