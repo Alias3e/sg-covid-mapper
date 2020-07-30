@@ -4,7 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'package:hive/hive.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
-import 'package:string_similarity/string_similarity.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 
 part 'visit.g.dart';
 
@@ -29,7 +29,7 @@ class Visit extends HiveObject {
   // the end date time when the place was visited by the user.
   DateTime checkOutTime;
   @HiveField(4)
-  List<String> tags;
+  List<Tag> tags;
 
   @HiveField(5)
   String postalCode;
@@ -44,7 +44,7 @@ class Visit extends HiveObject {
   static String getHiveKey(Visit visit) {
     String tagsString = '';
     if (visit.tags.isNotEmpty)
-      for (String tag in visit.tags) tagsString = tagsString + tag;
+      for (Tag tag in visit.tags) tagsString = tagsString + tag.label;
 
     var bytes = utf8.encode(
         '${visit.title}${visit.checkInTime.toString()}${visit.checkOutTime.toString()}$tagsString');
@@ -55,15 +55,21 @@ class Visit extends HiveObject {
     return LatLng(this.latitude, this.longitude);
   }
 
+  void addTags(List<String> tagStrings) {
+    tagStrings.forEach((tagString) {
+      tags.add(Tag(tagString));
+    });
+  }
+
   void setWarningLevel(CovidLocation item) {
     this.warningLevel = 0;
     if (item.postalCode == postalCode) {
       if (isOverlap(item.startTime, item.endTime)) {
         warningLevel++;
-        for (String tag in tags) {
-          if (item.subtitle.contains(tag) || item.title.contains(tag))
-            warningLevel++;
-          print(StringSimilarity.compareTwoStrings(tag, item.title));
+        for (Tag tag in tags) {
+          if (item.subtitle.contains(tag.label) ||
+              item.title.contains(tag.label)) warningLevel++;
+          tag.isVisitedByInfected = true;
         }
       }
     }

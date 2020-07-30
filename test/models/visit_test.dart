@@ -1,6 +1,7 @@
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 
 main() {
@@ -175,7 +176,7 @@ main() {
       visit.postalCode = postalCode;
       visit.checkInTime = DateTime(2020, 6, 21, 9);
       visit.checkOutTime = DateTime(2020, 6, 21, 10);
-      visit.tags = ['Ramada Zhongshan Park'];
+      visit.tags = [Tag('Ramada Zhongshan Park')];
 
       CovidLocation location = CovidLocation(
         postalCode: postalCode,

@@ -62,7 +62,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
     }
 
     if (event is SaveVisit) {
-      visit.tags = _labels.toList();
+      visit.addTags(_labels.toList());
 
       await repository.saveVisit(visit);
       _labels.clear();

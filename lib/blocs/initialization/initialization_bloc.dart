@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
@@ -31,5 +32,6 @@ class InitializationBloc
     await Hive.initFlutter();
     await Hive.openBox<Visit>('myVisits');
     Hive.registerAdapter(VisitAdapter());
+    Hive.registerAdapter(TagAdapter());
   }
 }

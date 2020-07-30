@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
 
 class VisitBody extends StatelessWidget {
@@ -32,10 +33,10 @@ class VisitBody extends StatelessWidget {
 
   List<Chip> _makeChips() {
     List<Chip> chips = [];
-    for (String string in item.tags) {
+    for (Tag tag in item.tags) {
       Chip chip = Chip(
         label: Text(
-          string,
+          tag.label,
           style: TextStyle(
             color: Colors.white,
           ),

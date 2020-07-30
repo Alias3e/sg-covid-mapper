@@ -21,7 +21,7 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..latitude = fields[1] as double
       ..longitude = fields[2] as double
       ..checkInTime = fields[3] as DateTime
-      ..tags = (fields[4] as List)?.cast<String>()
+      ..tags = (fields[4] as List)?.cast<Tag>()
       ..postalCode = fields[5] as String
       ..warningLevel = fields[6] as int;
   }
