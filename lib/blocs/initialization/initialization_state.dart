@@ -8,6 +8,7 @@ class Initializing extends InitializationState {
 }
 
 class InitializationComplete extends InitializationState {
+  InitializationComplete();
   @override
   List<Object> get props => [];
 }

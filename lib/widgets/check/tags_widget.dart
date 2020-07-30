@@ -7,12 +7,12 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_state.dart';
 
-class Tags extends StatefulWidget {
+class TagsWidget extends StatefulWidget {
   @override
-  _TagsState createState() => _TagsState();
+  _TagsWidgetState createState() => _TagsWidgetState();
 }
 
-class _TagsState extends State<Tags> {
+class _TagsWidgetState extends State<TagsWidget> {
   MainAxisSize _axisSize = MainAxisSize.min;
   TextEditingController _textEditingController;
 

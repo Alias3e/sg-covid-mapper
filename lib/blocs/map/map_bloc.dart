@@ -23,10 +23,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       {@required this.covidPlacesRepository, @required this.gpsRepository}) {
     assert(covidPlacesRepository != null);
     assert(gpsRepository != null);
-    getSubscription();
+    subscribe();
   }
 
-  Future<void> getSubscription() async {
+  Future<void> subscribe() async {
     await covidPlacesRepository.init();
     _subscription = covidPlacesRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));

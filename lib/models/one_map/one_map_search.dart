@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
 
 part 'one_map_search.g.dart';
 

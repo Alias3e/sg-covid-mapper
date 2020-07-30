@@ -51,7 +51,7 @@ main() {
           (realInvocation) => Stream.fromIterable(mockLocationTimelineItem));
       when(covidPlacesRepository.timelineItemCached)
           .thenAnswer((realInvocation) => mockLocationTimelineItem[0]);
-      when(visitedPlaceRepository.loadVisits())
+      when(visitedPlaceRepository.loadVisitTimelineItems())
           .thenReturn(mockVisitTimelineItem);
     });
 

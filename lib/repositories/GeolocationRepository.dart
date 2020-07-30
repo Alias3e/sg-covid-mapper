@@ -1,4 +1,4 @@
-import 'package:sgcovidmapper/models/one_map_search.dart';
+import 'package:sgcovidmapper/models/one_map/one_map_search.dart';
 import 'package:sgcovidmapper/services/map_service.dart';
 
 class GeolocationRepository {

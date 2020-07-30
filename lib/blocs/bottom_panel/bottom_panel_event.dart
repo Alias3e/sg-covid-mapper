@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sgcovidmapper/blocs/search/search_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
 
 class BottomPanelEvent extends Equatable {
   @override

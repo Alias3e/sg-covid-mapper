@@ -1,17 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_event.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_state.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
@@ -22,27 +18,16 @@ import 'package:sgcovidmapper/screens/map_screen.dart';
 import 'package:sgcovidmapper/screens/splash_screen.dart';
 import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
-import 'package:sgcovidmapper/util/config.dart';
 
 import 'blocs/search_box/search_box.dart';
 
 void main() async {
-//  await init();
   runApp(
     BlocProvider<InitializationBloc>(
       create: (BuildContext context) => InitializationBloc(),
       child: MyApp(),
     ),
   );
-}
-
-Future<void> init() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  BlocSupervisor.delegate = SimpleBlocDelegate();
-  await Config.loadConfig();
-  await Hive.initFlutter();
-  AuthResult result = await FirebaseAuth.instance.signInAnonymously();
-  if (result != null) print('Sign In Successfully');
 }
 
 class MyApp extends StatelessWidget {
@@ -52,10 +37,6 @@ class MyApp extends StatelessWidget {
     BlocProvider.of<InitializationBloc>(context).add(BeginInitialization());
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<MyVisitedPlaceRepository>(
-          create: (BuildContext context) =>
-              MyVisitedPlaceRepository(HiveService('myVisits')),
-        ),
         RepositoryProvider<CovidPlacesRepository>(
           create: (BuildContext context) => FirestoreCovidPlacesRepository(
             locationCollection: Firestore.instance.collection('all_locations'),
@@ -68,6 +49,10 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<GeolocationRepository>(
           create: (BuildContext context) =>
               GeolocationRepository(OneMapApiService(Dio())),
+        ),
+        RepositoryProvider<MyVisitedPlaceRepository>(
+          create: (BuildContext context) =>
+              MyVisitedPlaceRepository(HiveService('myVisits')),
         ),
       ],
       child: MultiBlocProvider(

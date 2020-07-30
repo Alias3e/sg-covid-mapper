@@ -8,7 +8,7 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
 
 class SearchResultsPanel extends StatelessWidget {
   final SearchResultLoaded searchState;

@@ -5,12 +5,12 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
+import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
 class InitializationBloc
     extends Bloc<InitializationEvent, InitializationState> {
   @override
-  // TODO: implement initialState
   InitializationState get initialState => Initializing();
 
   @override
@@ -20,10 +20,16 @@ class InitializationBloc
       WidgetsFlutterBinding.ensureInitialized();
       BlocSupervisor.delegate = SimpleBlocDelegate();
       await Config.loadConfig();
-      await Hive.initFlutter();
+      await _initHive();
       AuthResult result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
       yield InitializationComplete();
     }
+  }
+
+  Future<void> _initHive() async {
+    await Hive.initFlutter();
+    await Hive.openBox<Visit>('myVisits');
+    Hive.registerAdapter(VisitAdapter());
   }
 }

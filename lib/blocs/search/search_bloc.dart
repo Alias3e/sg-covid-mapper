@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/models/one_map_search.dart';
+import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {

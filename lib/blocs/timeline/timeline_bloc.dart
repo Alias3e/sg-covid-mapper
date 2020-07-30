@@ -16,10 +16,10 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   TimelineBloc(
       {@required this.visitsRepository, @required this.covidRepository})
       : assert(covidRepository != null && visitsRepository != null) {
-    getSubscription();
+    subscribe();
   }
 
-  Future<void> getSubscription() async {
+  Future<void> subscribe() async {
     await covidRepository.init();
     _subscription = covidRepository.timelineTiles.listen((event) {
       covidRepository.timelineItemCached = event;
@@ -32,7 +32,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
     List<ChildTimelineItem> items = [];
     items
       ..addAll(covidRepository.timelineItemCached)
-      ..addAll(visitsRepository.loadVisits());
+      ..addAll(visitsRepository.loadVisitTimelineItems());
     add(HasTimelineData(items));
   }
 

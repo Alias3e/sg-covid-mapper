@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sgcovidmapper/models/models.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map.dart';
 
 abstract class BottomPanelStateData extends Equatable {}
 

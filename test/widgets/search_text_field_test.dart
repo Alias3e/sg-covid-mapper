@@ -8,8 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
-import 'package:sgcovidmapper/models/one_map_search.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/widgets/search_text_field.dart';
 
 class MockSearchBloc extends MockBloc<SearchEvent, SearchState>

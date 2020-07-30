@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
 import 'check.dart';
@@ -150,7 +150,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                 AnimatedSize(
                     vsync: this,
                     duration: Duration(milliseconds: 250),
-                    child: Tags()),
+                    child: TagsWidget()),
                 SizedBox(height: 24.0),
               ],
             ),

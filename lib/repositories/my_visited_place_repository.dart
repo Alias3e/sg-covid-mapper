@@ -11,7 +11,7 @@ class MyVisitedPlaceRepository {
     await _service.save(visit);
   }
 
-  List<ChildTimelineItem> loadVisits() {
+  List<ChildTimelineItem> loadVisitTimelineItems() {
 //    return _service.visits
 //        .map((visit) => VisitTimelineItem.fromHiveVisit(visit))
 //        .toList();
@@ -19,6 +19,10 @@ class MyVisitedPlaceRepository {
       ..addAll(_service.visits
           .map((visit) => VisitTimelineItem.fromHiveVisit(visit))
           .toList());
+  }
+
+  List<Visit> loadVisits() {
+    return _service.visits;
   }
 
   void listen(Function listener) {

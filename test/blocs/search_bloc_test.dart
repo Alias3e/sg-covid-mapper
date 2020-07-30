@@ -3,8 +3,7 @@ import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/models/one_map_search.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 
 class MockGeolocationRepository extends Mock implements GeolocationRepository {}
