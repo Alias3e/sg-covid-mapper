@@ -21,7 +21,7 @@ class InitializationBloc
       WidgetsFlutterBinding.ensureInitialized();
       BlocSupervisor.delegate = SimpleBlocDelegate();
       await Config.loadConfig();
-      await _initHive();
+      if (!Hive.isBoxOpen('myVisits')) await _initHive();
       AuthResult result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
       yield InitializationComplete();
@@ -30,8 +30,8 @@ class InitializationBloc
 
   Future<void> _initHive() async {
     await Hive.initFlutter();
-    await Hive.openBox<Visit>('myVisits');
     Hive.registerAdapter(VisitAdapter());
     Hive.registerAdapter(TagAdapter());
+    await Hive.openBox<Visit>('myVisits');
   }
 }

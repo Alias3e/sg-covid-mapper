@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
@@ -14,11 +15,35 @@ class VisitBody extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Text(
-              item.title,
-              textAlign: TextAlign.justify,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          Expanded(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      item.title,
+                      textAlign: TextAlign.justify,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  item.warningLevel > 0
+                      ? Icon(
+                          Icons.warning,
+                          size: 28,
+                          color: Colors.redAccent,
+                        )
+                      : Container(
+                          width: 0,
+                          height: 0,
+                        ),
+                ],
+              ),
             ),
           ),
           Wrap(
@@ -36,15 +61,20 @@ class VisitBody extends StatelessWidget {
     for (Tag tag in item.tags) {
       Chip chip = Chip(
         label: Text(
-          tag.label,
+          '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? getSimilarityAsPercentage(tag.similarity) : ''}',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.amber,
+        backgroundColor:
+            Color.lerp(Colors.amber, Colors.redAccent, tag.similarity),
       );
       chips.add(chip);
     }
     return chips;
+  }
+
+  String getSimilarityAsPercentage(double similarity) {
+    return '(${(similarity * 100).round()}%)';
   }
 }

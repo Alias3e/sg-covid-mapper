@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 part 'visit.g.dart';
 
@@ -61,22 +62,65 @@ class Visit extends HiveObject {
     });
   }
 
-  void setWarningLevel(CovidLocation item) {
-    this.warningLevel = 0;
-    if (item.postalCode == postalCode) {
-      if (isOverlap(item.startTime, item.endTime)) {
-        warningLevel++;
-        for (Tag tag in tags) {
-          if (item.subtitle.contains(tag.label) ||
-              item.title.contains(tag.label)) warningLevel++;
-          tag.isVisitedByInfected = true;
+  void setWarningLevel(List<CovidLocation> items) {
+    int newWarningLevel = 0;
+    for (CovidLocation item in items) {
+      if (item.postalCode == postalCode) {
+        if (isOverlap(item.startTime, item.endTime)) {
+          newWarningLevel++;
+          for (Tag tag in tags) {
+            double titleSimilarity = 0;
+            double subTitleSimilarity = 0;
+
+            titleSimilarity = checkTitle(item.title, tag);
+            subTitleSimilarity = findStringSimilarity(item.subtitle, tag.label);
+            tag.similarity = titleSimilarity > subTitleSimilarity
+                ? titleSimilarity
+                : subTitleSimilarity;
+            if (item.subtitle.contains(tag.label) ||
+                item.title.contains(tag.label)) newWarningLevel++;
+            tag.isVisitedByInfected = true;
+          }
         }
       }
     }
-    if (this.isInBox) this.save();
+    this.warningLevel = newWarningLevel;
+    if (this.isInBox) {
+      this.save();
+    }
   }
 
-  bool isOverlap(DateTime startTime, DateTime endTime) =>
-      this.checkInTime.compareTo(endTime) <= 0 &&
-      checkOutTime.compareTo(startTime) >= 0;
+  double checkTitle(String title, Tag tag) {
+    List<String> titleTokens = title.split('(');
+    if (titleTokens.length == 0) return 0.0;
+    if (titleTokens[0].toLowerCase().contains(tag.label.toLowerCase()))
+      return 1.0;
+    else {
+      List<String> tagTokens = tag.label.split(' ');
+      if (tagTokens.length > 1) {
+        bool allMatch = true;
+        for (String labelToken in tagTokens) {
+          if (!titleTokens[0].contains(labelToken)) allMatch = false;
+        }
+        if (allMatch)
+          return 1.0;
+        else
+          return findStringSimilarity(titleTokens[0], tag.label);
+      }
+      return 0.0;
+    }
+  }
+
+  bool isOverlap(DateTime startTime, DateTime endTime) => checkOutTime != null
+      ? this.checkInTime.compareTo(endTime) <= 0 &&
+          checkOutTime.compareTo(startTime) >= 0
+      : this.checkInTime.compareTo(startTime) >= 0 &&
+          this.checkInTime.compareTo(endTime) <= 0;
+
+  double findStringSimilarity(String titleToken, String label) {
+    double dice = StringSimilarity.compareTwoStrings(
+        titleToken.toLowerCase(), label.toLowerCase());
+
+    return dice;
+  }
 }

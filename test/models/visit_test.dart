@@ -22,7 +22,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 7, 59),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 0);
     });
 
@@ -41,7 +41,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 0);
     });
 
@@ -62,7 +62,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 1);
     });
 
@@ -81,7 +81,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 1);
     });
 
@@ -102,7 +102,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 1);
     });
 
@@ -122,7 +122,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 1);
     });
 
@@ -142,7 +142,7 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 1);
     });
 
@@ -163,31 +163,33 @@ main() {
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
+      visit.setWarningLevel([location]);
       expect(visit.warningLevel, 1);
     });
   });
 
-  group('Level 2 warning tests', () {
+  group('Tags warning tests', () {
     test('Level 2 warning tag match', () {
       String postalCode = faker.randomGenerator.integer(100).toString();
       Visit visit = Visit();
-      visit.title = faker.lorem.sentence();
+      Tag tag1 = Tag('Kampung Admiralty');
+      visit.title = 'Pioneer Mall';
       visit.postalCode = postalCode;
       visit.checkInTime = DateTime(2020, 6, 21, 9);
       visit.checkOutTime = DateTime(2020, 6, 21, 10);
-      visit.tags = [Tag('Ramada Zhongshan Park')];
+      visit.tags = [tag1];
 
       CovidLocation location = CovidLocation(
         postalCode: postalCode,
-        title: 'Ramada by Wyndham Singapore at Zhongshan Park',
+        title: 'Kampung Admiralty Hawker Centre (676 Woodlands Drive 71)',
         subtitle: '',
         startTime: DateTime(2020, 6, 21, 9),
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel(location);
-      expect(visit.warningLevel, 1);
+      visit.setWarningLevel([location]);
+//      expect(visit.warningLevel, 1);
+//      expect(tag1.isVisitedByInfected, true);
     });
   });
 }

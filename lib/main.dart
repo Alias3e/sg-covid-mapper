@@ -3,12 +3,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
+import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_event.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_state.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
+import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/firestore_covid_places_repository.dart';
@@ -57,6 +59,20 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<CheckPanelBloc>(
+            create: (BuildContext context) => CheckPanelBloc(
+                repository:
+                    RepositoryProvider.of<MyVisitedPlaceRepository>(context)),
+          ),
+          BlocProvider<WarningBloc>(
+            lazy: false,
+            create: (BuildContext context) => WarningBloc(
+                visitsRepository:
+                    RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+                covidRepository:
+                    RepositoryProvider.of<CovidPlacesRepository>(context),
+                checkPanelBloc: BlocProvider.of<CheckPanelBloc>(context)),
+          ),
           BlocProvider<SearchBloc>(
             create: (BuildContext context) => SearchBloc(
                 RepositoryProvider.of<GeolocationRepository>(context)),

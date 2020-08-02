@@ -28,4 +28,8 @@ class MyVisitedPlaceRepository {
   void listen(Function listener) {
     _service.visitListenable().addListener(listener);
   }
+
+  void stopListen(Function listener) {
+    _service.visitListenable().removeListener(listener);
+  }
 }

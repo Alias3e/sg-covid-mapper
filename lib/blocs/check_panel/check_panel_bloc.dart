@@ -46,6 +46,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
       visit.title = event.data.location.searchValue;
       visit.latitude = event.data.location.latitude;
       visit.longitude = event.data.location.longitude;
+      visit.postalCode = event.data.location.postalCode;
       visit.checkInTime = DateTime.now();
       LatLng(event.data.location.latitude, event.data.location.longitude);
       yield CheckPanelLoaded(event.data);
@@ -66,6 +67,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
 
       await repository.saveVisit(visit);
       _labels.clear();
+      yield VisitSaved(visit);
 //      Hive.box<Visit>(boxName).put(Visit.getHiveKey(visit), visit).then((_) {
 //        _labels.clear();
 //      });

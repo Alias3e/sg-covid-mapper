@@ -11,7 +11,7 @@ import 'package:sgcovidmapper/widgets/timeline/visit_body.dart';
 enum WarningLevel { none, low, high }
 
 class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
-  final WarningLevel warningLevel;
+  final int warningLevel;
   final String title;
   final List<Tag> tags;
 
@@ -33,7 +33,7 @@ class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
       startTime: visit.checkInTime,
       endTime: visit.checkOutTime,
       lineX: 0.85,
-      warningLevel: WarningLevel.none,
+      warningLevel: visit.warningLevel,
       tags: visit.tags,
     );
   }

@@ -42,7 +42,7 @@ main() {
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
-          warningLevel: WarningLevel.none,
+          warningLevel: 0,
           tags: [],
         ),
       ];
@@ -64,7 +64,7 @@ main() {
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
-          warningLevel: WarningLevel.none,
+          warningLevel: 0,
           tags: [],
         ),
       ];
@@ -121,7 +121,7 @@ main() {
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
-          warningLevel: WarningLevel.none,
+          warningLevel: 0,
           tags: [],
         ),
       ];
@@ -169,7 +169,7 @@ main() {
           startTime: DateTime(2020, 6, 21),
           endTime: DateTime(2020, 6, 22),
           lineX: faker.randomGenerator.decimal(),
-          warningLevel: WarningLevel.none,
+          warningLevel: 0,
           tags: [],
         ),
       ];
@@ -278,7 +278,7 @@ main() {
           endTime: DateTime(2020, 6, 22),
           title: faker.lorem.sentence(),
           lineX: faker.randomGenerator.decimal(),
-          warningLevel: WarningLevel.none,
+          warningLevel: 0,
           tags: [],
         )
       ];

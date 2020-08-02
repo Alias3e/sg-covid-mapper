@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/models/hive/visit.dart';
 
 abstract class CheckPanelState extends Equatable {}
 
@@ -55,4 +56,13 @@ class TagListUpdated extends CheckPanelState {
 
   @override
   List<Object> get props => [tags.length];
+}
+
+class VisitSaved extends CheckPanelState {
+  final Visit visit;
+
+  VisitSaved(this.visit);
+
+  @override
+  List<Object> get props => [visit];
 }

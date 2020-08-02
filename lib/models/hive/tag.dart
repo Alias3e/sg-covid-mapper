@@ -8,6 +8,8 @@ class Tag extends HiveObject {
   final String label;
   @HiveField(1)
   bool isVisitedByInfected = false;
+  @HiveField(2)
+  double similarity;
 
   Tag(this.label);
 }

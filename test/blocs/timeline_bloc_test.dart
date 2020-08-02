@@ -39,7 +39,7 @@ main() {
         title: faker.lorem.sentence(),
         tags: [],
         lineX: 0.85,
-        warningLevel: WarningLevel.none,
+        warningLevel: 0,
       ),
     ];
 
