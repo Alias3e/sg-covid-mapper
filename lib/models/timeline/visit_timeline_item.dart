@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/models/timeline/indicator_timeline_item.dart';
 import 'package:sgcovidmapper/util/constants.dart';
@@ -10,9 +11,9 @@ import 'package:sgcovidmapper/widgets/timeline/visit_body.dart';
 enum WarningLevel { none, low, high }
 
 class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
-  final WarningLevel warningLevel;
+  final int warningLevel;
   final String title;
-  final List<String> tags;
+  final List<Tag> tags;
 
   VisitTimelineItem(
       {@required startTime,
@@ -32,7 +33,7 @@ class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
       startTime: visit.checkInTime,
       endTime: visit.checkOutTime,
       lineX: 0.85,
-      warningLevel: WarningLevel.none,
+      warningLevel: visit.warningLevel,
       tags: visit.tags,
     );
   }

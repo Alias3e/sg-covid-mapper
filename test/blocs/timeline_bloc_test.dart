@@ -2,9 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_event.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_state.dart';
+import 'package:sgcovidmapper/blocs/timeline/timeline.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
@@ -41,7 +39,7 @@ main() {
         title: faker.lorem.sentence(),
         tags: [],
         lineX: 0.85,
-        warningLevel: WarningLevel.none,
+        warningLevel: 0,
       ),
     ];
 
@@ -53,7 +51,7 @@ main() {
           (realInvocation) => Stream.fromIterable(mockLocationTimelineItem));
       when(covidPlacesRepository.timelineItemCached)
           .thenAnswer((realInvocation) => mockLocationTimelineItem[0]);
-      when(visitedPlaceRepository.loadVisits())
+      when(visitedPlaceRepository.loadVisitTimelineItems())
           .thenReturn(mockVisitTimelineItem);
     });
 

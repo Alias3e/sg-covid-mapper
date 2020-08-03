@@ -17,6 +17,7 @@ class TimelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(),
         body: ListView.builder(
           itemCount: timelineModel.tiles.length,
@@ -30,6 +31,8 @@ class TimelineScreen extends StatelessWidget {
                 alignment: TimelineAlign.manual,
                 isFirst: index == 0,
                 isLast: index == timelineModel.tiles.length - 1,
+                bottomLineStyle: LineStyle(color: Colors.blueGrey),
+                topLineStyle: LineStyle(color: Colors.blueGrey),
                 lineX: model.lineX,
                 hasIndicator: true,
                 indicatorStyle: IndicatorStyle(

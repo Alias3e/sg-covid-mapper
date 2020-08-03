@@ -7,9 +7,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
+
+import 'map.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
   final CovidPlacesRepository covidPlacesRepository;
@@ -22,10 +23,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       {@required this.covidPlacesRepository, @required this.gpsRepository}) {
     assert(covidPlacesRepository != null);
     assert(gpsRepository != null);
-    getSubscription();
+    subscribe();
   }
 
-  Future<void> getSubscription() async {
+  Future<void> subscribe() async {
     await covidPlacesRepository.init();
     _subscription = covidPlacesRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));

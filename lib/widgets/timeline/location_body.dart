@@ -24,7 +24,7 @@ class LocationBody extends StatelessWidget {
               ? Text(
                   item.subtitle,
                   textAlign: TextAlign.justify,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 )
               : Container(
                   width: 0,

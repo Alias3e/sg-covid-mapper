@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_event.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
+
+import 'bottom_panel.dart';
 
 class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
   List<PlaceMarker> _currentMarkers = [];

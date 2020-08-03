@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 
 abstract class CheckPanelEvent extends Equatable {}
 

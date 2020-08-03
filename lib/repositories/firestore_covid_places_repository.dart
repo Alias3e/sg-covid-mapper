@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sgcovidmapper/models/covid_location.dart';
 import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/models/timeline/indicator_timeline_item.dart';
 import 'package:sgcovidmapper/models/timeline/location_timeline_item.dart';
@@ -12,14 +13,18 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
 
   FirestoreCovidPlacesRepository(
       {this.locationCollection, this.systemCollection})
-      : assert(locationCollection != null && systemCollection != null);
+      : assert(locationCollection != null && systemCollection != null) {
+    init();
+  }
 
   Future<void> init() async {
-    DocumentReference docRef =
-        systemCollection.document('Wn7Rh8YtfIyKliO02Ltl');
-    DocumentSnapshot snapshot = await docRef.get();
-    version = snapshot.data['current_version'];
-    updated = snapshot.data['updated'];
+    if (updated == null) {
+      DocumentReference docRef =
+          systemCollection.document('Wn7Rh8YtfIyKliO02Ltl');
+      DocumentSnapshot snapshot = await docRef.get();
+      version = snapshot.data['current_version'];
+      updated = snapshot.data['updated'];
+    }
   }
 
   @override
@@ -45,4 +50,13 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
             .map((place) => LocationTimelineItem.fromFirestoreSnapshot(place))
             .toList();
       });
+
+  @override
+  Stream<List<CovidLocation>> get covidLocations => locationCollection
+      .document(version)
+      .collection('locations')
+      .snapshots()
+      .map((snapshot) => snapshot.documents
+          .map((place) => CovidLocation.fromFirestoreSnapshot(place))
+          .toList());
 }

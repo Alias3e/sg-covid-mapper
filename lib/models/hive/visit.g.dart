@@ -21,14 +21,15 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..latitude = fields[1] as double
       ..longitude = fields[2] as double
       ..checkInTime = fields[3] as DateTime
-      ..tags = (fields[4] as List)?.cast<String>()
-      ..postalCode = fields[5] as String;
+      ..tags = (fields[4] as List)?.cast<Tag>()
+      ..postalCode = fields[5] as String
+      ..warningLevel = fields[6] as int;
   }
 
   @override
   void write(BinaryWriter writer, Visit obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -40,6 +41,8 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..writeByte(4)
       ..write(obj.tags)
       ..writeByte(5)
-      ..write(obj.postalCode);
+      ..write(obj.postalCode)
+      ..writeByte(6)
+      ..write(obj.warningLevel);
   }
 }

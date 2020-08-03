@@ -7,7 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong/latlong.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
 

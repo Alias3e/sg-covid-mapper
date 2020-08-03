@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_state.dart';
+import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/timeline/timeline.dart';
 import 'package:sgcovidmapper/screens/timeline_screen.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 

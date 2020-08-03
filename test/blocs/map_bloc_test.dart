@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';

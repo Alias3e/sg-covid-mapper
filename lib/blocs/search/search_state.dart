@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sgcovidmapper/models/one_map_search.dart';
+import 'package:sgcovidmapper/models/one_map/one_map.dart';
 
 class SearchState extends Equatable {
   @override

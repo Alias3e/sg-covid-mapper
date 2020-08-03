@@ -4,15 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_state.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
-
-import 'file:///C:/workspace/flutter/sg_covid_mapper/lib/widgets/check/check_panel.dart';
-import 'file:///C:/workspace/flutter/sg_covid_mapper/lib/widgets/check/check_panel_button.dart';
-import 'file:///C:/workspace/flutter/sg_covid_mapper/lib/widgets/check/check_panel_date_time_picker.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
+import 'package:sgcovidmapper/models/one_map/one_map.dart';
+import 'package:sgcovidmapper/widgets/check/check.dart';
 
 class MockCheckPanelBloc extends MockBloc<CheckPanelEvent, CheckPanelLoaded>
     implements CheckPanelBloc {}

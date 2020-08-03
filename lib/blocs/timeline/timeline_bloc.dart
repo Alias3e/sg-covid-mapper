@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_event.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_state.dart';
+import 'package:sgcovidmapper/blocs/timeline/timeline.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
@@ -17,10 +16,10 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   TimelineBloc(
       {@required this.visitsRepository, @required this.covidRepository})
       : assert(covidRepository != null && visitsRepository != null) {
-    getSubscription();
+    subscribe();
   }
 
-  Future<void> getSubscription() async {
+  Future<void> subscribe() async {
     await covidRepository.init();
     _subscription = covidRepository.timelineTiles.listen((event) {
       covidRepository.timelineItemCached = event;
@@ -33,7 +32,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
     List<ChildTimelineItem> items = [];
     items
       ..addAll(covidRepository.timelineItemCached)
-      ..addAll(visitsRepository.loadVisits());
+      ..addAll(visitsRepository.loadVisitTimelineItems());
     add(HasTimelineData(items));
   }
 

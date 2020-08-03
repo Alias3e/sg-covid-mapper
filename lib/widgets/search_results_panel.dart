@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong/latlong.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
-import 'package:sgcovidmapper/models/one_map_search_result.dart';
+import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
+import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
 
 class SearchResultsPanel extends StatelessWidget {
   final SearchResultLoaded searchState;

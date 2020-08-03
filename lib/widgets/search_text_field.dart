@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sgcovidmapper/blocs/blocs.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_event.dart';
-import 'package:sgcovidmapper/blocs/search/search_event.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
 class SearchTextField extends StatefulWidget {

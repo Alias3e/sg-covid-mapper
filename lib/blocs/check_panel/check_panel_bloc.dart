@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong/latlong.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_state.dart';
+import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
@@ -47,6 +46,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
       visit.title = event.data.location.searchValue;
       visit.latitude = event.data.location.latitude;
       visit.longitude = event.data.location.longitude;
+      visit.postalCode = event.data.location.postalCode;
       visit.checkInTime = DateTime.now();
       LatLng(event.data.location.latitude, event.data.location.longitude);
       yield CheckPanelLoaded(event.data);
@@ -63,10 +63,11 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
     }
 
     if (event is SaveVisit) {
-      visit.tags = _labels.toList();
+      visit.addTags(_labels.toList());
 
       await repository.saveVisit(visit);
       _labels.clear();
+      yield VisitSaved(visit);
 //      Hive.box<Visit>(boxName).put(Visit.getHiveKey(visit), visit).then((_) {
 //        _labels.clear();
 //      });
