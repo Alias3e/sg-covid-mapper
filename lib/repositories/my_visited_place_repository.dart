@@ -8,7 +8,7 @@ class MyVisitedPlaceRepository {
   MyVisitedPlaceRepository(this._service);
 
   Future<void> saveVisit(Visit visit) async {
-    await _service.save(visit);
+    await _service.saveVisit(visit);
   }
 
   List<ChildTimelineItem> loadVisitTimelineItems() {

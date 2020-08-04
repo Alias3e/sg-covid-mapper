@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    HiveService hiveService = HiveService();
     BlocProvider.of<InitializationBloc>(context).add(BeginInitialization());
     return MultiRepositoryProvider(
       providers: [
@@ -50,11 +51,11 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<GeolocationRepository>(
           create: (BuildContext context) =>
-              GeolocationRepository(OneMapApiService(Dio())),
+              GeolocationRepository(OneMapApiService(Dio()), hiveService),
         ),
         RepositoryProvider<MyVisitedPlaceRepository>(
           create: (BuildContext context) =>
-              MyVisitedPlaceRepository(HiveService('myVisits')),
+              MyVisitedPlaceRepository(hiveService),
         ),
       ],
       child: MultiBlocProvider(

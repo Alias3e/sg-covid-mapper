@@ -11,6 +11,9 @@ import 'package:sgcovidmapper/util/config.dart';
 
 class InitializationBloc
     extends Bloc<InitializationEvent, InitializationState> {
+  static const String visitBoxName = 'myVisits';
+  static const String systemBoxName = 'system';
+
   @override
   InitializationState get initialState => Initializing();
 
@@ -21,7 +24,7 @@ class InitializationBloc
       WidgetsFlutterBinding.ensureInitialized();
       BlocSupervisor.delegate = SimpleBlocDelegate();
       await Config.loadConfig();
-      if (!Hive.isBoxOpen('myVisits')) await _initHive();
+      if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
       AuthResult result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
       yield InitializationComplete();
@@ -33,5 +36,6 @@ class InitializationBloc
     Hive.registerAdapter(VisitAdapter());
     Hive.registerAdapter(TagAdapter());
     await Hive.openBox<Visit>('myVisits');
+    await Hive.openBox('system');
   }
 }

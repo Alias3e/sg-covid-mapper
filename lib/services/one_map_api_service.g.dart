@@ -35,4 +35,46 @@ class _OneMapApiService implements OneMapApiService {
     final value = OneMapSearch.fromJson(_result.data);
     return value;
   }
+
+  @override
+  reverseGeocode({token, location, buffer}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'token': token,
+      r'location': location,
+      r'buffer': buffer
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        'privateapi/commonsvc/revgeocode',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ReverseGeocode.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  authenticate({email, password}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = {'email': email, 'password': password};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        'privateapi/auth/post/getToken',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = OneMapToken.fromJson(_result.data);
+    return value;
+  }
 }

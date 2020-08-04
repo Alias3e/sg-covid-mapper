@@ -61,7 +61,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         Position position = await gpsRepository.getCurrentLocation();
         _updatePlaceMarkers(
             [_makeMarker(position.latitude, position.longitude)]);
-        yield MapViewBoundsChanged(
+        yield GPSAcquired(
           mapCenter: LatLng(position.latitude, position.longitude),
           nearbyPlaces: _myPlaces,
           covidPlaces: covidPlacesRepository.placeMarkersCached,
