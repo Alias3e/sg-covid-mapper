@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sgcovidmapper/models/one_map/geocode_info.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
@@ -14,14 +14,14 @@ class ReverseGeocodeLocationPanel extends StatelessWidget {
     return ListView.separated(
       itemCount: data.results.length,
       itemBuilder: (context, index) {
-        GeoCodeInfo info = data.results[index];
+        CommonOneMapModel model = data.results[index];
         return ListTile(
           title: Text(
-            '${info.buildingName}',
+            model.title,
             style: Styles.kTitleTextStyle,
           ),
           subtitle: Text(
-            '${info.road} BLK ${info.block} ${info.postalCode}',
+            model.subtitle,
             style: Styles.kDetailsTextStyle,
           ),
           trailing: IconButton(
