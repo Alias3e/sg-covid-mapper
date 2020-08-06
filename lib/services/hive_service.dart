@@ -24,8 +24,14 @@ class HiveService extends LocalStorageService {
   }
 
   @override
-  String get oneMapToken =>
-      Hive.box(InitializationBloc.systemBoxName).get(oneMapTokenKey);
+  String get oneMapToken {
+    String expiry = Hive.box(InitializationBloc.systemBoxName)
+        .get(oneMapTokenExpiryKey, defaultValue: '');
+    if (expiry.isEmpty ||
+        DateTime.now().millisecondsSinceEpoch < int.parse(expiry)) return '';
+
+    return Hive.box(InitializationBloc.systemBoxName).get(oneMapTokenKey);
+  }
 
   @override
   void saveOneMapToken(OneMapToken token) {

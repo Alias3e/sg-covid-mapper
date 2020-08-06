@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
+import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
 
 abstract class BottomPanelStateData extends Equatable {}
 
@@ -20,6 +21,15 @@ class PlacePanelData extends BottomPanelStateData {
 
   @override
   List<Object> get props => [markers];
+}
+
+class GeocodePanelData extends BottomPanelStateData {
+  final ReverseGeocode geocode;
+
+  GeocodePanelData(this.geocode);
+
+  @override
+  List<Object> get props => [geocode];
 }
 
 class CheckInPanelData extends BottomPanelStateData {

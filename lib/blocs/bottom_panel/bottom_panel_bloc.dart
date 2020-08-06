@@ -1,10 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/models/models.dart';
 
 import 'bottom_panel.dart';
 
 class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
   List<PlaceMarker> _currentMarkers = [];
+  final ReverseGeocodeBloc _reverseGeocodeBloc;
+
+  BottomPanelBloc(this._reverseGeocodeBloc) {
+    _reverseGeocodeBloc.listen((state) {
+      if (state is GeocodingCompleted)
+        add(GeocodePanelOpenAnimationStarted(state.result));
+    });
+  }
 
   @override
   BottomPanelState get initialState => BottomPanelClosing(
@@ -23,6 +32,12 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
     if (event is SearchPanelOpenAnimationStarted)
       yield BottomPanelOpening(
           maxHeight: 0.65, isDraggable: false, data: SearchPanelData());
+
+    if (event is GeocodePanelOpenAnimationStarted)
+      yield BottomPanelOpening(
+          maxHeight: 0.65,
+          isDraggable: false,
+          data: GeocodePanelData(event.geocode));
 
     if (event is PlacePanelOpened) {
       yield BottomPanelOpened<PlacePanelData>(
@@ -56,5 +71,11 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
         position: event.position,
       );
     }
+  }
+
+  @override
+  Future<void> close() {
+    _reverseGeocodeBloc.close();
+    return super.close();
   }
 }

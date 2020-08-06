@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sgcovidmapper/blocs/search/search_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
 
 class BottomPanelEvent extends Equatable {
   @override
@@ -13,9 +14,16 @@ class BottomPanelCollapsed extends BottomPanelEvent {}
 
 class SearchPanelOpenAnimationStarted extends BottomPanelEvent {}
 
-class SearchPanelOpened extends BottomPanelEvent {}
+class GeocodePanelOpenAnimationStarted extends BottomPanelEvent {
+  final ReverseGeocode geocode;
 
-class GPSPanelOpened extends BottomPanelEvent {}
+  GeocodePanelOpenAnimationStarted(this.geocode);
+
+  @override
+  List<Object> get props => [geocode];
+}
+
+class SearchPanelOpened extends BottomPanelEvent {}
 
 class PlacePanelDragged extends BottomPanelEvent {
   final double position;

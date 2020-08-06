@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
+import 'package:sgcovidmapper/widgets/reverse_geocode_location_panel.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
 
 class BottomPanel extends StatelessWidget {
@@ -17,6 +18,10 @@ class BottomPanel extends StatelessWidget {
         return PlacesPanel(
           markers: data.markers,
           scrollController: scrollController,
+        );
+      if (data is GeocodePanelData)
+        return ReverseGeocodeLocationPanel(
+          data: data.geocode,
         );
     }
 

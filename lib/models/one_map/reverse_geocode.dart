@@ -17,6 +17,5 @@ class ReverseGeocode extends Equatable {
   Map<String, dynamic> toJson() => _$ReverseGeocodeToJson(this);
 
   @override
-  // TODO: implement props
   List<Object> get props => [results];
 }

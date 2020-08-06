@@ -8,6 +8,7 @@ import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_event.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_state.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
 import 'package:sgcovidmapper/blocs/warning/warning.dart';
@@ -60,10 +61,24 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<MapBloc>(
+              create: (BuildContext context) => MapBloc(
+                    covidPlacesRepository:
+                        RepositoryProvider.of<CovidPlacesRepository>(context),
+                    gpsRepository:
+                        RepositoryProvider.of<GpsRepository>(context),
+                  )),
+          BlocProvider<ReverseGeocodeBloc>(
+            create: (BuildContext context) => ReverseGeocodeBloc(
+              repository: RepositoryProvider.of<GeolocationRepository>(context),
+              mapBloc: BlocProvider.of<MapBloc>(context),
+            ),
+          ),
           BlocProvider<CheckPanelBloc>(
             create: (BuildContext context) => CheckPanelBloc(
-                repository:
-                    RepositoryProvider.of<MyVisitedPlaceRepository>(context)),
+              repository:
+                  RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+            ),
           ),
           BlocProvider<WarningBloc>(
             lazy: false,
@@ -78,13 +93,6 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => SearchBloc(
                 RepositoryProvider.of<GeolocationRepository>(context)),
           ),
-          BlocProvider<MapBloc>(
-              create: (BuildContext context) => MapBloc(
-                    covidPlacesRepository:
-                        RepositoryProvider.of<CovidPlacesRepository>(context),
-                    gpsRepository:
-                        RepositoryProvider.of<GpsRepository>(context),
-                  )),
           BlocProvider<TimelineBloc>(
             create: (BuildContext context) => TimelineBloc(
                 visitsRepository:
@@ -93,7 +101,8 @@ class MyApp extends StatelessWidget {
                     RepositoryProvider.of<CovidPlacesRepository>(context)),
           ),
           BlocProvider<BottomPanelBloc>(
-            create: (BuildContext context) => BottomPanelBloc(),
+            create: (BuildContext context) =>
+                BottomPanelBloc(BlocProvider.of<ReverseGeocodeBloc>(context)),
           ),
           BlocProvider<SearchBoxBloc>(
               create: (BuildContext context) =>
