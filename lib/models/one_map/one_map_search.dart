@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
 
 part 'one_map_search.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OneMapSearch extends Equatable {
-  final List<OneMapSearchResult> results;
+  @JsonKey(fromJson: _fromSearchResults, toJson: _toSearchResultList)
+  final List<CommonOneMapModel> results;
 
   factory OneMapSearch.fromJson(Map<String, dynamic> json) =>
       _$OneMapSearchFromJson(json);
@@ -19,7 +21,20 @@ class OneMapSearch extends Equatable {
   @override
   List<Object> get props {
     List<Object> props = [];
-    for (OneMapSearchResult result in results) props.add(result);
+    for (CommonOneMapModel result in results) props.add(result);
     return props;
+  }
+
+  static List<CommonOneMapModel> _fromSearchResults(List<dynamic> data) {
+    List<CommonOneMapModel> models = [];
+    data.forEach((geocodeInfo) {
+      models.add(CommonOneMapModel.fromSearchResultModel(
+          OneMapSearchResult.fromJson(geocodeInfo)));
+    });
+    return models;
+  }
+
+  static List<dynamic> _toSearchResultList(List<CommonOneMapModel> models) {
+    return [];
   }
 }

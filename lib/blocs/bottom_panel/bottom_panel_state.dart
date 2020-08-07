@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sgcovidmapper/models/models.dart';
-import 'package:sgcovidmapper/models/one_map/one_map.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
 
 abstract class BottomPanelStateData extends Equatable {}
@@ -33,7 +33,7 @@ class GeocodePanelData extends BottomPanelStateData {
 }
 
 class CheckInPanelData extends BottomPanelStateData {
-  final OneMapSearchResult location;
+  final CommonOneMapModel location;
   final DateTime dateTime;
 
   CheckInPanelData(this.location, this.dateTime);

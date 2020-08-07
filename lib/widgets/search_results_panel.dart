@@ -8,7 +8,7 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
-import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 
 class SearchResultsPanel extends StatelessWidget {
   final SearchResultLoaded searchState;
@@ -23,7 +23,7 @@ class SearchResultsPanel extends StatelessWidget {
         scrollDirection: Axis.vertical,
         itemCount: searchState.result != null ? searchState.result.count : 0,
         itemBuilder: (BuildContext context, int index) {
-          OneMapSearchResult result = searchState.result.results[index];
+          CommonOneMapModel result = searchState.result.results[index];
           return AnimatedContainer(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             decoration: BoxDecoration(
@@ -34,8 +34,8 @@ class SearchResultsPanel extends StatelessWidget {
             ),
             duration: Duration(milliseconds: 500),
             child: ListTile(
-              title: Text('${result.searchValue}'),
-              subtitle: Text('${result.address}'),
+              title: Text(result.title),
+              subtitle: Text(result.subtitle),
               trailing: IconButton(
                 icon: Icon(FontAwesomeIcons.signInAlt),
                 onPressed: () {

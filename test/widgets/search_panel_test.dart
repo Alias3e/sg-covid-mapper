@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
 
@@ -42,14 +43,16 @@ main() {
 
     testWidgets('search panel populates one search result properly',
         (WidgetTester tester) async {
-      List<OneMapSearchResult> results = [
-        OneMapSearchResult(
-          searchValue: faker.lorem.word(),
-          address: faker.address.streetAddress(),
-          postalCode: faker.address.zipCode(),
-          longitudeString: faker.randomGenerator.decimal().toString(),
-          latitudeString: faker.randomGenerator.decimal().toString(),
-        ),
+      List<CommonOneMapModel> results = [
+        CommonOneMapModel.fromSearchResultModel(
+          OneMapSearchResult(
+            searchValue: faker.lorem.word(),
+            address: faker.address.streetAddress(),
+            postalCode: faker.address.zipCode(),
+            longitudeString: faker.randomGenerator.decimal().toString(),
+            latitudeString: faker.randomGenerator.decimal().toString(),
+          ),
+        )
       ];
       OneMapSearch search = OneMapSearch(results);
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
@@ -73,34 +76,34 @@ main() {
 
       await tester.pump();
       expect(find.byType(ListTile), findsOneWidget);
-      expect(find.text(results[0].searchValue), findsOneWidget);
-      expect(find.text(results[0].address), findsOneWidget);
+      expect(find.text(results[0].title), findsOneWidget);
+      expect(find.text(results[0].subtitle), findsOneWidget);
     });
 
     testWidgets('search panel populates multiple search result properly',
         (WidgetTester tester) async {
-      List<OneMapSearchResult> results = [
-        OneMapSearchResult(
-          searchValue: faker.lorem.word(),
-          address: faker.address.streetAddress(),
-          postalCode: faker.address.zipCode(),
-          longitudeString: faker.lorem.word(),
-          latitudeString: faker.lorem.word(),
-        ),
-        OneMapSearchResult(
-          searchValue: faker.lorem.word(),
-          address: faker.address.streetAddress(),
-          postalCode: faker.address.zipCode(),
-          longitudeString: faker.lorem.word(),
-          latitudeString: faker.lorem.word(),
-        ),
-        OneMapSearchResult(
+      List<CommonOneMapModel> results = [
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.lorem.word(),
           address: faker.address.streetAddress(),
           postalCode: faker.address.zipCode(),
           longitudeString: faker.randomGenerator.decimal().toString(),
           latitudeString: faker.randomGenerator.decimal().toString(),
-        ),
+        )),
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
+          searchValue: faker.lorem.word(),
+          address: faker.address.streetAddress(),
+          postalCode: faker.address.zipCode(),
+          longitudeString: faker.randomGenerator.decimal().toString(),
+          latitudeString: faker.randomGenerator.decimal().toString(),
+        )),
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
+          searchValue: faker.lorem.word(),
+          address: faker.address.streetAddress(),
+          postalCode: faker.address.zipCode(),
+          longitudeString: faker.randomGenerator.decimal().toString(),
+          latitudeString: faker.randomGenerator.decimal().toString(),
+        )),
       ];
       OneMapSearch search = OneMapSearch(results);
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
@@ -125,16 +128,16 @@ main() {
       await tester.pump();
       expect(find.byType(ListTile), findsNWidgets(results.length));
       for (final result in results) {
-        expect(find.text(result.searchValue), findsOneWidget);
+        expect(find.text(result.title), findsOneWidget);
       }
       for (final result in results) {
-        expect(find.text(result.address), findsOneWidget);
+        expect(find.text(result.subtitle), findsOneWidget);
       }
     });
 
     testWidgets('search panel populates empty result properly',
         (WidgetTester tester) async {
-      List<OneMapSearchResult> results = [];
+      List<CommonOneMapModel> results = [];
       OneMapSearch search = OneMapSearch(results);
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, -1));
 
@@ -162,14 +165,14 @@ main() {
     testWidgets(
         'verify CenterOnLocation, SearchLocationTapped events are fired when list tile is tapped',
         (WidgetTester tester) async {
-      List<OneMapSearchResult> results = [
-        OneMapSearchResult(
+      List<CommonOneMapModel> results = [
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.lorem.word(),
           address: faker.address.streetAddress(),
           postalCode: faker.address.zipCode(),
           longitudeString: faker.randomGenerator.decimal().toString(),
           latitudeString: faker.randomGenerator.decimal().toString(),
-        ),
+        )),
       ];
       OneMapSearch search = OneMapSearch(results);
       when(searchBloc.state).thenAnswer((_) => SearchResultLoaded(search, 1));

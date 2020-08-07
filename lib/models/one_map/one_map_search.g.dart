@@ -8,15 +8,11 @@ part of 'one_map_search.dart';
 
 OneMapSearch _$OneMapSearchFromJson(Map<String, dynamic> json) {
   return OneMapSearch(
-    (json['results'] as List)
-        ?.map((e) => e == null
-            ? null
-            : OneMapSearchResult.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    OneMapSearch._fromSearchResults(json['results'] as List),
   );
 }
 
 Map<String, dynamic> _$OneMapSearchToJson(OneMapSearch instance) =>
     <String, dynamic>{
-      'results': instance.results?.map((e) => e?.toJson())?.toList(),
+      'results': OneMapSearch._toSearchResultList(instance.results),
     };

@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
-import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
 import 'check.dart';
@@ -18,7 +18,7 @@ class CheckPanel extends StatefulWidget {
 class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
   GlobalKey key;
   double height;
-  OneMapSearchResult location;
+  CommonOneMapModel location;
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                   buildWhen: (previous, current) => current is CheckPanelLoaded,
                   builder: (context, CheckPanelState state) {
                     String title = state is CheckPanelLoaded
-                        ? state.data.location.searchValue
+                        ? state.data.location.title
                         : '';
                     return Text(
                       title,

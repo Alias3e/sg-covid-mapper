@@ -8,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/widgets/search_text_field.dart';
 
@@ -22,7 +23,7 @@ class MockBottomPanelBloc extends MockBloc<BottomPanelEvent, BottomPanelState>
 
 main() {
   Faker faker;
-  List<OneMapSearchResult> results = [];
+  List<CommonOneMapModel> results = [];
 
   group('Search TextField', () {
     SearchBloc searchBloc;
@@ -122,11 +123,11 @@ main() {
         'Search TextField display close icon when user is typing but results is not empty',
         (WidgetTester tester) async {
       for (int i = 0; i < 3; i++) {
-        results.add(OneMapSearchResult(
+        results.add(CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
             searchValue: faker.lorem.word(),
             postalCode: faker.address.zipCode(),
             latitudeString: faker.randomGenerator.decimal().toString(),
-            longitudeString: faker.randomGenerator.decimal().toString()));
+            longitudeString: faker.randomGenerator.decimal().toString())));
       }
 
       when(searchBloc.state)

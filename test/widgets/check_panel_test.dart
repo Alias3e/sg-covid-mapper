@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/widgets/check/check.dart';
 
@@ -21,13 +22,13 @@ main() {
     faker = Faker();
     bloc = MockCheckPanelBloc();
     data = CheckInPanelData(
-        OneMapSearchResult(
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.lorem.word(),
           address: faker.address.streetAddress(),
           postalCode: faker.address.zipCode(),
           latitudeString: faker.randomGenerator.decimal().toString(),
           longitudeString: faker.randomGenerator.decimal().toString(),
-        ),
+        )),
         DateTime.now());
   });
 
@@ -38,7 +39,7 @@ main() {
   group('CheckPanel layout tests', () {
     testWidgets('initial layout displayed correctly',
         (WidgetTester tester) async {
-      when(bloc.state).thenAnswer((_) => CheckPanelInitialized());
+      when(bloc.state).thenAnswer((_) => CheckPanelLoaded(data));
       await tester.pumpWidget(BlocProvider<CheckPanelBloc>.value(
         value: bloc,
         child: Directionality(
@@ -48,7 +49,7 @@ main() {
       ));
 
       // Check title
-      expect(find.text(data.location.searchValue), findsOneWidget);
+      expect(find.text(data.location.title), findsOneWidget);
       // check in date time text
       expect(
           find.byWidgetPredicate((widget) =>
@@ -57,10 +58,11 @@ main() {
       // Single picker.
       expect(find.byType(CheckPanelDateTimePicker), findsOneWidget);
 
-      // Check out button and Save button
-      expect(find.byType(CheckPanelButton), findsNWidgets(2));
-      expect(find.text('Save'), findsOneWidget);
+      // Check out button, done button and cancel button
+      expect(find.byType(CheckPanelButton), findsNWidgets(3));
+      expect(find.text('Done'), findsOneWidget);
       expect(find.text('Check out'), findsOneWidget);
+      expect(find.text('Cancel'), findsOneWidget);
       expect(find.text('check out is optional'), findsOneWidget);
     });
 
@@ -75,8 +77,6 @@ main() {
         ),
       ));
 
-      // Check title
-      expect(find.text(data.location.searchValue), findsOneWidget);
       // Check in date time text.
       expect(
           find.byWidgetPredicate((widget) =>
@@ -92,8 +92,9 @@ main() {
       expect(find.byType(CheckPanelDateTimePicker), findsNWidgets(2));
 
       // Check out button and Save button
-      expect(find.byType(CheckPanelButton), findsOneWidget);
-      expect(find.text('Save'), findsOneWidget);
+      expect(find.byType(CheckPanelButton), findsNWidgets(2));
+      expect(find.text('Done'), findsOneWidget);
+      expect(find.text('Cancel'), findsOneWidget);
       // Check out button and optional text do not exist anymore.
       expect(find.text('Check out'), findsNothing);
       expect(find.text('check out is optional'), findsNothing);
