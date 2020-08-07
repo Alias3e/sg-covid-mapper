@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sgcovidmapper/blocs/search/search_state.dart';
 import 'package:sgcovidmapper/models/models.dart';
-import 'package:sgcovidmapper/models/one_map/one_map_search_result.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
 
 class BottomPanelEvent extends Equatable {
@@ -46,7 +46,7 @@ class PlacePanelDisplayed extends BottomPanelEvent {
 class PlacePanelOpened extends BottomPanelEvent {}
 
 class CheckInPanelSwitched extends BottomPanelEvent {
-  final OneMapSearchResult result;
+  final CommonOneMapModel result;
   final SearchResultLoaded previousState;
 
   CheckInPanelSwitched({@required this.result, @required this.previousState});

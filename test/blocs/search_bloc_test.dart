@@ -3,6 +3,7 @@ import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 
@@ -11,38 +12,38 @@ class MockGeolocationRepository extends Mock implements GeolocationRepository {}
 main() {
   group('Search Bloc', () {
     GeolocationRepository repository;
-    List<OneMapSearchResult> results;
-    List<OneMapSearchResult> resultsTwo;
+    List<CommonOneMapModel> results;
+    List<CommonOneMapModel> resultsTwo;
     OneMapSearch search;
     OneMapSearch searchTwo;
 
     setUp(() {
       repository = MockGeolocationRepository();
       results = [
-        OneMapSearchResult(
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
           longitudeString: faker.address.buildingNumber(),
           latitudeString: faker.address.countryCode(),
           address: faker.address.streetAddress(),
-        ),
-        OneMapSearchResult(
+        )),
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
           longitudeString: faker.address.buildingNumber(),
           latitudeString: faker.address.countryCode(),
           address: faker.address.streetAddress(),
-        )
+        ))
       ];
       search = OneMapSearch(results);
       searchTwo = OneMapSearch([
-        OneMapSearchResult(
+        CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
           longitudeString: faker.address.buildingNumber(),
           latitudeString: faker.address.countryCode(),
           address: faker.address.streetAddress(),
-        )
+        ))
       ]);
     });
 

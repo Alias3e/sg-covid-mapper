@@ -43,7 +43,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
 
     if (event is DisplayLocationCheckInPanel) {
       visit = Visit();
-      visit.title = event.data.location.searchValue;
+      visit.title = event.data.location.title;
       visit.latitude = event.data.location.latitude;
       visit.longitude = event.data.location.longitude;
       visit.postalCode = event.data.location.postalCode;

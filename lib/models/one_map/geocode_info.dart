@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'geocode_info.g.dart';
 
 @JsonSerializable()
-class GeoCodeInfo extends Equatable {
+class GeocodeInfo extends Equatable {
   @JsonKey(name: 'BUILDINGNAME')
   final String buildingName;
   @JsonKey(name: 'BLOCK')
@@ -18,7 +18,7 @@ class GeoCodeInfo extends Equatable {
   @JsonKey(name: 'POSTALCODE')
   final String postalCode;
 
-  GeoCodeInfo({
+  GeocodeInfo({
     this.buildingName,
     this.block,
     this.road,
@@ -27,10 +27,10 @@ class GeoCodeInfo extends Equatable {
     this.postalCode,
   });
 
-  factory GeoCodeInfo.fromJson(Map<String, dynamic> json) =>
-      _$GeoCodeInfoFromJson(json);
+  factory GeocodeInfo.fromJson(Map<String, dynamic> json) =>
+      _$GeocodeInfoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$GeoCodeInfoToJson(this);
+  Map<String, dynamic> toJson() => _$GeocodeInfoToJson(this);
 
   double get latitude => double.parse(latitudeString);
 
