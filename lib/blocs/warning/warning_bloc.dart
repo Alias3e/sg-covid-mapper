@@ -19,7 +19,10 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
   WarningBloc(
       {@required this.checkPanelBloc,
       @required this.visitsRepository,
-      @required this.covidRepository}) {
+      @required this.covidRepository})
+      : assert(checkPanelBloc != null &&
+            visitsRepository != null &&
+            covidRepository != null) {
     subscribe();
   }
 
@@ -55,8 +58,8 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
 
   @override
   Future<void> close() {
-    _subscription.cancel();
-    checkPanelBloc.close();
+    _subscription?.cancel();
+    checkPanelBloc?.close();
     return super.close();
   }
 }
