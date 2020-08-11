@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
-import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
+import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
@@ -162,7 +162,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                 onPressed: () {
                   BlocProvider.of<BottomPanelBloc>(context)
                       .add(SearchPanelSwitched());
-                  BlocProvider.of<SearchBoxBloc>(context)
+                  BlocProvider.of<UpdateOpacityBloc>(context)
                       .add(SearchBoxOpacityChanged(0));
                   BlocProvider.of<CheckPanelBloc>(context).add(SaveVisit());
                 },
@@ -177,7 +177,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                 onPressed: () {
                   BlocProvider.of<BottomPanelBloc>(context)
                       .add(SearchPanelSwitched());
-                  BlocProvider.of<SearchBoxBloc>(context)
+                  BlocProvider.of<UpdateOpacityBloc>(context)
                       .add(SearchBoxOpacityChanged(0));
                   BlocProvider.of<CheckPanelBloc>(context).add(CancelVisit());
                 },

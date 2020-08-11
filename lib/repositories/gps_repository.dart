@@ -7,7 +7,6 @@ class GpsRepository {
   Future<Position> getCurrentLocation() async {
     _lastPosition = await _geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print(_lastPosition);
     return _lastPosition;
   }
 

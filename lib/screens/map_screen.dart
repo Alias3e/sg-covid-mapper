@@ -38,7 +38,13 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         children: [
           BlocConsumer<BottomPanelBloc, BottomPanelState>(
             listener: (BuildContext context, BottomPanelState state) {
-              if (state is PlacePanelPositionChanging) return;
+              if (state is PanelPositionUpdated) return;
+              if (state is BottomPanelContentChanged)
+                _panelController.animatePanelToPosition(
+                  state.maxHeight,
+                  duration: Duration(milliseconds: 250),
+                  curve: Curves.linear,
+                );
               if (state is! BottomPanelClosing)
                 _panelController.animatePanelToPosition(
                   1.0,
@@ -79,10 +85,13 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                 },
                 onPanelClosed: () =>
                     print('onPanelClosed() $state ${state.data}'),
-                onPanelSlide:
-                    state is BottomPanelOpened && state.data is PlacePanelData
-                        ? _onBottomPanelSlide
-                        : null,
+                onPanelSlide: (position) =>
+                    BlocProvider.of<BottomPanelBloc>(context).add(
+                        PanelPositionChanged(
+                            position: position, data: state.data)),
+//                    state is BottomPanelOpened && state.data is PlacePanelData
+//                        ? _onBottomPanelSlide
+//                        : null,
                 panelBuilder: (sc) => BottomPanel(
                   state: state,
                   scrollController: sc,
@@ -165,9 +174,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     );
   }
 
-  _onBottomPanelSlide(double position) {
+  _onBottomPanelSlide(double position, BottomPanelStateData data) {
     BlocProvider.of<BottomPanelBloc>(context)
-        .add(PlacePanelDragged(position: position));
+        .add(PanelPositionChanged(position: position, data: data));
   }
 
 //  _getBottomPanel(BottomPanelState state, ScrollController scrollController) {

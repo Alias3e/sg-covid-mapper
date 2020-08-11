@@ -50,7 +50,7 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
 
   @override
   Stream<WarningState> mapEventToState(WarningEvent event) async* {
-    if (event is WarningChanged) yield WarningLevelUpdated();
+    if (event is WarningChanged) yield WarningLevelUpdated(event.timestamp);
   }
 
   @override

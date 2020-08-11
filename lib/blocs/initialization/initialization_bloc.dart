@@ -14,6 +14,10 @@ class InitializationBloc
   static const String visitBoxName = 'myVisits';
   static const String systemBoxName = 'system';
 
+  InitializationBloc() {
+    add(BeginInitialization());
+  }
+
   @override
   InitializationState get initialState => Initializing();
 

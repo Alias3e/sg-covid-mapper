@@ -8,5 +8,5 @@ class WarningChanged extends WarningEvent {
   WarningChanged(this.timestamp);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [timestamp];
 }

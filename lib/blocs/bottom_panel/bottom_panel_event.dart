@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sgcovidmapper/blocs/search/search_state.dart';
+import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
@@ -25,13 +25,14 @@ class GeocodePanelOpenAnimationStarted extends BottomPanelEvent {
 
 class SearchPanelOpened extends BottomPanelEvent {}
 
-class PlacePanelDragged extends BottomPanelEvent {
+class PanelPositionChanged extends BottomPanelEvent {
   final double position;
+  final BottomPanelStateData data;
 
-  PlacePanelDragged({this.position});
+  PanelPositionChanged({@required this.position, @required this.data});
 
   @override
-  List<Object> get props => [position];
+  List<Object> get props => [position, data];
 }
 
 class PlacePanelDisplayed extends BottomPanelEvent {
@@ -47,12 +48,11 @@ class PlacePanelOpened extends BottomPanelEvent {}
 
 class CheckInPanelSwitched extends BottomPanelEvent {
   final CommonOneMapModel result;
-  final SearchResultLoaded previousState;
 
-  CheckInPanelSwitched({@required this.result, @required this.previousState});
+  CheckInPanelSwitched({@required this.result});
 
   @override
-  List<Object> get props => [result, previousState];
+  List<Object> get props => [result];
 }
 
 class SearchPanelSwitched extends BottomPanelEvent {}

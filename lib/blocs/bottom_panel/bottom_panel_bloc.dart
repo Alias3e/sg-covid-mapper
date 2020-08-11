@@ -48,11 +48,12 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
 
     if (event is CheckInPanelSwitched) {
       yield BottomPanelContentChanged(
+          maxHeight: 0.65,
           data: CheckInPanelData(event.result, DateTime.now()));
     }
 
     if (event is SearchPanelSwitched) {
-      yield BottomPanelContentChanged(data: SearchPanelData());
+      yield BottomPanelContentChanged(maxHeight: 1.0, data: SearchPanelData());
     }
 
     if (event is PlacePanelDisplayed) {
@@ -64,11 +65,12 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
       );
     }
 
-    if (event is PlacePanelDragged) {
-      yield PlacePanelPositionChanging(
+    if (event is PanelPositionChanged) {
+      yield PanelPositionUpdated(
         maxHeight: 0.4,
         isDraggable: true,
         position: event.position,
+        data: event.data,
       );
     }
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
+import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
 class SearchTextField extends StatefulWidget {
@@ -27,12 +27,13 @@ class _SearchTextFieldState extends State<SearchTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchBoxBloc, SearchBoxState>(
-      builder: (BuildContext context, SearchBoxState state) {
+    return BlocBuilder<UpdateOpacityBloc, UpdateOpacityState>(
+      condition: (previous, current) => current is! SpeedDialOpacityUpdating,
+      builder: (BuildContext context, UpdateOpacityState state) {
         return Visibility(
-          visible: true,
+          visible: state.opacity != 0,
           child: AnimatedOpacity(
-            opacity: state is SearchBoxOpacityUpdating ? state.opacity : 1.0,
+            opacity: state.opacity,
             duration: Duration(milliseconds: 250),
             child: Focus(
               onFocusChange: (value) {

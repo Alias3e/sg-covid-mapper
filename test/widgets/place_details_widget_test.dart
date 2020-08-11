@@ -31,6 +31,7 @@ main() {
               textDirection: TextDirection.ltr,
               child: PlacesPanel(
                 markers: markers,
+                scrollController: null,
               ),
             ),
           ),
@@ -69,6 +70,7 @@ main() {
               textDirection: TextDirection.ltr,
               child: PlacesPanel(
                 markers: markers,
+                scrollController: null,
               ),
             ),
           ),
@@ -132,6 +134,7 @@ main() {
               textDirection: TextDirection.ltr,
               child: PlacesPanel(
                 markers: markers,
+                scrollController: null,
               ),
             ),
           ),

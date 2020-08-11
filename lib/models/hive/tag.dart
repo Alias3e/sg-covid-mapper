@@ -11,5 +11,7 @@ class Tag extends HiveObject {
   @HiveField(2)
   double similarity;
 
-  Tag(this.label);
+  Tag(this.label) {
+    similarity = 0.0;
+  }
 }

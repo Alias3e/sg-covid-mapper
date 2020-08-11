@@ -1,33 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
+import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 
-class SearchResultsPanel extends StatelessWidget {
+class SearchResultsPanel extends StatefulWidget {
   final SearchResultLoaded searchState;
 
   const SearchResultsPanel({@required this.searchState});
 
   @override
+  _SearchResultsPanelState createState() => _SearchResultsPanelState();
+}
+
+class _SearchResultsPanelState extends State<SearchResultsPanel> {
+  double topPadding = 60.0;
+
+  @override
+  void initState() {
+    _setTopPadding(KeyboardVisibilityNotification().isKeyboardVisible);
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        _setTopPadding(visible);
+      },
+    );
+    super.initState();
+  }
+
+  void _setTopPadding(bool keyboardVisible) {
+    setState(() {
+      setState(() {
+        keyboardVisible ? topPadding = 60.0 : topPadding = 0.0;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.only(top: 60),
+      minimum: EdgeInsets.only(top: topPadding),
       child: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: searchState.result != null ? searchState.result.count : 0,
+        itemCount: widget.searchState.result != null
+            ? widget.searchState.result.count
+            : 0,
         itemBuilder: (BuildContext context, int index) {
-          CommonOneMapModel result = searchState.result.results[index];
+          CommonOneMapModel result = widget.searchState.result.results[index];
           return AnimatedContainer(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             decoration: BoxDecoration(
-              border: searchState.selected == index
+              border: widget.searchState.selected == index
                   ? Border.all(color: Colors.teal)
                   : null,
               borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -40,14 +69,13 @@ class SearchResultsPanel extends StatelessWidget {
                 icon: Icon(FontAwesomeIcons.signInAlt),
                 onPressed: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  BlocProvider.of<BottomPanelBloc>(context).add(
-                      CheckInPanelSwitched(
-                          result: result, previousState: searchState));
+                  BlocProvider.of<BottomPanelBloc>(context)
+                      .add(CheckInPanelSwitched(result: result));
                   BlocProvider.of<CheckPanelBloc>(context).add(
                       DisplayLocationCheckInPanel(
                           CheckInPanelData(result, DateTime.now())));
-                  BlocProvider.of<SearchBoxBloc>(context)
-                      .add(SearchBoxOpacityChanged(1));
+                  BlocProvider.of<UpdateOpacityBloc>(context)
+                      .add(OpacityChanged(1));
                 },
               ),
               onTap: () {

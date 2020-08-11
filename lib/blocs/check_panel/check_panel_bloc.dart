@@ -7,7 +7,6 @@ import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
 class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
-  final String boxName = 'visits';
   final MyVisitedPlaceRepository repository;
   Visit visit;
   Set<String> _labels = {};

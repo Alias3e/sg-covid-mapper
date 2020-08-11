@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/blocs/search_box/search_box.dart';
+import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/widgets/search_text_field.dart';
@@ -15,8 +15,8 @@ import 'package:sgcovidmapper/widgets/search_text_field.dart';
 class MockSearchBloc extends MockBloc<SearchEvent, SearchState>
     implements SearchBloc {}
 
-class MockSearchBoxBloc extends MockBloc<SearchBoxEvent, SearchBoxState>
-    implements SearchBoxBloc {}
+class MockSearchBoxBloc extends MockBloc<UpdateOpacityEvent, UpdateOpacityState>
+    implements UpdateOpacityBloc {}
 
 class MockBottomPanelBloc extends MockBloc<BottomPanelEvent, BottomPanelState>
     implements BottomPanelBloc {}
@@ -27,7 +27,7 @@ main() {
 
   group('Search TextField', () {
     SearchBloc searchBloc;
-    SearchBoxBloc searchBoxBloc;
+    UpdateOpacityBloc searchBoxBloc;
     BottomPanelBloc bottomPanelBloc;
 
     setUp(() {
@@ -51,7 +51,7 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<SearchBoxBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -76,7 +76,7 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<SearchBoxBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -102,7 +102,7 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<SearchBoxBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -136,7 +136,7 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<SearchBoxBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -162,7 +162,7 @@ main() {
           MultiBlocProvider(
             providers: [
               BlocProvider<SearchBloc>.value(value: searchBloc),
-              BlocProvider<SearchBoxBloc>.value(value: searchBoxBloc),
+              BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
               BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
             ],
             child: MaterialApp(
@@ -192,7 +192,7 @@ main() {
           MultiBlocProvider(
             providers: [
               BlocProvider<SearchBloc>.value(value: searchBloc),
-              BlocProvider<SearchBoxBloc>.value(value: searchBoxBloc),
+              BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
             ],
             child: MaterialApp(
               home: Scaffold(

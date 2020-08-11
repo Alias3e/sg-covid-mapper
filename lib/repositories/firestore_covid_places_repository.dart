@@ -18,6 +18,7 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
   }
 
   Future<void> init() async {
+    print('init covid repository');
     if (updated == null) {
       DocumentReference docRef =
           systemCollection.document('Wn7Rh8YtfIyKliO02Ltl');

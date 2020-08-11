@@ -12,7 +12,6 @@ class ReverseGeocodeBloc
 
   ReverseGeocodeBloc({@required this.repository, @required this.mapBloc})
       : assert(repository != null && mapBloc != null) {
-    print('reverse geocode bloc');
     mapBloc.listen((state) {
       if (state is GPSAcquired) {
         add(BeginGeocode(state.mapCenter));

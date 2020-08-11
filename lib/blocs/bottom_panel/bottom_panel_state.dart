@@ -88,20 +88,23 @@ class BottomPanelOpened<T extends BottomPanelStateData>
 
 class BottomPanelContentChanged<T extends BottomPanelStateData>
     extends BottomPanelState<T> {
-  BottomPanelContentChanged({@required BottomPanelStateData data})
-      : super(0.65, false, data: data);
+  BottomPanelContentChanged(
+      {@required BottomPanelStateData data, @required double maxHeight})
+      : super(maxHeight, false, data: data);
 
   List<Object> get props => [data];
 }
 
-class PlacePanelPositionChanging extends BottomPanelState {
+class PanelPositionUpdated<T extends BottomPanelStateData>
+    extends BottomPanelState<T> {
   final double position;
 
-  PlacePanelPositionChanging({
-    @required double maxHeight,
-    @required bool isDraggable,
-    @required this.position,
-  }) : super(maxHeight, isDraggable);
+  PanelPositionUpdated(
+      {@required double maxHeight,
+      @required bool isDraggable,
+      @required this.position,
+      @required BottomPanelStateData data})
+      : super(maxHeight, isDraggable, data: data);
 
   List<Object> get props => [position];
 }
