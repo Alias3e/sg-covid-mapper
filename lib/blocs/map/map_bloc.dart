@@ -18,6 +18,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   List<Marker> _myPlaces = [];
   StreamSubscription _subscription;
   StreamSubscription _settingsSubscription;
+  Marker _lastGpsLocation;
 
   MapBloc(
       {@required this.covidPlacesRepository, @required this.gpsRepository}) {
@@ -44,6 +45,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     }
 
     if (event is CenterOnLocation) {
+      _myPlaces.clear();
       _updatePlaceMarkers(
           [_makeMarker(event.location.latitude, event.location.longitude)]);
       yield MapViewBoundsChanged(
@@ -59,8 +61,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           nearbyPlaces: _myPlaces);
       try {
         Position position = await gpsRepository.getCurrentLocation();
-        _updatePlaceMarkers(
-            [_makeMarker(position.latitude, position.longitude)]);
+        if (_myPlaces.isNotEmpty) _myPlaces.clear();
+        _lastGpsLocation = _makeMarker(position.latitude, position.longitude,
+            iconData: FontAwesomeIcons.streetView, color: Colors.teal);
         yield GPSAcquired(
           mapCenter: LatLng(position.latitude, position.longitude),
           nearbyPlaces: _myPlaces,
@@ -72,6 +75,34 @@ class MapBloc extends Bloc<MapEvent, MapState> {
             nearbyPlaces: _myPlaces);
       }
     }
+
+    if (event is DisplayUserLocation) {
+      _updatePlaceMarkers([_lastGpsLocation]);
+      yield MapViewBoundsChanged(
+        mapCenter: LatLng(
+            _lastGpsLocation.point.latitude, _lastGpsLocation.point.longitude),
+        nearbyPlaces: _myPlaces,
+        covidPlaces: covidPlacesRepository.placeMarkersCached,
+      );
+    }
+
+    if (event is GeoCodeLocationSelected) {
+      List<Marker> newPlaces = [
+        _lastGpsLocation,
+        _makeMarker(event.latitude, event.longitude)
+      ];
+      _myPlaces = newPlaces;
+      yield MapUpdated(
+          covidPlaces: covidPlacesRepository.placeMarkersCached,
+          nearbyPlaces: _myPlaces);
+    }
+
+    if (event is ClearOneMapPlacesMarker) {
+      _myPlaces = List<Marker>();
+      yield MapUpdated(
+          covidPlaces: covidPlacesRepository.placeMarkersCached,
+          nearbyPlaces: _myPlaces);
+    }
   }
 
   @override
@@ -82,19 +113,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   void _updatePlaceMarkers(List<Marker> markers) {
-    _myPlaces.clear();
     _myPlaces.addAll(markers);
   }
 
-  Marker _makeMarker(double latitude, double longitude) {
+  Marker _makeMarker(double latitude, double longitude,
+      {IconData iconData, Color color}) {
     return Marker(
       point: LatLng(latitude, longitude),
       anchorPos: AnchorPos.align(AnchorAlign.top),
       height: 50,
       width: 50,
       builder: (context) => FaIcon(
-        FontAwesomeIcons.mapMarkerAlt,
-        color: Colors.amber,
+        iconData == null ? FontAwesomeIcons.mapMarkerAlt : iconData,
+        color: color == null ? Colors.amber : color,
         size: 50,
       ),
     );

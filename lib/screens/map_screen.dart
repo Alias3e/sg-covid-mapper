@@ -39,22 +39,25 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
           BlocConsumer<BottomPanelBloc, BottomPanelState>(
             listener: (BuildContext context, BottomPanelState state) {
               if (state is PanelPositionUpdated) return;
-              if (state is BottomPanelContentChanged)
+              if (state is BottomPanelContentChanged) {
                 _panelController.animatePanelToPosition(
                   state.maxHeight,
                   duration: Duration(milliseconds: 250),
                   curve: Curves.linear,
                 );
-              if (state is! BottomPanelClosing)
+              }
+              if (state is BottomPanelOpening) {
                 _panelController.animatePanelToPosition(
                   1.0,
                   duration: Duration(milliseconds: 250),
                   curve: Curves.linear,
                 );
-              else
+              }
+              if (state is BottomPanelClosing) {
                 _panelController.animatePanelToPosition(0.0,
                     duration: Duration(milliseconds: 250),
                     curve: Curves.linear);
+              }
             },
             buildWhen: (previous, current) => (current is BottomPanelOpening ||
                 current is BottomPanelOpened ||
@@ -82,13 +85,23 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                   if (state.data is PlacePanelData)
                     BlocProvider.of<BottomPanelBloc>(context)
                         .add(PlacePanelOpened());
+                  if (state.data is GeocodePanelData)
+                    BlocProvider.of<MapBloc>(context)
+                        .add(DisplayUserLocation());
                 },
-                onPanelClosed: () =>
-                    print('onPanelClosed() $state ${state.data}'),
-                onPanelSlide: (position) =>
-                    BlocProvider.of<BottomPanelBloc>(context).add(
-                        PanelPositionChanged(
-                            position: position, data: state.data)),
+                onPanelClosed: () {
+                  BlocProvider.of<BottomPanelBloc>(context)
+                      .add(OnBottomPanelClosed());
+                  if (state.data is SearchPanelData ||
+                      state.data is GeocodePanelData)
+                    BlocProvider.of<MapBloc>(context)
+                        .add(ClearOneMapPlacesMarker());
+                },
+                onPanelSlide: (position) {
+                  BlocProvider.of<BottomPanelBloc>(context).add(
+                      PanelPositionChanged(
+                          position: position, data: state.data));
+                },
 //                    state is BottomPanelOpened && state.data is PlacePanelData
 //                        ? _onBottomPanelSlide
 //                        : null,

@@ -10,6 +10,8 @@ class BottomPanelEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class OnBottomPanelClosed extends BottomPanelEvent {}
+
 class BottomPanelCollapsed extends BottomPanelEvent {}
 
 class SearchPanelOpenAnimationStarted extends BottomPanelEvent {}

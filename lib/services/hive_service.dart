@@ -28,7 +28,7 @@ class HiveService extends LocalStorageService {
     String expiry = Hive.box(InitializationBloc.systemBoxName)
         .get(oneMapTokenExpiryKey, defaultValue: '');
     if (expiry.isEmpty ||
-        DateTime.now().millisecondsSinceEpoch < int.parse(expiry)) return '';
+        DateTime.now().millisecondsSinceEpoch > int.parse(expiry)) return '';
 
     return Hive.box(InitializationBloc.systemBoxName).get(oneMapTokenKey);
   }

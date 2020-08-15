@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/screens/timeline_screen.dart';
@@ -19,9 +20,9 @@ class MapScreenSpeedDial extends StatelessWidget {
         child: AnimatedOpacity(
           opacity: state.opacity,
           duration: Duration(milliseconds: 250),
-          child: BlocBuilder<MapBloc, MapState>(
+          child: BlocBuilder<ReverseGeocodeBloc, ReverseGeocodeState>(
             builder: (BuildContext context, state) => SpeedDial(
-              animatedIcon: state is GpsLocationAcquiring
+              animatedIcon: state is GeocodingInProgress
                   ? null
                   : AnimatedIcons.menu_close,
               overlayColor: Colors.black,

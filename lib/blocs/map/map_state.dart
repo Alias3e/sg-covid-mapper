@@ -43,19 +43,19 @@ class GpsLocationAcquiring extends MapState {
       : super(covidPlaces, nearbyPlaces);
 
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
-class GPSAcquired extends MapViewBoundsChanged {
+class GPSAcquired extends MapState {
+  final LatLng mapCenter;
   const GPSAcquired(
-      {@required LatLng mapCenter,
+      {@required this.mapCenter,
       @required List<PlaceMarker> covidPlaces,
       @required List<Marker> nearbyPlaces})
-      : super(
-            mapCenter: mapCenter,
-            covidPlaces: covidPlaces,
-            nearbyPlaces: nearbyPlaces);
+      : super(covidPlaces, nearbyPlaces);
+
+  @override
+  List<Object> get props => [mapCenter];
 }
 
 class MapViewBoundsChanged extends MapState {

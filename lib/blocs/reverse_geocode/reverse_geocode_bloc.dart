@@ -13,6 +13,8 @@ class ReverseGeocodeBloc
   ReverseGeocodeBloc({@required this.repository, @required this.mapBloc})
       : assert(repository != null && mapBloc != null) {
     mapBloc.listen((state) {
+      if (state is GpsLocationAcquiring) add(WaitingForLocation());
+
       if (state is GPSAcquired) {
         add(BeginGeocode(state.mapCenter));
       }
@@ -25,11 +27,11 @@ class ReverseGeocodeBloc
   @override
   Stream<ReverseGeocodeState> mapEventToState(
       ReverseGeocodeEvent event) async* {
+    if (event is WaitingForLocation) yield GeocodingInProgress();
+
     if (event is BeginGeocode) {
-      yield GeocodingInProgress();
       ReverseGeocode result = await repository.reverseGeocode(
           event.latLng.latitude, event.latLng.longitude);
-      print(result.results);
       yield GeocodingCompleted(result);
     }
   }

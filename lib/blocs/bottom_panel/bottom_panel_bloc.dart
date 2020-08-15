@@ -16,10 +16,8 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
   }
 
   @override
-  BottomPanelState get initialState => BottomPanelClosing(
-        maxHeight: 0.0,
-        isDraggable: false,
-      );
+  BottomPanelState get initialState =>
+      BottomPanelClosed(isDraggable: false, maxHeight: 0.0);
 
   @override
   Stream<BottomPanelState> mapEventToState(BottomPanelEvent event) async* {
@@ -63,6 +61,10 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
         isDraggable: true,
         data: PlacePanelData(event.markers),
       );
+    }
+
+    if (event is OnBottomPanelClosed) {
+      yield BottomPanelClosed(isDraggable: false, maxHeight: 0.0);
     }
 
     if (event is PanelPositionChanged) {

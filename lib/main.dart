@@ -6,6 +6,7 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
+import 'package:sgcovidmapper/blocs/keyboard_visibility/keyboard_visibility.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
@@ -122,6 +123,9 @@ class MyApp extends StatelessWidget {
                   BlocProvider<UpdateOpacityBloc>(
                       create: (BuildContext context) => UpdateOpacityBloc(
                           BlocProvider.of<BottomPanelBloc>(context))),
+                  BlocProvider<KeyboardVisibilityBloc>(
+                    create: (BuildContext context) => KeyboardVisibilityBloc(),
+                  ),
                 ],
                 child: MaterialApp(
                   title: 'Flutter Demo',

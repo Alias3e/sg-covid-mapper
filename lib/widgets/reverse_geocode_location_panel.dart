@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
+import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/reverse_geocode.dart';
 import 'package:sgcovidmapper/util/constants.dart';
@@ -47,6 +48,10 @@ class ReverseGeocodeLocationPanel extends StatelessWidget {
                                   CheckInPanelData(model, DateTime.now())));
                         },
                       ),
+                      onTap: () => BlocProvider.of<MapBloc>(context).add(
+                          GeoCodeLocationSelected(
+                              latitude: model.latitude,
+                              longitude: model.longitude)),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) =>
