@@ -187,11 +187,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     );
   }
 
-  _onBottomPanelSlide(double position, BottomPanelStateData data) {
-    BlocProvider.of<BottomPanelBloc>(context)
-        .add(PanelPositionChanged(position: position, data: data));
-  }
-
 //  _getBottomPanel(BottomPanelState state, ScrollController scrollController) {
 //    if (state is BottomPanelOpening) {
 //      BottomPanelStateData data = state.data;

@@ -9,7 +9,6 @@ class DisplayLocationCheckInPanel extends CheckPanelEvent {
   DisplayLocationCheckInPanel(this.data);
 
   @override
-  // TODO: implement props
   List<Object> get props => [data];
 }
 
@@ -28,7 +27,6 @@ class CheckOutDateTimeUpdated extends CheckPanelEvent {
   CheckOutDateTimeUpdated(this.dateTime);
 
   @override
-  // TODO: implement props
   List<Object> get props => [dateTime];
 }
 

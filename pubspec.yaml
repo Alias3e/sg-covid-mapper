@@ -89,9 +89,9 @@ flutter:
     - family: Coiny
       fonts:
       - asset: fonts/Coiny-Regular.ttf
-    - family: Monofett
+    - family: FrederickatheGreat
       fonts:
-      - asset: fonts/Monofett-Regular.ttf
+      - asset: fonts/FrederickatheGreat-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

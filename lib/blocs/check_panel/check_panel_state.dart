@@ -19,7 +19,6 @@ class CheckPanelInitialized extends CheckPanelState {
   CheckPanelInitialized();
 
   @override
-  // TODO: implement props
   List<Object> get props => [];
 }
 
@@ -29,7 +28,6 @@ class CheckInDateTimeTextRefreshed extends CheckPanelState {
   CheckInDateTimeTextRefreshed({@required this.dateTime});
 
   @override
-  // TODO: implement props
   List<Object> get props => [dateTime];
 }
 

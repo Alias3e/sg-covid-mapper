@@ -34,7 +34,9 @@ class _SearchPanelState extends State<SearchPanel> {
                     ),
                     child: bottomPanelState is BottomPanelContentChanged &&
                             bottomPanelState.data is CheckInPanelData
-                        ? CheckPanel()
+                        ? CheckPanel(
+                            switchOutEvent: SearchPanelSwitched(),
+                          )
                         : SearchResultsPanel(
                             searchState: searchState,
                           ),

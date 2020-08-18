@@ -4,9 +4,14 @@ import 'package:sgcovidmapper/models/models.dart';
 
 import 'bottom_panel.dart';
 
+enum PanelType { none, covidPlaces, search, geocode, log }
+
 class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
   List<PlaceMarker> _currentMarkers = [];
   final ReverseGeocodeBloc _reverseGeocodeBloc;
+  PanelType _panelType = PanelType.none;
+
+  PanelType get panelType => _panelType;
 
   BottomPanelBloc(this._reverseGeocodeBloc) {
     _reverseGeocodeBloc.listen((state) {
@@ -21,23 +26,30 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
 
   @override
   Stream<BottomPanelState> mapEventToState(BottomPanelEvent event) async* {
-    if (event is BottomPanelCollapsed)
+    if (event is BottomPanelCollapsed) {
+      _panelType = PanelType.none;
       yield BottomPanelClosing(
         maxHeight: 0.0,
         isDraggable: false,
       );
+    }
 
-    if (event is SearchPanelOpenAnimationStarted)
+    if (event is SearchPanelOpenAnimationStarted) {
+      _panelType = PanelType.search;
       yield BottomPanelOpening(
           maxHeight: 0.65, isDraggable: false, data: SearchPanelData());
+    }
 
-    if (event is GeocodePanelOpenAnimationStarted)
+    if (event is GeocodePanelOpenAnimationStarted) {
+      _panelType = PanelType.geocode;
       yield BottomPanelOpening(
           maxHeight: 0.65,
           isDraggable: false,
           data: GeocodePanelData(event.geocode));
+    }
 
     if (event is PlacePanelOpened) {
+      _panelType = PanelType.covidPlaces;
       yield BottomPanelOpened<PlacePanelData>(
           maxHeight: 0.4,
           isDraggable: true,
@@ -45,16 +57,24 @@ class BottomPanelBloc extends Bloc<BottomPanelEvent, BottomPanelState> {
     }
 
     if (event is CheckInPanelSwitched) {
+      _panelType = PanelType.log;
       yield BottomPanelContentChanged(
-          maxHeight: 0.65,
-          data: CheckInPanelData(event.result, DateTime.now()));
+          maxHeight: 1, data: CheckInPanelData(event.result, DateTime.now()));
     }
 
     if (event is SearchPanelSwitched) {
+      _panelType = PanelType.search;
       yield BottomPanelContentChanged(maxHeight: 1.0, data: SearchPanelData());
     }
 
+    if (event is ReverseGeocodePanelSwitched) {
+      _panelType = PanelType.geocode;
+      yield BottomPanelContentChanged(
+          maxHeight: 1.0, data: GeocodePanelData(null));
+    }
+
     if (event is PlacePanelDisplayed) {
+      _panelType = PanelType.covidPlaces;
       _currentMarkers = event.markers;
       yield BottomPanelOpening(
         maxHeight: 0.4,

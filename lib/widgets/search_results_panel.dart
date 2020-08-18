@@ -26,39 +26,50 @@ class SearchResultsPanel extends StatelessWidget {
           itemCount: searchState.result != null ? searchState.result.count : 0,
           itemBuilder: (BuildContext context, int index) {
             CommonOneMapModel result = searchState.result.results[index];
-            return AnimatedContainer(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                border: searchState.selected == index
-                    ? Border.all(color: Colors.teal)
-                    : null,
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            return ListTile(
+              title: AnimatedDefaultTextStyle(
+                style: searchState.selected != index
+                    ? Theme.of(context).textTheme.subtitle1
+                    : Theme.of(context).textTheme.subtitle1.copyWith(
+                        color: Colors.teal, fontWeight: FontWeight.w600),
+                duration: Duration(milliseconds: 200),
+                child: Text(result.title),
               ),
-              duration: Duration(milliseconds: 500),
-              child: ListTile(
-                title: Text(result.title),
-                subtitle: Text(result.subtitle),
-                trailing: IconButton(
-                  icon: Icon(FontAwesomeIcons.signInAlt),
-                  onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    BlocProvider.of<BottomPanelBloc>(context)
-                        .add(CheckInPanelSwitched(result: result));
-                    BlocProvider.of<CheckPanelBloc>(context).add(
-                        DisplayLocationCheckInPanel(
-                            CheckInPanelData(result, DateTime.now())));
-                    BlocProvider.of<UpdateOpacityBloc>(context)
-                        .add(OpacityChanged(1));
-                  },
+              subtitle: AnimatedDefaultTextStyle(
+                  duration: Duration(milliseconds: 200),
+                  style: searchState.selected != index
+                      ? Theme.of(context).textTheme.bodyText2.copyWith(
+                          color: Theme.of(context).textTheme.caption.color)
+                      : Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(color: Colors.teal[200]),
+                  child: Text(result.subtitle)),
+              trailing: IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.signInAlt,
+                  color: searchState.selected != index
+                      ? Colors.black45
+                      : Colors.teal,
                 ),
-                onTap: () {
+                onPressed: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
-                      location: LatLng(result.latitude, result.longitude)));
-                  BlocProvider.of<SearchBloc>(context)
-                      .add(SearchLocationTapped(index));
+                  BlocProvider.of<BottomPanelBloc>(context)
+                      .add(CheckInPanelSwitched(result: result));
+                  BlocProvider.of<CheckPanelBloc>(context).add(
+                      DisplayLocationCheckInPanel(
+                          CheckInPanelData(result, DateTime.now())));
+                  BlocProvider.of<UpdateOpacityBloc>(context)
+                      .add(OpacityChanged(1));
                 },
               ),
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
+                    location: LatLng(result.latitude, result.longitude)));
+                BlocProvider.of<SearchBloc>(context)
+                    .add(SearchLocationTapped(index));
+              },
             );
           },
         ),

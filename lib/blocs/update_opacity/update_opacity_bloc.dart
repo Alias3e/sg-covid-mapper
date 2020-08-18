@@ -18,7 +18,7 @@ class UpdateOpacityBloc extends Bloc<UpdateOpacityEvent, UpdateOpacityState> {
 //      if (state is BottomPanelOpening && state.data is GeocodePanelData)
 //        add(OpacityChanged(1.0));
       if (state is PanelPositionUpdated<BottomPanelStateData>) {
-        if (state.data is! SearchPanelData)
+        if (_bottomPanelBloc.panelType != PanelType.search)
           add(OpacityChanged(state.position));
         else
           add(SpeedDialOpacityChanged(state.position));
@@ -29,6 +29,10 @@ class UpdateOpacityBloc extends Bloc<UpdateOpacityEvent, UpdateOpacityState> {
 //        if (state.data is GeocodePanelData)
 //          add(SearchBoxOpacityChanged(state.position));
       }
+
+      if (state is BottomPanelContentChanged &&
+          _bottomPanelBloc.panelType == PanelType.search)
+        add(SearchBoxOpacityChanged(0.0));
     });
   }
 

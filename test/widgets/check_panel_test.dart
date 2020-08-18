@@ -44,7 +44,9 @@ main() {
         value: bloc,
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: CheckPanel(),
+          child: CheckPanel(
+            switchOutEvent: ReverseGeocodePanelSwitched(),
+          ),
         ),
       ));
 
@@ -73,7 +75,9 @@ main() {
         value: bloc,
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: CheckPanel(),
+          child: CheckPanel(
+            switchOutEvent: ReverseGeocodePanelSwitched(),
+          ),
         ),
       ));
 
@@ -104,12 +108,21 @@ main() {
   group('User interaction tests', () {
     testWidgets('tap check out buttons fires CheckOutDateTimeDisplayed event',
         (WidgetTester tester) async {
-      when(bloc.state).thenAnswer((_) => CheckPanelInitialized());
+      when(bloc.state).thenAnswer((_) => CheckPanelLoaded(CheckInPanelData(
+          CommonOneMapModel(
+              latitude: 1.4,
+              longitude: 103.5,
+              title: faker.lorem.sentence(),
+              subtitle: faker.lorem.sentence(),
+              postalCode: faker.address.zipCode()),
+          DateTime.now())));
       await tester.pumpWidget(BlocProvider<CheckPanelBloc>.value(
         value: bloc,
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: CheckPanel(),
+          child: CheckPanel(
+            switchOutEvent: ReverseGeocodePanelSwitched(),
+          ),
         ),
       ));
 

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
-import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
@@ -11,6 +10,9 @@ import 'check.dart';
 import 'check_panel_button.dart';
 
 class CheckPanel extends StatefulWidget {
+  final BottomPanelEvent switchOutEvent;
+
+  const CheckPanel({@required this.switchOutEvent});
   @override
   _CheckPanelState createState() => _CheckPanelState();
 }
@@ -161,9 +163,9 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
               CheckPanelButton(
                 onPressed: () {
                   BlocProvider.of<BottomPanelBloc>(context)
-                      .add(SearchPanelSwitched());
-                  BlocProvider.of<UpdateOpacityBloc>(context)
-                      .add(SearchBoxOpacityChanged(0));
+                      .add(widget.switchOutEvent);
+//                  BlocProvider.of<UpdateOpacityBloc>(context)
+//                      .add(SearchBoxOpacityChanged(0));
                   BlocProvider.of<CheckPanelBloc>(context).add(SaveVisit());
                 },
                 text: 'Done',
@@ -176,9 +178,9 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
               CheckPanelButton(
                 onPressed: () {
                   BlocProvider.of<BottomPanelBloc>(context)
-                      .add(SearchPanelSwitched());
-                  BlocProvider.of<UpdateOpacityBloc>(context)
-                      .add(SearchBoxOpacityChanged(0));
+                      .add(widget.switchOutEvent);
+//                  BlocProvider.of<UpdateOpacityBloc>(context)
+//                      .add(SearchBoxOpacityChanged(0));
                   BlocProvider.of<CheckPanelBloc>(context).add(CancelVisit());
                 },
                 text: 'Cancel',

@@ -26,8 +26,9 @@ class ReverseGeocode extends Equatable {
   static List<CommonOneMapModel> _fromGeocodeInfoList(List<dynamic> data) {
     List<CommonOneMapModel> models = [];
     data.forEach((geocodeInfo) {
-      models.add(CommonOneMapModel.fromGeocodeInfoModel(
-          GeocodeInfo.fromJson(geocodeInfo)));
+      CommonOneMapModel model = CommonOneMapModel.fromGeocodeInfoModel(
+          GeocodeInfo.fromJson(geocodeInfo));
+      if (model.postalCode != null) models.add(model);
     });
     return models;
   }

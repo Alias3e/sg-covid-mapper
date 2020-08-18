@@ -19,10 +19,13 @@ class BottomPanel extends StatelessWidget {
           markers: data.markers,
           scrollController: scrollController,
         );
-      if (data is GeocodePanelData)
+
+      if (data is GeocodePanelData) {
+        print(data.geocode.results.length);
         return ReverseGeocodeLocationPanel(
           data: data.geocode,
         );
+      }
     }
 
     if (state is BottomPanelOpened) {

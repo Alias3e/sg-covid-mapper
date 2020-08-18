@@ -58,3 +58,5 @@ class CheckInPanelSwitched extends BottomPanelEvent {
 }
 
 class SearchPanelSwitched extends BottomPanelEvent {}
+
+class ReverseGeocodePanelSwitched extends BottomPanelEvent {}

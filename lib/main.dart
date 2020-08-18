@@ -10,6 +10,7 @@ import 'package:sgcovidmapper/blocs/keyboard_visibility/keyboard_visibility.dart
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
 import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
@@ -125,6 +126,9 @@ class MyApp extends StatelessWidget {
                           BlocProvider.of<BottomPanelBloc>(context))),
                   BlocProvider<KeyboardVisibilityBloc>(
                     create: (BuildContext context) => KeyboardVisibilityBloc(),
+                  ),
+                  BlocProvider<SearchTextFieldBloc>(
+                    create: (BuildContext context) => SearchTextFieldBloc(),
                   ),
                 ],
                 child: MaterialApp(

@@ -68,10 +68,22 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
+  static const TextStyle kSelectedTitleTextStyle = TextStyle(
+    fontSize: 20.5,
+    color: Colors.teal,
+    fontWeight: FontWeight.w900,
+  );
+
   static const TextStyle kDetailsTextStyle = TextStyle(
     fontSize: 16,
     color: Colors.black54,
     fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle kSelectedDetailsTextStyle = TextStyle(
+    fontSize: 16.5,
+    color: Color(0xFF80CBC4), // Teal[200]
+    fontWeight: FontWeight.w900,
   );
 
   static final DateFormat kStartDateFormat = DateFormat("dd/MM/yyyy HH:mm");
