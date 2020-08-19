@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
+import 'package:location/location.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
 
@@ -60,7 +60,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           covidPlaces: covidPlacesRepository.placeMarkersCached,
           nearbyPlaces: _myPlaces);
       try {
-        Position position = await gpsRepository.getCurrentLocation();
+        LocationData position = await gpsRepository.getCurrentLocation();
         if (_myPlaces.isNotEmpty) _myPlaces.clear();
         _lastGpsLocation = _makeMarker(position.latitude, position.longitude,
             iconData: FontAwesomeIcons.streetView, color: Colors.teal);

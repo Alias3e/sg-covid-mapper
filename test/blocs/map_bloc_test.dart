@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong/latlong.dart';
+import 'package:location/location.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/models/models.dart';
@@ -18,11 +18,15 @@ class MockGpsRepository extends Mock implements GpsRepository {}
 class MockVisitedPlaceRepository extends Mock implements CovidPlacesRepository {
 }
 
+class MockLocationData extends Mock implements LocationData {}
+
 main() {
   group('MapBloc', () {
     MockGpsRepository mockGpsRepository;
     MockVisitedPlaceRepository mockVisitedPlaceRepository;
-    Position position = Position(longitude: 103.1, latitude: 1.42);
+    LocationData position = MockLocationData();
+    when(position.latitude).thenReturn(1.42);
+    when(position.longitude).thenReturn(103.5);
     LatLng latLng = LatLng(position.latitude, position.longitude);
     List<Marker> nearbyPlaces = [];
     List<List<PlaceMarker>> markers = [
