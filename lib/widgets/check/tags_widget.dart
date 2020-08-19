@@ -51,6 +51,7 @@ class _TagsWidgetState extends State<TagsWidget> {
                       'Add Tags',
                       style: TextStyle(
                         color: Colors.white,
+                        fontSize: 20,
                       ),
                     )
                   ],

@@ -108,7 +108,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                         color: Styles.kSearchTextFieldGrayColor,
                         fontSize: 16,
                         fontStyle: FontStyle.italic),
-                    hintText: "Search location",
+                    hintText: "Search address, buildings or postal code",
                     fillColor: Color.fromARGB(
                         Color.getAlphaFromOpacity(0.6), 255, 255, 255),
                   ),

@@ -43,24 +43,34 @@ class _ReverseGeocodeLocationPanelState
                         itemBuilder: (context, index) {
                           CommonOneMapModel model = widget.data.results[index];
                           return ListTile(
-                            title: Text(
-                              model.title != null && model.title.isNotEmpty
-                                  ? model.title
-                                  : model.subtitle,
+                            title: AnimatedDefaultTextStyle(
+                              duration: Duration(milliseconds: 100),
                               style: selected != index
                                   ? Styles.kTitleTextStyle
                                   : Styles.kSelectedTitleTextStyle,
+                              child: Text(
+                                model.title != null &&
+                                        model.title.isNotEmpty &&
+                                        model.title != 'null'
+                                    ? model.title
+                                    : model.subtitle,
+                              ),
                             ),
-                            subtitle: model.title.isEmpty || model.title == null
+                            subtitle: model.title.isEmpty ||
+                                    model.title == null ||
+                                    model.title == 'null'
                                 ? Container(
                                     height: 0,
                                     width: 0,
                                   )
-                                : Text(
-                                    model.subtitle,
+                                : AnimatedDefaultTextStyle(
+                                    duration: Duration(milliseconds: 100),
                                     style: selected != index
                                         ? Styles.kDetailsTextStyle
                                         : Styles.kSelectedDetailsTextStyle,
+                                    child: Text(
+                                      model.subtitle,
+                                    ),
                                   ),
                             trailing: IconButton(
                               icon: Icon(

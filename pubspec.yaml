@@ -86,12 +86,12 @@ flutter:
     - assets/cfg.json
 
   fonts:
-    - family: Coiny
-      fonts:
-      - asset: fonts/Coiny-Regular.ttf
     - family: FrederickatheGreat
       fonts:
       - asset: fonts/FrederickatheGreat-Regular.ttf
+    - family: BalooChettan2
+      fonts:
+      - asset: fonts/BalooChettan2-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
