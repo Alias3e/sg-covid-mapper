@@ -32,14 +32,15 @@ class _SearchPanelState extends State<SearchPanel> {
                     duration: Duration(
                       milliseconds: 500,
                     ),
-                    child: bottomPanelState is BottomPanelContentChanged &&
-                            bottomPanelState.data is CheckInPanelData
-                        ? CheckPanel(
-                            switchOutEvent: SearchPanelSwitched(),
-                          )
-                        : SearchResultsPanel(
-                            searchState: searchState,
-                          ),
+                    child:
+                        BlocProvider.of<BottomPanelBloc>(context).panelType ==
+                                PanelType.log
+                            ? CheckPanel(
+                                switchOutEvent: SearchPanelSwitched(),
+                              )
+                            : SearchResultsPanel(
+                                searchState: searchState,
+                              ),
                   );
                 },
               );

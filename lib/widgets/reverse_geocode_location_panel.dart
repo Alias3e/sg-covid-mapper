@@ -34,7 +34,8 @@ class _ReverseGeocodeLocationPanelState
             ? AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),
                 child: state is BottomPanelContentChanged &&
-                        state.data is CheckInPanelData
+                        BlocProvider.of<BottomPanelBloc>(context).panelType ==
+                            PanelType.log
                     ? CheckPanel(
                         switchOutEvent: ReverseGeocodePanelSwitched(),
                       )
