@@ -31,11 +31,12 @@ class MapScreenSpeedDial extends StatelessWidget {
                 SpeedDialChild(
                     child: Icon(Icons.gps_fixed),
                     backgroundColor: Colors.blue,
-                    labelStyle: TextStyle(fontSize: 18.0),
+                    label: 'Log your visit to a nearby location',
                     onTap: () =>
                         BlocProvider.of<MapBloc>(context).add(GetGPS())),
                 SpeedDialChild(
                     backgroundColor: Colors.blue,
+                    label: 'Display locations in a timeline',
                     child: OpenContainer(
                       closedColor: Colors.red,
                       closedElevation: 6.0,
