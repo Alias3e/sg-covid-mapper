@@ -112,7 +112,7 @@ main() {
           CommonOneMapModel(
               latitude: 1.4,
               longitude: 103.5,
-              title: faker.lorem.sentence(),
+              tempTitle: faker.lorem.sentence(),
               subtitle: faker.lorem.sentence(),
               postalCode: faker.address.zipCode()),
           DateTime.now())));

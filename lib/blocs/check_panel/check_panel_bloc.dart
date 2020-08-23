@@ -42,7 +42,8 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
 
     if (event is DisplayLocationCheckInPanel) {
       visit = Visit();
-      visit.title = event.data.location.title;
+      // if location title is null, set as subtitle else set as title
+      visit.title = event.data.location.title ?? event.data.location.subtitle;
       visit.latitude = event.data.location.latitude;
       visit.longitude = event.data.location.longitude;
       visit.postalCode = event.data.location.postalCode;

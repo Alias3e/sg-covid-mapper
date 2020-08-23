@@ -68,7 +68,7 @@ class VisitBody extends StatelessWidget {
           elevation: 2,
           shadowColor: Colors.blueGrey,
           label: Text(
-            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? getSimilarityAsPercentage(tag.similarity) : ''}',
+            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -80,9 +80,5 @@ class VisitBody extends StatelessWidget {
       chips.add(chip);
     }
     return chips;
-  }
-
-  String getSimilarityAsPercentage(double similarity) {
-    return '(${(similarity * 100).round()}%)';
   }
 }
