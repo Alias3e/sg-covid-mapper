@@ -21,6 +21,16 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     if (event is OnDeleteButtonPressed)
       yield DeleteConfirmationPanelShowing(event.visit);
 
-    if (event is OnDeleteCancelled) yield PanelClosing(maxHeight: 0.25);
+    if (event is OnCancelButtonPressed) yield LogPanelClosing(maxHeight: 0.25);
+
+    if (event is OnCheckOutButtonPressed) {
+      yield CheckOutPanelShowing(event.visit);
+    }
+
+    if (event is OnVisitUpdated) {
+      yield VisitUpdateInProgress();
+      await _repository.updateVisit(event.visit);
+      yield VisitUpdateCompleted(maxHeight: 0.33);
+    }
   }
 }

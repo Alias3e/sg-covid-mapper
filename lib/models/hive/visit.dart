@@ -28,7 +28,9 @@ class Visit extends HiveObject {
   DateTime checkInTime;
 
   // the end date time when the place was visited by the user.
+  @HiveField(7)
   DateTime checkOutTime;
+
   @HiveField(4)
   List<Tag> tags;
 

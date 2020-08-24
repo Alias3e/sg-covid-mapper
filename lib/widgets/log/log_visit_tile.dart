@@ -24,7 +24,7 @@ class LogVisitTile extends StatelessWidget {
             Row(
               children: <Widget>[
                 DateTimeText(
-                  visit: visit,
+                  dateTime: visit.checkInTime,
                   text: 'IN',
                 ),
                 SizedBox(
@@ -32,7 +32,7 @@ class LogVisitTile extends StatelessWidget {
                 ),
                 visit.checkOutTime != null
                     ? DateTimeText(
-                        visit: visit,
+                        dateTime: visit.checkOutTime,
                         text: 'OUT',
                       )
                     : IconButton(
@@ -40,7 +40,8 @@ class LogVisitTile extends StatelessWidget {
                           FontAwesomeIcons.signOutAlt,
                           color: Colors.amber,
                         ),
-                        onPressed: () {},
+                        onPressed: () => BlocProvider.of<LogBloc>(context)
+                            .add(OnCheckOutButtonPressed(visit: visit)),
                       ),
                 SizedBox(
                   width: 16.0,
@@ -119,11 +120,11 @@ class LogVisitTile extends StatelessWidget {
 }
 
 class DateTimeText extends StatelessWidget {
-  final Visit visit;
+  final DateTime dateTime;
   final String text;
 
   const DateTimeText({
-    @required this.visit,
+    @required this.dateTime,
     @required this.text,
   });
 
@@ -140,10 +141,10 @@ class DateTimeText extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
         TextSpan(
-            text: '${Styles.kLogTileDateFormat.format(visit.checkInTime)}\n',
+            text: '${Styles.kLogTileDateFormat.format(dateTime)}\n',
             style: TextStyle(color: Colors.black)),
         TextSpan(
-            text: Styles.kEndTimeFormat.format(visit.checkInTime),
+            text: Styles.kEndTimeFormat.format(dateTime),
             style: TextStyle(color: Colors.black54))
       ]),
     );

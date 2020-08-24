@@ -7,6 +7,8 @@ abstract class LocalStorageService {
 
   Future<void> deleteVisit(Visit visit);
 
+  Future<void> updateVisit(Visit visit);
+
   List<Visit> get visits;
 
   ValueListenable visitListenable();

@@ -23,13 +23,14 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..checkInTime = fields[3] as DateTime
       ..tags = (fields[4] as List)?.cast<Tag>()
       ..postalCode = fields[5] as String
-      ..warningLevel = fields[6] as int;
+      ..warningLevel = fields[6] as int
+      ..checkOutTime = fields[7] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, Visit obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -43,6 +44,8 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..writeByte(5)
       ..write(obj.postalCode)
       ..writeByte(6)
-      ..write(obj.warningLevel);
+      ..write(obj.warningLevel)
+      ..writeByte(7)
+      ..write(obj.checkOutTime);
   }
 }

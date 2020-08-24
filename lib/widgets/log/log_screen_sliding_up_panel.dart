@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
+import 'package:sgcovidmapper/widgets/log/check_out_panel.dart';
 import 'package:sgcovidmapper/widgets/log/delete_confirmation_panel.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -27,7 +28,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
   Widget build(BuildContext context) {
     return BlocConsumer<LogBloc, LogState>(
       listener: (BuildContext context, state) {
-        if (state is DeleteConfirmationPanelShowing) {
+        if (state is LogPanelShowingState) {
           _panelController.animatePanelToPosition(
             1.0,
             duration: Duration(milliseconds: 150),
@@ -35,7 +36,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
           );
         }
 
-        if (state is PanelClosing || state is VisitDeleteCompleted) {
+        if (state is LogPanelClosing || state is VisitDeleteCompleted) {
           _panelController.animatePanelToPosition(
             0.0,
             duration: Duration(milliseconds: 150),
@@ -44,6 +45,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
         }
       },
       builder: (BuildContext context, state) => SlidingUpPanel(
+        isDraggable: false,
         minHeight: 0,
         maxHeight: state is LogPanelState
             ? MediaQuery.of(context).size.height * state.maxHeight
@@ -56,6 +58,9 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
             return DeleteConfirmationPanel(
               visit: state.visit,
             );
+          }
+          if (state is CheckOutPanelShowing) {
+            return CheckOutPanel(state.visit);
           }
           return Container();
         },

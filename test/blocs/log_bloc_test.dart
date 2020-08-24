@@ -57,14 +57,25 @@ main() {
     );
 
     blocTest(
-      'emits [PanelClosing] after user cancel deletion',
+      'emits [CheckOutPanelShowing] after user press check out button',
       build: () async {
         return LogBloc(repository);
       },
       act: (bloc) async {
-        bloc.add(OnDeleteCancelled());
+        bloc.add(OnCheckOutButtonPressed(visit: visit));
       },
-      expect: [isA<PanelClosing>()],
+      expect: [isA<CheckOutPanelShowing>()],
+    );
+
+    blocTest(
+      'emits [VisitUpdateInProgress, VisitUpdateCompleted] after user update visit',
+      build: () async {
+        return LogBloc(repository);
+      },
+      act: (bloc) async {
+        bloc.add(OnVisitUpdated(visit));
+      },
+      expect: [isA<VisitUpdateInProgress>(), isA<VisitUpdateCompleted>()],
     );
   });
 }

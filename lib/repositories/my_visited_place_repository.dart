@@ -11,6 +11,8 @@ class MyVisitedPlaceRepository {
 
   Future<void> deleteVisit(Visit visit) async => _service.deleteVisit(visit);
 
+  Future<void> updateVisit(Visit visit) async => _service.updateVisit(visit);
+
   List<ChildTimelineItem> loadVisitTimelineItems() {
 //    return _service.visits
 //        .map((visit) => VisitTimelineItem.fromHiveVisit(visit))

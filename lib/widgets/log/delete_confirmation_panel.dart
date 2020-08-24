@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
+import 'package:sgcovidmapper/widgets/log/bottom_panel_button.dart';
 
 class DeleteConfirmationPanel extends StatelessWidget {
   final Visit visit;
@@ -23,27 +24,18 @@ class DeleteConfirmationPanel extends StatelessWidget {
           padding: const EdgeInsets.only(top: 20),
           child: Divider(),
         ),
-        GestureDetector(
+        BottomPanelButton(
+          text: 'Confirm',
+          color: Colors.teal,
           onTap: () =>
               BlocProvider.of<LogBloc>(context).add(OnDeleteConfirmed(visit)),
-          child: Text(
-            'Confirm',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.teal,
-              fontSize: 24,
-            ),
-          ),
         ),
         Divider(),
-        GestureDetector(
+        BottomPanelButton(
+          text: 'Cancel',
+          color: Colors.amber,
           onTap: () =>
-              BlocProvider.of<LogBloc>(context).add(OnDeleteCancelled()),
-          child: Text(
-            'Cancel',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.amber, fontSize: 24),
-          ),
+              BlocProvider.of<LogBloc>(context).add(OnCancelButtonPressed()),
         ),
       ],
     );

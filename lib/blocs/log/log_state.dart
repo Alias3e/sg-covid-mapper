@@ -10,12 +10,16 @@ abstract class LogPanelState extends LogState {
   LogPanelState({@required this.maxHeight});
 }
 
+abstract class LogPanelShowingState extends LogPanelState {
+  LogPanelShowingState({@required maxHeight}) : super(maxHeight: maxHeight);
+}
+
 class LogStateInitial extends LogState {
   @override
   List<Object> get props => [];
 }
 
-class DeleteConfirmationPanelShowing extends LogPanelState {
+class DeleteConfirmationPanelShowing extends LogPanelShowingState {
   final Visit visit;
 
   DeleteConfirmationPanelShowing(this.visit) : super(maxHeight: 0.25);
@@ -24,8 +28,17 @@ class DeleteConfirmationPanelShowing extends LogPanelState {
   List<Object> get props => [visit];
 }
 
-class PanelClosing extends LogPanelState {
-  PanelClosing({@required maxHeight}) : super(maxHeight: maxHeight);
+class CheckOutPanelShowing extends LogPanelShowingState {
+  final Visit visit;
+
+  CheckOutPanelShowing(this.visit) : super(maxHeight: 0.33);
+
+  @override
+  List<Object> get props => [visit];
+}
+
+class LogPanelClosing extends LogPanelState {
+  LogPanelClosing({@required maxHeight}) : super(maxHeight: maxHeight);
 
   @override
   List<Object> get props => [];
@@ -49,3 +62,13 @@ class VisitDeleteCompleted extends LogPanelState {
   @override
   List<Object> get props => [];
 }
+
+class VisitUpdateInProgress extends LogState {
+  @override
+  List<Object> get props => [];
+}
+
+class VisitUpdateCompleted extends LogPanelClosing {
+  VisitUpdateCompleted({@required maxHeight}):super(maxHeight: maxHeight);
+}
+
