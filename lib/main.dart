@@ -7,6 +7,7 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/keyboard_visibility/keyboard_visibility.dart';
+import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
@@ -129,6 +130,11 @@ class MyApp extends StatelessWidget {
                   ),
                   BlocProvider<SearchTextFieldBloc>(
                     create: (BuildContext context) => SearchTextFieldBloc(),
+                  ),
+                  BlocProvider<LogBloc>(
+                    create: (BuildContext context) => LogBloc(
+                        RepositoryProvider.of<MyVisitedPlaceRepository>(
+                            context)),
                   ),
                 ],
                 child: MaterialApp(

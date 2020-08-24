@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/constants.dart';
@@ -69,11 +71,12 @@ class LogVisitTile extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                   icon: Icon(
-                    FontAwesomeIcons.trash,
+                    FontAwesomeIcons.trashAlt,
                     color: Colors.amber,
                     size: 20,
                   ),
-                  onPressed: () {},
+                  onPressed: () => BlocProvider.of<LogBloc>(context)
+                      .add(OnDeleteButtonPressed(visit)),
                 ),
                 IconButton(
                   icon: Icon(
