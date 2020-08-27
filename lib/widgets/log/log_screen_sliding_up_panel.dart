@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/widgets/log/check_out_panel.dart';
 import 'package:sgcovidmapper/widgets/log/delete_confirmation_panel.dart';
+import 'package:sgcovidmapper/widgets/log/edit_visit_panel.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class LogScreenSlidingUpPanel extends StatefulWidget {
-  final Widget body;
-
-  const LogScreenSlidingUpPanel({this.body});
+  const LogScreenSlidingUpPanel();
 
   @override
   _LogScreenSlidingUpPanelState createState() =>
@@ -36,7 +35,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
           );
         }
 
-        if (state is LogPanelClosing || state is VisitDeleteCompleted) {
+        if (state is LogPanelClosing) {
           _panelController.animatePanelToPosition(
             0.0,
             duration: Duration(milliseconds: 150),
@@ -44,6 +43,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
           );
         }
       },
+      buildWhen: (previous, current) => current is LogPanelState,
       builder: (BuildContext context, state) => SlidingUpPanel(
         isDraggable: false,
         minHeight: 0,
@@ -51,7 +51,6 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
             ? MediaQuery.of(context).size.height * state.maxHeight
             : 0,
         backdropTapClosesPanel: false,
-        body: widget.body,
         controller: _panelController,
         panelBuilder: (sc) {
           if (state is DeleteConfirmationPanelShowing) {
@@ -61,6 +60,12 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
           }
           if (state is CheckOutPanelShowing) {
             return CheckOutPanel(state.visit);
+          }
+          if (state is EditVisitPanelShowing) {
+            return EditVisitPanel(
+              visit: state.visit,
+              scrollController: sc,
+            );
           }
           return Container();
         },

@@ -43,7 +43,7 @@ main() {
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
           warningLevel: 0,
-          tags: [],
+          chips: [],
         ),
       ];
 
@@ -65,7 +65,7 @@ main() {
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
           warningLevel: 0,
-          tags: [],
+          chips: [],
         ),
       ];
 
@@ -122,7 +122,7 @@ main() {
           endTime: DateTime(2020, 6, 21),
           lineX: faker.randomGenerator.decimal(),
           warningLevel: 0,
-          tags: [],
+          chips: [],
         ),
       ];
 
@@ -170,7 +170,7 @@ main() {
           endTime: DateTime(2020, 6, 22),
           lineX: faker.randomGenerator.decimal(),
           warningLevel: 0,
-          tags: [],
+          chips: [],
         ),
       ];
 
@@ -279,7 +279,7 @@ main() {
           title: faker.lorem.sentence(),
           lineX: faker.randomGenerator.decimal(),
           warningLevel: 0,
-          tags: [],
+          chips: [],
         )
       ];
 

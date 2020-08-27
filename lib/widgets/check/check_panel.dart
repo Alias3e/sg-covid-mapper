@@ -77,6 +77,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                       }),
                   SizedBox(height: 20),
                   CheckPanelDateTimePicker(
+                    initialDateTime: DateTime.now(),
                     onChange: (dateTime, selectedIndex) =>
                         BlocProvider.of<CheckPanelBloc>(context)
                             .add(CheckInDateTimeUpdated(dateTime)),
@@ -145,6 +146,8 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                                 ],
                               )
                             : CheckPanelDateTimePicker(
+                                initialDateTime:
+                                    DateTime.now().add(Duration(minutes: 30)),
                                 onChange: (dateTime, selectedIndex) =>
                                     BlocProvider.of<CheckPanelBloc>(context)
                                         .add(CheckOutDateTimeUpdated(dateTime)),
@@ -155,7 +158,24 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                   AnimatedSize(
                       vsync: this,
                       duration: Duration(milliseconds: 250),
-                      child: TagsWidget()),
+                      child: TagsWidget(
+                        hasInitialTags: false,
+                        onTagAdd: (tag) =>
+                            BlocProvider.of<CheckPanelBloc>(context)
+                                .add(AddTag(tagName: tag)),
+                        chipsBox: BlocBuilder<CheckPanelBloc, CheckPanelState>(
+                          condition: (previous, current) =>
+                              current is TagListUpdated,
+                          builder: (BuildContext context, state) {
+                            return Wrap(
+                              children:
+                                  state is TagListUpdated ? state.tags : [],
+                              spacing: 4.0,
+                              runSpacing: -8.0,
+                            );
+                          },
+                        ),
+                      )),
                   SizedBox(height: 24.0),
                 ],
               ),

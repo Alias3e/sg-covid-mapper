@@ -20,7 +20,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
   Stream<Transition<CheckPanelEvent, CheckPanelState>> transformEvents(
       Stream<CheckPanelEvent> events, transitionFn) {
     return super.transformEvents(
-        events.debounceTime(Duration(milliseconds: 200)), transitionFn);
+        events.debounceTime(Duration(milliseconds: 100)), transitionFn);
   }
 
   @override

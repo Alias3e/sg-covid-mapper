@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_event.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel_state.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 
 class TagsWidget extends StatefulWidget {
+  final Function onTagAdd;
+  final Widget chipsBox;
+  final bool hasInitialTags;
+
+  const TagsWidget({this.onTagAdd, this.chipsBox, this.hasInitialTags});
   @override
   _TagsWidgetState createState() => _TagsWidgetState();
 }
@@ -28,7 +30,7 @@ class _TagsWidgetState extends State<TagsWidget> {
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 250),
-        child: _axisSize == MainAxisSize.min
+        child: _axisSize == MainAxisSize.min && !widget.hasInitialTags
             ? RaisedButton(
                 onPressed: () {
                   setState(() {
@@ -86,8 +88,9 @@ class _TagsWidgetState extends State<TagsWidget> {
                         FlatButton(
                           shape: CircleBorder(),
                           onPressed: () {
-                            BlocProvider.of<CheckPanelBloc>(context).add(
-                                AddTag(tagName: _textEditingController.text));
+                            widget.onTagAdd(Tag(_textEditingController.text));
+//                            BlocProvider.of<CheckPanelBloc>(context).add(
+//                                AddTag(tagName: _textEditingController.text));
                             _textEditingController.clear();
                           },
                           child: Icon(
@@ -98,16 +101,7 @@ class _TagsWidgetState extends State<TagsWidget> {
                       ],
                     ),
                   ),
-                  BlocBuilder<CheckPanelBloc, CheckPanelState>(
-                    condition: (previous, current) => current is TagListUpdated,
-                    builder: (BuildContext context, state) {
-                      return Wrap(
-                        children: state is TagListUpdated ? state.tags : [],
-                        spacing: 4.0,
-                        runSpacing: -8.0,
-                      );
-                    },
-                  ),
+                  widget.chipsBox,
                 ],
               ),
       ),

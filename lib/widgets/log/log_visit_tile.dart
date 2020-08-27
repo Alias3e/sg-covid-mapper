@@ -60,7 +60,7 @@ class LogVisitTile extends StatelessWidget {
               height: 8.0,
             ),
             Wrap(
-              children: _makeChips(),
+              children: visit.getChips(),
               spacing: 4.0,
               runSpacing: -8.0,
             ),
@@ -85,7 +85,8 @@ class LogVisitTile extends StatelessWidget {
                     color: Colors.amber,
                     size: 20,
                   ),
-                  onPressed: () {},
+                  onPressed: () => BlocProvider.of<LogBloc>(context)
+                      .add(OnEditButtonPressed(visit)),
                 )
               ],
             )

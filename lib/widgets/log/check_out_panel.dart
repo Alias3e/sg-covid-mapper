@@ -20,6 +20,7 @@ class CheckOutPanel extends StatelessWidget {
           CheckPanelDateTimePicker(
             onChange: (dateTime, selectedIndex) =>
                 visit.checkOutTime = dateTime,
+            initialDateTime: DateTime.now(),
           ),
           Column(
             children: <Widget>[

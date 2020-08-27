@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
@@ -9,6 +10,13 @@ class LogBloc extends Bloc<LogEvent, LogState> {
 
   @override
   LogState get initialState => LogStateInitial();
+
+  @override
+  Stream<Transition<LogEvent, LogState>> transformEvents(
+      Stream<LogEvent> events, transitionFn) {
+    return super.transformEvents(
+        events.debounceTime(Duration(milliseconds: 50)), transitionFn);
+  }
 
   @override
   Stream<LogState> mapEventToState(LogEvent event) async* {
@@ -31,6 +39,30 @@ class LogBloc extends Bloc<LogEvent, LogState> {
       yield VisitUpdateInProgress();
       await _repository.updateVisit(event.visit);
       yield VisitUpdateCompleted(maxHeight: 0.33);
+    }
+
+    if (event is OnEditButtonPressed) {
+      yield EditVisitPanelShowing(event.visit);
+    }
+
+    if (event is OnEditPanelCheckOutButtonPressed) {
+      yield CheckOutPickerDisplayed(DateTime.now());
+    }
+
+    if (event is OnCheckInDateTimeSpinnerChanged) {
+      yield EditCheckInDateTimeUpdated(event.dateTime);
+    }
+
+    if (event is OnCheckOutDateTimeSpinnerChanged) {
+      yield EditCheckOutDateTimeUpdated(event.dateTime);
+    }
+
+    if (event is OnTagDeleteButtonPressed) {
+      yield TagsUpdated(event.tag);
+    }
+
+    if (event is OnTagAdded) {
+      yield TagsUpdated(event.tag);
     }
   }
 }

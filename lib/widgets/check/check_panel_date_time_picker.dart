@@ -3,8 +3,10 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 
 class CheckPanelDateTimePicker extends StatelessWidget {
   final Function onChange;
+  final DateTime initialDateTime;
 
-  const CheckPanelDateTimePicker({@required this.onChange});
+  const CheckPanelDateTimePicker(
+      {@required this.onChange, this.initialDateTime});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class CheckPanelDateTimePicker extends StatelessWidget {
         itemHeight: 50,
         pickerHeight: 120,
       ),
+      initDateTime: initialDateTime,
       minDateTime: DateTime.now().subtract(Duration(days: 15)),
       dateFormat: 'dd/MM/yyyy, HH:mm',
       onChange: onChange,

@@ -1,7 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
@@ -36,6 +38,7 @@ main() {
       build: () async {
         return LogBloc(repository);
       },
+      wait: Duration(milliseconds: 100),
       act: (bloc) async {
         bloc.add(OnDeleteButtonPressed(visit));
       },
@@ -47,6 +50,7 @@ main() {
       build: () async {
         return LogBloc(repository);
       },
+      wait: Duration(milliseconds: 100),
       act: (bloc) async {
         bloc.add(OnDeleteConfirmed(visit));
       },
@@ -61,6 +65,7 @@ main() {
       build: () async {
         return LogBloc(repository);
       },
+      wait: Duration(milliseconds: 100),
       act: (bloc) async {
         bloc.add(OnCheckOutButtonPressed(visit: visit));
       },
@@ -72,10 +77,83 @@ main() {
       build: () async {
         return LogBloc(repository);
       },
+      wait: Duration(milliseconds: 100),
       act: (bloc) async {
         bloc.add(OnVisitUpdated(visit));
       },
       expect: [isA<VisitUpdateInProgress>(), isA<VisitUpdateCompleted>()],
+    );
+
+    blocTest(
+      'emits [EditVisitPanelShowing] after user pressed edit button',
+      build: () async {
+        return LogBloc(repository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnEditButtonPressed(visit));
+      },
+      expect: [isA<EditVisitPanelShowing>()],
+    );
+
+    blocTest(
+      'emits [CheckOutPickerDisplayed] after user pressed check out button in edit visit panel',
+      build: () async {
+        return LogBloc(repository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnEditPanelCheckOutButtonPressed());
+      },
+      expect: [isA<CheckOutPickerDisplayed>()],
+    );
+
+    blocTest(
+      'emits [EditCheckInDateTimeUpdated] after user change the check in time picker',
+      build: () async {
+        return LogBloc(repository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnCheckInDateTimeSpinnerChanged(DateTime.now()));
+      },
+      expect: [isA<EditCheckInDateTimeUpdated>()],
+    );
+
+    blocTest(
+      'emits [EditCheckOutDateTimeUpdated] after user change the check out time picker',
+      build: () async {
+        return LogBloc(repository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnCheckOutDateTimeSpinnerChanged(DateTime.now()));
+      },
+      expect: [isA<EditCheckOutDateTimeUpdated>()],
+    );
+
+    blocTest(
+      'emits [TagsUpdated] after user delete a tag',
+      build: () async {
+        return LogBloc(repository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnTagDeleteButtonPressed(Tag(Faker().lorem.word())));
+      },
+      expect: [isA<TagsUpdated>()],
+    );
+
+    blocTest(
+      'emits [TagsUpdated] after user add a new tag',
+      build: () async {
+        return LogBloc(repository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnTagAdded(Tag(Faker().lorem.word())));
+      },
+      expect: [isA<TagsUpdated>()],
     );
   });
 }

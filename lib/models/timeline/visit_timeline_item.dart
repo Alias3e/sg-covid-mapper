@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/models/timeline/indicator_timeline_item.dart';
 import 'package:sgcovidmapper/util/constants.dart';
@@ -13,19 +13,19 @@ enum WarningLevel { none, low, high }
 class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
   final int warningLevel;
   final String title;
-  final List<Tag> tags;
+  final List<Chip> chips;
 
   VisitTimelineItem(
       {@required startTime,
       @required endTime,
       @required this.title,
-      @required this.tags,
       @required lineX,
-      @required this.warningLevel})
+      @required this.warningLevel,
+      @required this.chips})
       : super(lineX: lineX, startTime: startTime, endTime: endTime);
 
   @override
-  List<Object> get props => [warningLevel, title, tags, startTime, endTime];
+  List<Object> get props => [warningLevel, title, startTime, endTime, chips];
 
   factory VisitTimelineItem.fromHiveVisit(Visit visit) {
     return VisitTimelineItem(
@@ -34,7 +34,7 @@ class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
       endTime: visit.checkOutTime,
       lineX: 0.85,
       warningLevel: visit.warningLevel,
-      tags: visit.tags,
+      chips: visit.getChips(),
     );
   }
 
