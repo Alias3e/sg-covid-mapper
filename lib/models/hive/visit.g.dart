@@ -8,19 +8,20 @@ part of 'visit.dart';
 
 class VisitAdapter extends TypeAdapter<Visit> {
   @override
-  final typeId = 0;
+  final int typeId = 0;
 
   @override
   Visit read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Visit()
       ..title = fields[0] as String
       ..latitude = fields[1] as double
       ..longitude = fields[2] as double
       ..checkInTime = fields[3] as DateTime
+      ..checkOutTime = fields[7] as DateTime
       ..tags = (fields[4] as List)?.cast<Tag>()
       ..postalCode = fields[5] as String
       ..warningLevel = fields[6] as int;
@@ -29,7 +30,7 @@ class VisitAdapter extends TypeAdapter<Visit> {
   @override
   void write(BinaryWriter writer, Visit obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -38,6 +39,8 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..write(obj.longitude)
       ..writeByte(3)
       ..write(obj.checkInTime)
+      ..writeByte(7)
+      ..write(obj.checkOutTime)
       ..writeByte(4)
       ..write(obj.tags)
       ..writeByte(5)
@@ -45,4 +48,14 @@ class VisitAdapter extends TypeAdapter<Visit> {
       ..writeByte(6)
       ..write(obj.warningLevel);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is VisitAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

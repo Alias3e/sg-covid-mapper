@@ -37,7 +37,7 @@ main() {
         startTime: DateTime.now(),
         endTime: DateTime.now(),
         title: faker.lorem.sentence(),
-        tags: [],
+        chips: [],
         lineX: 0.85,
         warningLevel: 0,
       ),

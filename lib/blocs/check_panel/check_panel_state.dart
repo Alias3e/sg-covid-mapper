@@ -36,7 +36,6 @@ class CheckOutDateTimeTextRefreshed extends CheckPanelState {
   CheckOutDateTimeTextRefreshed({@required this.dateTime});
 
   @override
-  // TODO: implement props
   List<Object> get props => [dateTime];
 }
 

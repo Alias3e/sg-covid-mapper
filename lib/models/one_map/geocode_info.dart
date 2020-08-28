@@ -37,7 +37,6 @@ class GeocodeInfo extends Equatable {
   double get longitude => double.parse(longitudeString);
 
   @override
-  // TODO: implement props
   List<Object> get props =>
       [buildingName, postalCode, block, road, latitudeString, longitudeString];
 }

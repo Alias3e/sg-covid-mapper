@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
@@ -28,7 +29,9 @@ class Visit extends HiveObject {
   DateTime checkInTime;
 
   // the end date time when the place was visited by the user.
+  @HiveField(7)
   DateTime checkOutTime;
+
   @HiveField(4)
   List<Tag> tags;
 
@@ -122,5 +125,30 @@ class Visit extends HiveObject {
         titleToken.toLowerCase(), label.toLowerCase());
 
     return dice;
+  }
+
+  List<Widget> getChips({Function onDeleted}) {
+    List<Widget> chips = [];
+    for (Tag tag in tags) {
+      Widget chip = Container(
+        margin: EdgeInsets.only(bottom: 3, right: 3),
+        child: Chip(
+          elevation: 2,
+          shadowColor: Colors.blueGrey,
+          onDeleted: onDeleted != null ? () => onDeleted(tag) : null,
+          deleteIconColor: Colors.white,
+          label: Text(
+            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor:
+              Color.lerp(Colors.amber, Colors.redAccent, tag.similarity),
+        ),
+      );
+      chips.add(chip);
+    }
+    return chips;
   }
 }

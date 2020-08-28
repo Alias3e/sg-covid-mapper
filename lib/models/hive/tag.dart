@@ -14,4 +14,8 @@ class Tag extends HiveObject {
   Tag(this.label) {
     similarity = 0.0;
   }
+
+  String get similarityPercentage {
+    return '(${(similarity * 100).round()}%)';
+  }
 }

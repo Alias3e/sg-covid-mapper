@@ -6,21 +6,23 @@ import 'package:sgcovidmapper/models/one_map/one_map.dart';
 class CommonOneMapModel extends Equatable {
   final double latitude;
   final double longitude;
-  final String title;
+  final String tempTitle;
   final String subtitle;
   final String postalCode;
 
   CommonOneMapModel({
     @required this.latitude,
     @required this.longitude,
-    @required this.title,
+    @required this.tempTitle,
     @required this.subtitle,
     @required this.postalCode,
   });
 
+  String get title => tempTitle == 'null' ? subtitle : tempTitle;
+
   factory CommonOneMapModel.fromSearchResultModel(OneMapSearchResult model) =>
       CommonOneMapModel(
-        title: model.searchValue,
+        tempTitle: model.searchValue,
         subtitle: model.address,
         postalCode: model.postalCode,
         latitude: model.latitude,
@@ -31,7 +33,7 @@ class CommonOneMapModel extends Equatable {
       CommonOneMapModel(
           latitude: model.latitude,
           longitude: model.longitude,
-          title: model.buildingName,
+          tempTitle: model.buildingName,
           subtitle: 'Block ${model.block} ${model.road} ${model.postalCode}',
           postalCode: model.postalCode);
 

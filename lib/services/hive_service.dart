@@ -40,4 +40,15 @@ class HiveService extends LocalStorageService {
     Hive.box(InitializationBloc.systemBoxName)
         .put(oneMapTokenExpiryKey, token.expiryTimestamp);
   }
+
+  @override
+  Future<void> deleteVisit(Visit visit) {
+    return visit.delete();
+  }
+
+  @override
+  Future<void> updateVisit(Visit visit) {
+    print(visit.key);
+    return visit.save();
+  }
 }

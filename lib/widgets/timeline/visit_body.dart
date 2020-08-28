@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
 
 class VisitBody extends StatelessWidget {
@@ -49,7 +48,7 @@ class VisitBody extends StatelessWidget {
           ),
           Expanded(
             child: Wrap(
-              children: _makeChips(),
+              children: item.chips,
               spacing: 4.0,
               runSpacing: -8.0,
             ),
@@ -57,32 +56,5 @@ class VisitBody extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  List<Widget> _makeChips() {
-    List<Widget> chips = [];
-    for (Tag tag in item.tags) {
-      Widget chip = Container(
-        margin: EdgeInsets.only(bottom: 3, right: 3),
-        child: Chip(
-          elevation: 2,
-          shadowColor: Colors.blueGrey,
-          label: Text(
-            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? getSimilarityAsPercentage(tag.similarity) : ''}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          backgroundColor:
-              Color.lerp(Colors.amber, Colors.redAccent, tag.similarity),
-        ),
-      );
-      chips.add(chip);
-    }
-    return chips;
-  }
-
-  String getSimilarityAsPercentage(double similarity) {
-    return '(${(similarity * 100).round()}%)';
   }
 }

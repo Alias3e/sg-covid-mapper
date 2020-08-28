@@ -76,7 +76,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     topLeft: Radius.circular(18.0),
                     topRight: Radius.circular(18.0)),
                 backdropTapClosesPanel: true,
-                minHeight: MediaQuery.of(context).size.height * 0.00,
+                minHeight: 0.00,
                 maxHeight: MediaQuery.of(context).size.height * state.maxHeight,
                 onPanelOpened: () {
                   if (state.data is SearchPanelData)
