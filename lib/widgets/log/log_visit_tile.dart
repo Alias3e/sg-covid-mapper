@@ -15,6 +15,7 @@ class LogVisitTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
+      color: visit.warningLevel > 0 ? Colors.redAccent : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

@@ -13,7 +13,7 @@ enum WarningLevel { none, low, high }
 class VisitTimelineItem extends ChildTimelineItem with TimelineIndicator {
   final int warningLevel;
   final String title;
-  final List<Chip> chips;
+  final List<Widget> chips;
 
   VisitTimelineItem(
       {@required startTime,
