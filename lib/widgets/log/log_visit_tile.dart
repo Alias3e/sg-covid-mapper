@@ -15,7 +15,7 @@ class LogVisitTile extends StatelessWidget {
     return Card(
       elevation: 4.0,
       color: visit.warningLevel > 0
-          ? AppColors.kColorAccentDark
+          ? AppColors.kColorAccentLight
           : AppColors.kColorPrimaryLight,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -28,8 +28,8 @@ class LogVisitTile extends StatelessWidget {
                 DateTimeText(
                   dateTime: visit.checkInTime,
                   text: 'IN',
-                  textColor: getTextColor(),
-                  textColorDarker: getTextColorDarker(context),
+                  textColor: Colors.black,
+                  textColorDarker: Theme.of(context).primaryColor,
                 ),
                 SizedBox(
                   width: 16.0,
@@ -38,8 +38,8 @@ class LogVisitTile extends StatelessWidget {
                     ? DateTimeText(
                         dateTime: visit.checkOutTime,
                         text: 'OUT',
-                        textColor: getTextColor(),
-                        textColorDarker: getTextColorDarker(context),
+                        textColor: Colors.black,
+                        textColorDarker: Theme.of(context).primaryColor,
                       )
                     : IconButton(
                         icon: Icon(
@@ -62,7 +62,7 @@ class LogVisitTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
-                      color: getTextColor(),
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -85,7 +85,7 @@ class LogVisitTile extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     FontAwesomeIcons.trashAlt,
-                    color: getIconColor(context),
+                    color: Theme.of(context).accentColor,
                     size: 20,
                   ),
                   onPressed: () => BlocProvider.of<LogBloc>(context)
@@ -94,7 +94,7 @@ class LogVisitTile extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     FontAwesomeIcons.edit,
-                    color: getIconColor(context),
+                    color: Theme.of(context).accentColor,
                     size: 20,
                   ),
                   onPressed: () => BlocProvider.of<LogBloc>(context)
@@ -107,17 +107,6 @@ class LogVisitTile extends StatelessWidget {
       ),
     );
   }
-
-  Color getIconColor(BuildContext context) => visit.warningLevel == 0
-      ? Theme.of(context).accentColor
-      : Theme.of(context).primaryColor;
-
-  Color getTextColor() =>
-      visit.warningLevel == 0 ? Colors.black : AppColors.kColorAccent[50];
-
-  Color getTextColorDarker(BuildContext context) => visit.warningLevel == 0
-      ? Theme.of(context).primaryColor
-      : AppColors.kColorAccent[200];
 }
 
 class DateTimeText extends StatelessWidget {

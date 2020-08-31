@@ -98,7 +98,7 @@ class AppColors {
   static const MaterialColor kColorPrimary = Colors.deepPurple;
   static const MaterialColor kColorAccent = Colors.deepOrange;
   static final Color kColorPrimaryLight = Colors.deepPurple[200];
-  static final Color kColorAccentLight = Colors.deepOrange[50];
+  static final Color kColorAccentLight = Colors.deepOrange[200];
   static final Color kColorAccentDark = Colors.deepOrange[600];
   static final Color kColorRed = Colors.red;
   static final Color kColorGreen = Colors.teal;

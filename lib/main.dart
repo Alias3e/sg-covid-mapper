@@ -135,7 +135,8 @@ class MyApp extends StatelessWidget {
                   BlocProvider<LogBloc>(
                     create: (BuildContext context) => LogBloc(
                         RepositoryProvider.of<MyVisitedPlaceRepository>(
-                            context)),
+                            context),
+                        RepositoryProvider.of<CovidPlacesRepository>(context)),
                   ),
                 ],
                 child: MaterialApp(

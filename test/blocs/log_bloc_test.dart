@@ -5,30 +5,40 @@ import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
+import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
 class MockMyVisitedPlaceRepository extends Mock
     implements MyVisitedPlaceRepository {}
 
+class MockCovidPlacesRepository extends Mock implements CovidPlacesRepository {}
+
 main() {
-  MyVisitedPlaceRepository repository;
+  MyVisitedPlaceRepository myVisitedPlacesRepository;
+  CovidPlacesRepository covidPlacesRepository;
   Visit visit;
 
   setUp(() {
-    repository = MockMyVisitedPlaceRepository();
+    myVisitedPlacesRepository = MockMyVisitedPlaceRepository();
+    covidPlacesRepository = MockCovidPlacesRepository();
     visit = Visit();
   });
 
   group('initialization tests', () {
     test('initial state is LogStateInitial', () async {
-      LogBloc bloc = LogBloc(repository);
+      LogBloc bloc = LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
 
       expect(bloc.initialState, LogStateInitial());
       bloc.close();
     });
 
     test('throw AssertionError when MyVistedPlaceRepository is null', () {
-      expect(() => LogBloc(null), throwsAssertionError);
+      expect(() => LogBloc(null, covidPlacesRepository), throwsAssertionError);
+    });
+
+    test('throw AssertionError when CovidPlacesRepository is null', () {
+      expect(
+          () => LogBloc(myVisitedPlacesRepository, null), throwsAssertionError);
     });
   });
 
@@ -36,7 +46,7 @@ main() {
     blocTest(
       'emits [DeleteConfirmationShowing] after user press delete button',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -48,7 +58,7 @@ main() {
     blocTest(
       'emits [VisitDeleteInProgress, VisitDeleteCompleted] after user confirm deletion',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -63,7 +73,7 @@ main() {
     blocTest(
       'emits [CheckOutPanelShowing] after user press check out button',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -75,7 +85,7 @@ main() {
     blocTest(
       'emits [VisitUpdateInProgress, VisitUpdateCompleted] after user update visit',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -87,7 +97,7 @@ main() {
     blocTest(
       'emits [EditVisitPanelShowing] after user pressed edit button',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -99,7 +109,7 @@ main() {
     blocTest(
       'emits [CheckOutPickerDisplayed] after user pressed check out button in edit visit panel',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -111,7 +121,7 @@ main() {
     blocTest(
       'emits [EditCheckInDateTimeUpdated] after user change the check in time picker',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -123,7 +133,7 @@ main() {
     blocTest(
       'emits [EditCheckOutDateTimeUpdated] after user change the check out time picker',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -135,7 +145,7 @@ main() {
     blocTest(
       'emits [TagsUpdated] after user delete a tag',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {
@@ -147,7 +157,7 @@ main() {
     blocTest(
       'emits [TagsUpdated] after user add a new tag',
       build: () async {
-        return LogBloc(repository);
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
       },
       wait: Duration(milliseconds: 100),
       act: (bloc) async {

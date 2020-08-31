@@ -48,7 +48,6 @@ class HiveService extends LocalStorageService {
 
   @override
   Future<void> updateVisit(Visit visit) {
-    print(visit.key);
     return visit.save();
   }
 }

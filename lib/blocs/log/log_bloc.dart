@@ -1,12 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
+import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
 class LogBloc extends Bloc<LogEvent, LogState> {
-  final MyVisitedPlaceRepository _repository;
+  final MyVisitedPlaceRepository _myVisitedPlacesRepository;
+  final CovidPlacesRepository _covidPlacesRepository;
 
-  LogBloc(this._repository) : assert(_repository != null);
+  LogBloc(this._myVisitedPlacesRepository, this._covidPlacesRepository)
+      : assert(_myVisitedPlacesRepository != null &&
+            _covidPlacesRepository != null);
 
   @override
   LogState get initialState => LogStateInitial();
@@ -22,7 +26,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
   Stream<LogState> mapEventToState(LogEvent event) async* {
     if (event is OnDeleteConfirmed) {
       yield VisitDeleteInProgress(event.visit);
-      await _repository.deleteVisit(event.visit);
+      await _myVisitedPlacesRepository.deleteVisit(event.visit);
       yield VisitDeleteCompleted(visit: event.visit, maxHeight: 0.25);
     }
 
@@ -37,7 +41,9 @@ class LogBloc extends Bloc<LogEvent, LogState> {
 
     if (event is OnVisitUpdated) {
       yield VisitUpdateInProgress();
-      await _repository.updateVisit(event.visit);
+      await event.visit
+          .setWarningLevel(_covidPlacesRepository.covidLocationsCached);
+//      await _myVisitedPlacesRepository.updateVisit(event.visit);
       yield VisitUpdateCompleted(maxHeight: 0.33);
     }
 
