@@ -64,6 +64,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                 current is BottomPanelCollapsed),
             builder: (BuildContext context, BottomPanelState state) {
               return SlidingUpPanel(
+                color: Theme.of(context).primaryColorLight,
                 isDraggable:
                     state.isDraggable != null ? state.isDraggable : false,
                 panelSnapping: true,

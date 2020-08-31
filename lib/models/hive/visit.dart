@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 part 'visit.g.dart';
@@ -134,7 +135,7 @@ class Visit extends HiveObject {
         margin: EdgeInsets.only(bottom: 3, right: 3),
         child: Chip(
           elevation: 2,
-          shadowColor: Colors.blueGrey,
+          shadowColor: Colors.deepPurple,
           onDeleted: onDeleted != null ? () => onDeleted(tag) : null,
           deleteIconColor: Colors.white,
           label: Text(
@@ -143,8 +144,8 @@ class Visit extends HiveObject {
               color: Colors.white,
             ),
           ),
-          backgroundColor:
-              Color.lerp(Colors.amber, Colors.redAccent, tag.similarity),
+          backgroundColor: Color.lerp(
+              Colors.deepPurple, AppColors.kColorRed, tag.similarity),
         ),
       );
       chips.add(chip);

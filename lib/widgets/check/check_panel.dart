@@ -131,7 +131,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                                 children: <Widget>[
                                   CheckPanelButton(
                                     text: 'Check out',
-                                    color: Colors.amber,
+                                    color: Theme.of(context).accentColor,
                                     onPressed: () =>
                                         BlocProvider.of<CheckPanelBloc>(context)
                                             .add(CheckOutDateTimeDisplayed()),
@@ -162,7 +162,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                         hasInitialTags: false,
                         onTagAdd: (tag) =>
                             BlocProvider.of<CheckPanelBloc>(context)
-                                .add(AddTag(tagName: tag)),
+                                .add(AddTag(tag: tag)),
                         chipsBox: BlocBuilder<CheckPanelBloc, CheckPanelState>(
                           condition: (previous, current) =>
                               current is TagListUpdated,
@@ -192,7 +192,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                     BlocProvider.of<CheckPanelBloc>(context).add(SaveVisit());
                   },
                   text: 'Done',
-                  color: Colors.teal,
+                  color: AppColors.kColorGreen,
                   icon: FontAwesomeIcons.check,
                 ),
                 SizedBox(
@@ -207,7 +207,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                     BlocProvider.of<CheckPanelBloc>(context).add(CancelVisit());
                   },
                   text: 'Cancel',
-                  color: Colors.redAccent,
+                  color: AppColors.kColorRed,
                   icon: FontAwesomeIcons.times,
                 ),
               ],

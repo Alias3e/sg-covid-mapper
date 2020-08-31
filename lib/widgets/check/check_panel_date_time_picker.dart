@@ -12,6 +12,7 @@ class CheckPanelDateTimePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return DateTimePickerWidget(
       pickerTheme: DateTimePickerTheme(
+        backgroundColor: Theme.of(context).primaryColorLight,
         showTitle: false,
         itemHeight: 50,
         pickerHeight: 120,

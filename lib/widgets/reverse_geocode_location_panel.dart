@@ -45,28 +45,40 @@ class _ReverseGeocodeLocationPanelState
                           CommonOneMapModel model = widget.data.results[index];
                           return ListTile(
                             title: AnimatedDefaultTextStyle(
-                              duration: Duration(milliseconds: 100),
                               style: selected != index
-                                  ? Styles.kTitleTextStyle
-                                  : Styles.kSelectedTitleTextStyle,
+                                  ? Theme.of(context).textTheme.subtitle1
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      .copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w600),
+                              duration: Duration(milliseconds: 200),
                               child: Text(model.title),
                             ),
                             subtitle: AnimatedDefaultTextStyle(
-                              duration: Duration(milliseconds: 100),
+                              duration: Duration(milliseconds: 200),
                               style: selected != index
-                                  ? Styles.kDetailsTextStyle
-                                  : Styles.kSelectedDetailsTextStyle,
+                                  ? Theme.of(context)
+                                      .textTheme
+                                      .bodyText2
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .caption
+                                              .color)
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .bodyText2
+                                      .copyWith(
+                                          color: AppColors.kColorPrimary[300]),
                               child: Text(
                                 model.subtitle,
                               ),
                             ),
                             trailing: IconButton(
-                              icon: Icon(
-                                FontAwesomeIcons.signInAlt,
-                                color: selected != index
-                                    ? Colors.black54
-                                    : Colors.teal,
-                              ),
+                              icon: Icon(FontAwesomeIcons.signInAlt,
+                                  color: Theme.of(context).accentColor),
                               onPressed: () {
                                 BlocProvider.of<BottomPanelBloc>(context)
                                     .add(CheckInPanelSwitched(result: model));
@@ -115,7 +127,7 @@ class _ReverseGeocodeLocationPanelState
                     child: Icon(
                       FontAwesomeIcons.searchLocation,
                       size: 80,
-                      color: Colors.teal,
+                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ],

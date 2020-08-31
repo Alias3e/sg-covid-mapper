@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong/latlong.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class PlaceMarker extends Marker with EquatableMixin {
   final String title;
@@ -32,7 +33,7 @@ class PlaceMarker extends Marker with EquatableMixin {
       point: LatLng(snapshot['geo'].latitude, snapshot['geo'].longitude),
       builder: (BuildContext context) => FaIcon(
         FontAwesomeIcons.virus,
-        color: Colors.teal,
+        color: AppColors.kColorPrimary,
       ),
     );
   }

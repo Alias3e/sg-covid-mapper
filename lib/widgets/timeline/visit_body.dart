@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/models/timeline/timeline.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class VisitBody extends StatelessWidget {
   final VisitTimelineItem item;
@@ -36,7 +37,7 @@ class VisitBody extends StatelessWidget {
                       ? Icon(
                           FontAwesomeIcons.exclamation,
                           size: 22,
-                          color: Colors.redAccent,
+                          color: AppColors.kColorRed,
                         )
                       : Container(
                           width: 0,
@@ -46,12 +47,10 @@ class VisitBody extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Wrap(
-              children: item.chips,
-              spacing: 4.0,
-              runSpacing: -8.0,
-            ),
+          Wrap(
+            children: item.chips,
+            spacing: 4.0,
+            runSpacing: -8.0,
           )
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/widgets/log/check_out_panel.dart';
@@ -46,6 +47,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
       buildWhen: (previous, current) => current is LogPanelState,
       builder: (BuildContext context, state) => SlidingUpPanel(
         isDraggable: false,
+        color: Theme.of(context).primaryColorLight,
         minHeight: 0,
         maxHeight: state is LogPanelState
             ? MediaQuery.of(context).size.height * state.maxHeight

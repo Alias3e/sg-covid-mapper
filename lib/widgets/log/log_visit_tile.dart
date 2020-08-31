@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
-import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 
@@ -15,7 +14,9 @@ class LogVisitTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      color: visit.warningLevel > 0 ? Colors.redAccent : Colors.white,
+      color: visit.warningLevel > 0
+          ? AppColors.kColorAccentDark
+          : AppColors.kColorPrimaryLight,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -27,6 +28,8 @@ class LogVisitTile extends StatelessWidget {
                 DateTimeText(
                   dateTime: visit.checkInTime,
                   text: 'IN',
+                  textColor: getTextColor(),
+                  textColorDarker: getTextColorDarker(context),
                 ),
                 SizedBox(
                   width: 16.0,
@@ -35,11 +38,15 @@ class LogVisitTile extends StatelessWidget {
                     ? DateTimeText(
                         dateTime: visit.checkOutTime,
                         text: 'OUT',
+                        textColor: getTextColor(),
+                        textColorDarker: getTextColorDarker(context),
                       )
                     : IconButton(
                         icon: Icon(
                           FontAwesomeIcons.signOutAlt,
-                          color: Colors.amber,
+                          color: visit.warningLevel == 0
+                              ? Theme.of(context).accentColor
+                              : AppColors.kColorAccentDark,
                         ),
                         onPressed: () => BlocProvider.of<LogBloc>(context)
                             .add(OnCheckOutButtonPressed(visit: visit)),
@@ -52,7 +59,11 @@ class LogVisitTile extends StatelessWidget {
                     visit.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: getTextColor(),
+                    ),
                   ),
                 ),
               ],
@@ -74,7 +85,7 @@ class LogVisitTile extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     FontAwesomeIcons.trashAlt,
-                    color: Colors.amber,
+                    color: getIconColor(context),
                     size: 20,
                   ),
                   onPressed: () => BlocProvider.of<LogBloc>(context)
@@ -83,7 +94,7 @@ class LogVisitTile extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     FontAwesomeIcons.edit,
-                    color: Colors.amber,
+                    color: getIconColor(context),
                     size: 20,
                   ),
                   onPressed: () => BlocProvider.of<LogBloc>(context)
@@ -97,37 +108,29 @@ class LogVisitTile extends StatelessWidget {
     );
   }
 
-  List<Widget> _makeChips() {
-    List<Widget> chips = [];
-    for (Tag tag in visit.tags) {
-      Widget chip = Container(
-        margin: EdgeInsets.only(bottom: 3, right: 3),
-        child: Chip(
-          elevation: 2,
-          shadowColor: Colors.blueGrey,
-          label: Text(
-            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          backgroundColor:
-              Color.lerp(Colors.amber, Colors.redAccent, tag.similarity),
-        ),
-      );
-      chips.add(chip);
-    }
-    return chips;
-  }
+  Color getIconColor(BuildContext context) => visit.warningLevel == 0
+      ? Theme.of(context).accentColor
+      : Theme.of(context).primaryColor;
+
+  Color getTextColor() =>
+      visit.warningLevel == 0 ? Colors.black : AppColors.kColorAccent[50];
+
+  Color getTextColorDarker(BuildContext context) => visit.warningLevel == 0
+      ? Theme.of(context).primaryColor
+      : AppColors.kColorAccent[200];
 }
 
 class DateTimeText extends StatelessWidget {
   final DateTime dateTime;
   final String text;
+  final Color textColor;
+  final Color textColorDarker;
 
   const DateTimeText({
     @required this.dateTime,
     @required this.text,
+    @required this.textColor,
+    @required this.textColorDarker,
   });
 
   @override
@@ -139,15 +142,15 @@ class DateTimeText extends StatelessWidget {
             text: '$text\n',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.teal,
+              color: textColorDarker,
               fontWeight: FontWeight.bold,
             )),
         TextSpan(
             text: '${Styles.kLogTileDateFormat.format(dateTime)}\n',
-            style: TextStyle(color: Colors.black)),
+            style: TextStyle(color: textColor)),
         TextSpan(
             text: Styles.kEndTimeFormat.format(dateTime),
-            style: TextStyle(color: Colors.black54))
+            style: TextStyle(color: textColor))
       ]),
     );
   }

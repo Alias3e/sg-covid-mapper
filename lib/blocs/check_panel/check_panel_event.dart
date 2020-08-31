@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/models/hive/tag.dart';
 
 abstract class CheckPanelEvent extends Equatable {}
 
@@ -36,12 +37,12 @@ class CheckOutDateTimeDisplayed extends CheckPanelEvent {
 }
 
 class AddTag extends CheckPanelEvent {
-  final String tagName;
+  final Tag tag;
 
-  AddTag({@required this.tagName});
+  AddTag({@required this.tag});
 
   @override
-  List<Object> get props => [tagName];
+  List<Object> get props => [tag];
 }
 
 class RemoveTag extends CheckPanelEvent {

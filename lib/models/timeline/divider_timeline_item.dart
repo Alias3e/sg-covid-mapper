@@ -17,7 +17,7 @@ class DividerTimelineItem extends TimelineItem {
           thickness: 4,
           begin: 0.5,
           end: 0.85,
-          color: Colors.blueGrey,
+          color: Colors.deepPurple,
         );
         break;
       case DividerDirection.left:
@@ -25,7 +25,7 @@ class DividerTimelineItem extends TimelineItem {
           thickness: 4,
           begin: 0.15,
           end: 0.5,
-          color: Colors.blueGrey,
+          color: Colors.deepPurple,
         );
         break;
       default:
@@ -33,7 +33,7 @@ class DividerTimelineItem extends TimelineItem {
           thickness: 4,
           begin: 0.15,
           end: 0.85,
-          color: Colors.blueGrey,
+          color: Colors.deepPurple,
         );
         break;
     }

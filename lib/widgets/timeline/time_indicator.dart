@@ -10,12 +10,12 @@ class TimeIndicator extends StatelessWidget {
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.all(Radius.circular(25)),
-      shadowColor: Colors.blueGrey,
+      shadowColor: Theme.of(context).primaryColor,
       child: Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-            color: Colors.teal,
+            color: Theme.of(context).primaryColor,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular(25))),
         child: Center(

@@ -26,85 +26,83 @@ class _TagsWidgetState extends State<TagsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 250),
-        child: _axisSize == MainAxisSize.min && !widget.hasInitialTags
-            ? RaisedButton(
-                onPressed: () {
-                  setState(() {
-                    _axisSize = _axisSize == MainAxisSize.min
-                        ? MainAxisSize.max
-                        : MainAxisSize.min;
-                  });
-                },
-                shape: StadiumBorder(),
-                color: Colors.amber,
-                child: Row(
-                  mainAxisSize: _axisSize,
-                  children: [
-                    Icon(
-                      FontAwesomeIcons.tags,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 16.0),
-                    Text(
-                      'Add Tags',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.amberAccent,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                    ),
-                    padding: EdgeInsets.only(left: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            controller: _textEditingController,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                            decoration: InputDecoration(
-                                hintText: 'NTUC, KFC, Mom',
-                                hintStyle: TextStyle(
-                                  color: Colors.white,
-                                ),
-                                border: InputBorder.none),
-                          ),
-                        ),
-                        FlatButton(
-                          shape: CircleBorder(),
-                          onPressed: () {
-                            widget.onTagAdd(Tag(_textEditingController.text));
-//                            BlocProvider.of<CheckPanelBloc>(context).add(
-//                                AddTag(tagName: _textEditingController.text));
-                            _textEditingController.clear();
-                          },
-                          child: Icon(
-                            FontAwesomeIcons.plus,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 250),
+      child: _axisSize == MainAxisSize.min && !widget.hasInitialTags
+          ? RaisedButton(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              onPressed: () {
+                setState(() {
+                  _axisSize = _axisSize == MainAxisSize.min
+                      ? MainAxisSize.max
+                      : MainAxisSize.min;
+                });
+              },
+              shape: StadiumBorder(),
+              color: Theme.of(context).accentColor,
+              child: Row(
+                mainAxisSize: _axisSize,
+                children: [
+                  Icon(
+                    FontAwesomeIcons.tags,
+                    color: Colors.white,
                   ),
-                  widget.chipsBox,
+                  SizedBox(width: 16.0),
+                  Text(
+                    'Add Tags',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  )
                 ],
               ),
-      ),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                  ),
+                  padding: EdgeInsets.only(left: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: _textEditingController,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                              hintText: 'NTUC, KFC, Mom',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                              ),
+                              border: InputBorder.none),
+                        ),
+                      ),
+                      FlatButton(
+                        shape: CircleBorder(),
+                        onPressed: () {
+                          widget.onTagAdd(Tag(_textEditingController.text));
+//                            BlocProvider.of<CheckPanelBloc>(context).add(
+//                                AddTag(tagName: _textEditingController.text));
+                          _textEditingController.clear();
+                        },
+                        child: Icon(
+                          FontAwesomeIcons.plus,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                widget.chipsBox,
+              ],
+            ),
     );
   }
 

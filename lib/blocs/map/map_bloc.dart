@@ -9,6 +9,7 @@ import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/gps_repository.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 import 'map.dart';
 
@@ -63,7 +64,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         LocationData position = await gpsRepository.getCurrentLocation();
         if (_myPlaces.isNotEmpty) _myPlaces.clear();
         _lastGpsLocation = _makeMarker(position.latitude, position.longitude,
-            iconData: FontAwesomeIcons.streetView, color: Colors.teal);
+            iconData: FontAwesomeIcons.streetView,
+            color: AppColors.kColorPrimary);
         yield GPSAcquired(
           mapCenter: LatLng(position.latitude, position.longitude),
           nearbyPlaces: _myPlaces,
@@ -125,7 +127,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       width: 50,
       builder: (context) => FaIcon(
         iconData == null ? FontAwesomeIcons.mapMarkerAlt : iconData,
-        color: color == null ? Colors.amber : color,
+        color: color == null ? AppColors.kColorAccent : color,
         size: 50,
       ),
     );

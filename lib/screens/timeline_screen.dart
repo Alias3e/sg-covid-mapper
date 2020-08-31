@@ -12,13 +12,14 @@ class TimelineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (notification) {
-            notification.disallowGlow();
-            return false;
-          },
+    return Scaffold(
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (notification) {
+          notification.disallowGlow();
+          return false;
+        },
+        child: Container(
+          color: Theme.of(context).primaryColorLight,
           child: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
@@ -39,15 +40,17 @@ class TimelineScreen extends StatelessWidget {
                         alignment: TimelineAlign.manual,
                         isFirst: index == 0,
                         isLast: index == timelineModel.tiles.length - 1,
-                        bottomLineStyle: LineStyle(color: Colors.blueGrey),
-                        topLineStyle: LineStyle(color: Colors.blueGrey),
+                        bottomLineStyle:
+                            LineStyle(color: Theme.of(context).primaryColor),
+                        topLineStyle:
+                            LineStyle(color: Theme.of(context).primaryColor),
                         lineX: model.lineX,
                         hasIndicator: true,
                         indicatorStyle: IndicatorStyle(
                             padding: EdgeInsets.all(6.0),
                             indicator: (model as TimelineIndicator).indicator,
-                            width: model is DateTimelineItem ? 80 : 50,
-                            height: 50),
+                            width: model is DateTimelineItem ? 70 : 50,
+                            height: model is DateTimelineItem ? 40 : 50),
                         rightChild:
                             model is LocationTimelineItem ? model.child : null,
                         leftChild:

@@ -12,13 +12,13 @@ class DateIndicator extends StatelessWidget {
     return Material(
       elevation: 4,
       shadowColor: Colors.blueGrey,
-      borderRadius: BorderRadius.all(Radius.circular(18)),
+      borderRadius: BorderRadius.all(Radius.circular(16)),
       color: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: Theme.of(context).accentColor,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(18)),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
 //          border: Border.all(width: 4, color: Colors.blueGrey),
         ),
         child: Center(
@@ -26,7 +26,7 @@ class DateIndicator extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
           ),
         ),
       ),

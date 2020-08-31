@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          color: Colors.teal,
+          color: AppColors.kColorPrimaryLight,
           child: Center(
             child: AnimatedDefaultTextStyle(
               curve: Curves.decelerate,
@@ -34,12 +35,12 @@ class _SplashScreenState extends State<SplashScreen> {
               style: isForward
                   ? TextStyle(
                       fontFamily: 'FrederickatheGreat',
-                      color: Colors.amber,
+                      color: AppColors.kColorPrimary,
                       fontSize: 100,
                     )
                   : TextStyle(
                       fontFamily: 'FrederickatheGreat',
-                      color: Colors.amber,
+                      color: AppColors.kColorPrimary,
                       fontSize: 75,
                     ),
               duration: Duration(milliseconds: 500),

@@ -5,7 +5,7 @@ class LogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.tealAccent,
+      backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
         title: Text('My Visits Log'),
       ),

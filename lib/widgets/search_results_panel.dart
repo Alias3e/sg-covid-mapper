@@ -10,6 +10,7 @@ import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class SearchResultsPanel extends StatelessWidget {
   final SearchResultLoaded searchState;
@@ -21,57 +22,59 @@ class SearchResultsPanel extends StatelessWidget {
     return BlocBuilder<KeyboardVisibilityBloc, KeyboardVisibilityState>(
       builder: (BuildContext context, state) => SafeArea(
         minimum: EdgeInsets.only(top: state is KeyboardVisible ? 60 : 0),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: searchState.result != null ? searchState.result.count : 0,
-          itemBuilder: (BuildContext context, int index) {
-            CommonOneMapModel result = searchState.result.results[index];
-            return ListTile(
-              title: AnimatedDefaultTextStyle(
-                style: searchState.selected != index
-                    ? Theme.of(context).textTheme.subtitle1
-                    : Theme.of(context).textTheme.subtitle1.copyWith(
-                        color: Colors.teal, fontWeight: FontWeight.w600),
-                duration: Duration(milliseconds: 200),
-                child: Text(result.title),
-              ),
-              subtitle: AnimatedDefaultTextStyle(
-                  duration: Duration(milliseconds: 200),
+        child: Container(
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount:
+                searchState.result != null ? searchState.result.count : 0,
+            itemBuilder: (BuildContext context, int index) {
+              CommonOneMapModel result = searchState.result.results[index];
+              return ListTile(
+                title: AnimatedDefaultTextStyle(
                   style: searchState.selected != index
-                      ? Theme.of(context).textTheme.bodyText2.copyWith(
-                          color: Theme.of(context).textTheme.caption.color)
-                      : Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(color: Colors.teal[200]),
-                  child: Text(result.subtitle)),
-              trailing: IconButton(
-                icon: Icon(
-                  FontAwesomeIcons.signInAlt,
-                  color: searchState.selected != index
-                      ? Colors.black45
-                      : Colors.teal,
+                      ? Theme.of(context).textTheme.subtitle1
+                      : Theme.of(context).textTheme.subtitle1.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w600),
+                  duration: Duration(milliseconds: 200),
+                  child: Text(result.title),
                 ),
-                onPressed: () {
+                subtitle: AnimatedDefaultTextStyle(
+                    duration: Duration(milliseconds: 200),
+                    style: searchState.selected != index
+                        ? Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: Theme.of(context).textTheme.caption.color)
+                        : Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(color: AppColors.kColorPrimary[300]),
+                    child: Text(result.subtitle)),
+                trailing: IconButton(
+                  icon: Icon(
+                    FontAwesomeIcons.signInAlt,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    BlocProvider.of<BottomPanelBloc>(context)
+                        .add(CheckInPanelSwitched(result: result));
+                    BlocProvider.of<CheckPanelBloc>(context).add(
+                        DisplayLocationCheckInPanel(
+                            CheckInPanelData(result, DateTime.now())));
+                    BlocProvider.of<UpdateOpacityBloc>(context)
+                        .add(OpacityChanged(1));
+                  },
+                ),
+                onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  BlocProvider.of<BottomPanelBloc>(context)
-                      .add(CheckInPanelSwitched(result: result));
-                  BlocProvider.of<CheckPanelBloc>(context).add(
-                      DisplayLocationCheckInPanel(
-                          CheckInPanelData(result, DateTime.now())));
-                  BlocProvider.of<UpdateOpacityBloc>(context)
-                      .add(OpacityChanged(1));
+                  BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
+                      location: LatLng(result.latitude, result.longitude)));
+                  BlocProvider.of<SearchBloc>(context)
+                      .add(SearchLocationTapped(index));
                 },
-              ),
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
-                    location: LatLng(result.latitude, result.longitude)));
-                BlocProvider.of<SearchBloc>(context)
-                    .add(SearchLocationTapped(index));
-              },
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

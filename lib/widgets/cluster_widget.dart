@@ -11,9 +11,7 @@ class ClusterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: RadialGradient(
-          colors: <Color>[Colors.teal.shade200, Colors.teal],
-        ),
+        color: Theme.of(context).primaryColor,
         shape: BoxShape.circle,
       ),
       child: Center(

@@ -63,27 +63,20 @@ class MapConstants {
 
 class Styles {
   static const TextStyle kTitleTextStyle = TextStyle(
-    fontSize: 20,
     color: Colors.black,
-    fontWeight: FontWeight.bold,
   );
 
   static const TextStyle kSelectedTitleTextStyle = TextStyle(
-    fontSize: 20.5,
-    color: Colors.teal,
+    color: AppColors.kColorPrimary,
     fontWeight: FontWeight.w900,
   );
 
   static const TextStyle kDetailsTextStyle = TextStyle(
-    fontSize: 16,
     color: Colors.black54,
-    fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle kSelectedDetailsTextStyle = TextStyle(
-    fontSize: 16.5,
-    color: Color(0xFF80CBC4), // Teal[200]
-    fontWeight: FontWeight.w900,
+  static final TextStyle kSelectedDetailsTextStyle = TextStyle(
+    color: AppColors.kColorPrimaryLight, // Teal[200]
   );
 
   static final DateFormat kStartDateFormat = DateFormat("dd/MM/yyyy HH:mm");
@@ -99,4 +92,14 @@ class Styles {
 class Keys {
   static const Key kKeyFABSpinner = Key('key_fab_spinner');
   static const Key kKeySubLocationText = Key('key_sub_location_text');
+}
+
+class AppColors {
+  static const MaterialColor kColorPrimary = Colors.deepPurple;
+  static const MaterialColor kColorAccent = Colors.deepOrange;
+  static final Color kColorPrimaryLight = Colors.deepPurple[200];
+  static final Color kColorAccentLight = Colors.deepOrange[50];
+  static final Color kColorAccentDark = Colors.deepOrange[600];
+  static final Color kColorRed = Colors.red;
+  static final Color kColorGreen = Colors.teal;
 }

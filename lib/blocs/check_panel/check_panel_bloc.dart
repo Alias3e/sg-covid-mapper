@@ -53,7 +53,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
     }
 
     if (event is AddTag) {
-      _labels.add(event.tagName);
+      _labels.add(event.tag.label);
       yield TagListUpdated(tags: _makeTags());
     }
 
@@ -88,7 +88,7 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.deepPurple,
         deleteIconColor: Colors.white,
         onDeleted: () => this.add(RemoveTag(tagName: chipLabel)),
       );

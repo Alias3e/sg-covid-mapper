@@ -4,7 +4,6 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
-import 'package:sgcovidmapper/util/constants.dart';
 
 class SearchTextField extends StatefulWidget {
   @override
@@ -54,9 +53,11 @@ class _SearchTextFieldState extends State<SearchTextField> {
                   controller: _textEditingController,
                   focusNode: _focusNode,
                   decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Styles.kSearchTextFieldGrayColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(30.0),
@@ -64,7 +65,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.teal,
+                        color: Theme.of(context).accentColor,
                       ),
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(30.0),
@@ -92,25 +93,25 @@ class _SearchTextFieldState extends State<SearchTextField> {
                               color: Colors.transparent,
                               child: Icon(
                                 Icons.close,
-                                color: Styles.kSearchTextFieldGrayColor,
+                                color: Theme.of(context).accentColor,
                               ),
                             ),
                           );
                         else
-                          return Container(
-                            width: 0,
-                            height: 0,
+                          return Icon(
+                            Icons.search,
+                            color: Theme.of(context).primaryColor,
                           );
                       },
                     ),
                     filled: true,
                     hintStyle: new TextStyle(
-                        color: Styles.kSearchTextFieldGrayColor,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 16,
                         fontStyle: FontStyle.italic),
                     hintText: "Search address, buildings or postal code",
-                    fillColor: Color.fromARGB(
-                        Color.getAlphaFromOpacity(0.6), 255, 255, 255),
+                    fillColor:
+                        Theme.of(context).primaryColorLight.withAlpha(150),
                   ),
                   onChanged: (value) {
                     if (value.isNotEmpty)

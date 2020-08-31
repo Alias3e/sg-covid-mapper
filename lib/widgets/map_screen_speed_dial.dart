@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -27,28 +28,35 @@ class MapScreenSpeedDial extends StatelessWidget {
               animatedIcon: state is GeocodingInProgress
                   ? null
                   : AnimatedIcons.menu_close,
-              overlayColor: Colors.black,
-              curve: Curves.bounceInOut,
+              overlayColor: Theme.of(context).primaryColor,
+              curve: Curves.linearToEaseOut,
+              animationSpeed: 100,
               children: [
                 SpeedDialChild(
                     child: Icon(Icons.gps_fixed),
-                    backgroundColor: Colors.blue,
-                    label: 'Log your visit to a nearby location',
+                    backgroundColor: Theme.of(context).accentColor,
+                    labelWidget: LabelCard(
+                      label: 'Log your visit to a nearby location',
+                    ),
+//                    labelBackgroundColor: Theme.of(context).accentColor,
+//                    labelStyle: TextStyle(
+//                        color: Colors.white, fontWeight: FontWeight.bold),
                     onTap: () =>
                         BlocProvider.of<MapBloc>(context).add(GetGPS())),
                 SpeedDialChild(
-                  backgroundColor: Colors.greenAccent,
-                  label: 'Log of places you visited',
+                  labelWidget: LabelCard(
+                    label: 'Log of places you visited',
+                  ),
                   child: OpenContainerSpeedDial(
-                      color: Colors.greenAccent,
+                      color: Theme.of(context).accentColor,
                       icon: FontAwesomeIcons.clipboard,
                       openBuilder: openLogScreen),
                 ),
                 SpeedDialChild(
-                  backgroundColor: Colors.blue,
-                  label: 'Display locations in a timeline',
+                  labelWidget:
+                      LabelCard(label: 'Display locations in a timeline'),
                   child: OpenContainerSpeedDial(
-                      color: Colors.red,
+                      color: Theme.of(context).accentColor,
                       icon: Icons.timeline,
                       openBuilder: timelineWidget),
                 ),
@@ -67,6 +75,30 @@ class MapScreenSpeedDial extends StatelessWidget {
   }
 }
 
+class LabelCard extends StatelessWidget {
+  final String label;
+  final Color labelColor;
+
+  const LabelCard({@required this.label, this.labelColor = Colors.white});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(40))),
+      elevation: 4,
+      color: Theme.of(context).primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Text(
+          label,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
+
 Widget timelineWidget(
     BuildContext context, void Function({Object returnValue}) action) {
   return BlocBuilder<TimelineBloc, TimelineState>(
@@ -76,7 +108,7 @@ Widget timelineWidget(
               timelineModel: state.model,
             )
           : Container(
-              color: Colors.redAccent,
+              color: AppColors.kColorRed,
             );
     },
   );

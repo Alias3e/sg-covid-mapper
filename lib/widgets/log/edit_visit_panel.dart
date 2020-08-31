@@ -165,14 +165,14 @@ class _EditVisitPanelState extends State<EditVisitPanel>
                 children: [
                   BottomPanelButton(
                     text: 'Confirm',
-                    color: Colors.teal,
+                    color: AppColors.kColorGreen,
                     onTap: () => BlocProvider.of<LogBloc>(context)
                         .add(OnVisitUpdated(widget.visit)),
                   ),
                   Divider(),
                   BottomPanelButton(
                     text: 'Cancel',
-                    color: Colors.amber,
+                    color: AppColors.kColorRed,
                     onTap: () {
                       widget.visit.checkInTime = initialCheckInTime;
                       widget.visit.checkOutTime = initialCheckOutTime;
@@ -196,7 +196,7 @@ class _EditVisitPanelState extends State<EditVisitPanel>
             children: <Widget>[
               CheckPanelButton(
                 text: 'Check out',
-                color: Colors.amber,
+                color: Theme.of(context).accentColor,
                 onPressed: () => BlocProvider.of<LogBloc>(context)
                     .add(OnEditPanelCheckOutButtonPressed()),
                 icon: FontAwesomeIcons.signOutAlt,
