@@ -56,6 +56,8 @@ class SearchResultsPanel extends StatelessWidget {
                   ),
                   onPressed: () {
                     FocusScope.of(context).requestFocus(FocusNode());
+                    BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
+                        location: LatLng(result.latitude, result.longitude)));
                     BlocProvider.of<BottomPanelBloc>(context)
                         .add(CheckInPanelSwitched(result: result));
                     BlocProvider.of<CheckPanelBloc>(context).add(

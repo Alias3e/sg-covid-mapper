@@ -32,6 +32,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      reverse: true,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 4.0),
         child: Column(

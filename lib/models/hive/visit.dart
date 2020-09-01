@@ -139,7 +139,7 @@ class Visit extends HiveObject {
           onDeleted: onDeleted != null ? () => onDeleted(tag) : null,
           deleteIconColor: Colors.white,
           label: Text(
-            '${tag.label}${tag.similarity != 1.0 || tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
+            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
             style: TextStyle(
               color: Colors.white,
             ),
