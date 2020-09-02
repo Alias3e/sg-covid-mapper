@@ -24,6 +24,7 @@ import 'package:sgcovidmapper/screens/splash_screen.dart';
 import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:showcaseview/showcase_widget.dart';
 
 import 'blocs/update_opacity/update_opacity.dart';
 
@@ -159,7 +160,11 @@ class MyApp extends StatelessWidget {
                     visualDensity: VisualDensity.adaptivePlatformDensity,
                     fontFamily: 'BalooChettan2',
                   ),
-                  home: MapScreen(),
+                  home: ShowCaseWidget(
+                    builder: Builder(
+                      builder: (context) => MapScreen(),
+                    ),
+                  ),
                 ),
               ))
           : SplashScreen(),

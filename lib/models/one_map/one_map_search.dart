@@ -27,9 +27,10 @@ class OneMapSearch extends Equatable {
 
   static List<CommonOneMapModel> _fromSearchResults(List<dynamic> data) {
     List<CommonOneMapModel> models = [];
-    data.forEach((geocodeInfo) {
-      models.add(CommonOneMapModel.fromSearchResultModel(
-          OneMapSearchResult.fromJson(geocodeInfo)));
+    data.forEach((result) {
+      CommonOneMapModel model = CommonOneMapModel.fromSearchResultModel(
+          OneMapSearchResult.fromJson(result));
+      if (model.postalCode != 'NIL') models.add(model);
     });
     return models;
   }

@@ -52,19 +52,26 @@ class SearchResultsPanel extends StatelessWidget {
                 trailing: IconButton(
                   icon: Icon(
                     FontAwesomeIcons.signInAlt,
-                    color: Theme.of(context).accentColor,
+                    color: result.postalCode != 'NIL'
+                        ? Theme.of(context).accentColor
+                        : Colors.black54,
                   ),
                   onPressed: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
-                        location: LatLng(result.latitude, result.longitude)));
-                    BlocProvider.of<BottomPanelBloc>(context)
-                        .add(CheckInPanelSwitched(result: result));
-                    BlocProvider.of<CheckPanelBloc>(context).add(
-                        DisplayLocationCheckInPanel(
-                            CheckInPanelData(result, DateTime.now())));
-                    BlocProvider.of<UpdateOpacityBloc>(context)
-                        .add(OpacityChanged(1));
+                    if (result.postalCode != 'NIL') {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      BlocProvider.of<MapBloc>(context).add(CenterOnLocation(
+                          location: LatLng(result.latitude, result.longitude)));
+                      BlocProvider.of<BottomPanelBloc>(context)
+                          .add(CheckInPanelSwitched(result: result));
+                      BlocProvider.of<CheckPanelBloc>(context).add(
+                          DisplayLocationCheckInPanel(
+                              CheckInPanelData(result, DateTime.now())));
+                      BlocProvider.of<UpdateOpacityBloc>(context)
+                          .add(OpacityChanged(1));
+                    } else {
+                      print(
+                          'Unable to check in as no postal code is provided by OneMap.sg');
+                    }
                   },
                 ),
                 onTap: () {

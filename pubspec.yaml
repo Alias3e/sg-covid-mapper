@@ -46,6 +46,7 @@ dependencies:
   firebase_auth: ^0.16.1
   string_similarity: ^1.0.1
   flutter_keyboard_visibility: ^3.2.1
+  showcaseview: ^0.1.6
 
   flutter_map_marker_cluster:
     path: external/flutter_map_marker_cluster
