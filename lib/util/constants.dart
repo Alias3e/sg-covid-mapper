@@ -85,6 +85,8 @@ class Styles {
 
   static final DateFormat kLogTileDateFormat = DateFormat("dd MMM");
 
+  static final DateFormat kUpdatedDateFormat = DateFormat("dd MMM HH:mm");
+
   static final Color kSearchTextFieldGrayColor =
       Color.fromARGB(Color.getAlphaFromOpacity(0.6), 111, 111, 111);
 }

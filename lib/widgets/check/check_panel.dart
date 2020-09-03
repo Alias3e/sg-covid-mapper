@@ -264,7 +264,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
               },
               child: Icon(
                 Icons.info_outline,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).accentColor,
               ),
             ),
           )

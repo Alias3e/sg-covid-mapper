@@ -7,14 +7,16 @@ import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
+import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
 class InitializationBloc
     extends Bloc<InitializationEvent, InitializationState> {
   static const String visitBoxName = 'myVisits';
   static const String systemBoxName = 'system';
+  final CovidPlacesRepository _covidPlacesRepository;
 
-  InitializationBloc() {
+  InitializationBloc(this._covidPlacesRepository) {
     add(BeginInitialization());
   }
 
@@ -28,6 +30,7 @@ class InitializationBloc
       WidgetsFlutterBinding.ensureInitialized();
       BlocSupervisor.delegate = SimpleBlocDelegate();
       await Config.loadConfig();
+      await _covidPlacesRepository.init();
       if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
       AuthResult result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');

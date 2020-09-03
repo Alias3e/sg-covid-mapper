@@ -20,7 +20,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   }
 
   Future<void> subscribe() async {
-    await covidRepository.init();
+//    await covidRepository.init();
     _subscription = covidRepository.timelineTiles.listen((event) {
       covidRepository.timelineItemCached = event;
       _addTimelineDataEvent();

@@ -4,27 +4,28 @@ import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/models/timeline/indicator_timeline_item.dart';
 import 'package:sgcovidmapper/models/timeline/location_timeline_item.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
   final CollectionReference locationCollection;
   final CollectionReference systemCollection;
-  String version;
   Timestamp updated;
+
+  @override
+  String get dataUpdated => Styles.kUpdatedDateFormat.format(updated.toDate());
 
   FirestoreCovidPlacesRepository(
       {this.locationCollection, this.systemCollection})
-      : assert(locationCollection != null && systemCollection != null) {
-    init();
-  }
+      : assert(locationCollection != null && systemCollection != null);
 
   Future<void> init() async {
-    print('init covid repository');
     if (updated == null) {
       DocumentReference docRef =
           systemCollection.document('Wn7Rh8YtfIyKliO02Ltl');
       DocumentSnapshot snapshot = await docRef.get();
       version = snapshot.data['current_version'];
       updated = snapshot.data['updated'];
+      source = snapshot.data['source'];
     }
   }
 

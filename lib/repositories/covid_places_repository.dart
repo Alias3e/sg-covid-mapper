@@ -9,4 +9,8 @@ abstract class CovidPlacesRepository {
   Stream<List<PlaceMarker>> get placeMarkers;
   Stream<List<ChildTimelineItem>> get timelineTiles;
   Stream<List<CovidLocation>> get covidLocations;
+
+  String source;
+  String version;
+  String get dataUpdated;
 }

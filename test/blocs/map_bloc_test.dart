@@ -50,6 +50,7 @@ main() {
 
     setUp(() {
       mockVisitedPlaceRepository = MockVisitedPlaceRepository();
+      mockVisitedPlaceRepository.init();
       mockGpsRepository = MockGpsRepository();
       when(mockVisitedPlaceRepository.placeMarkers)
           .thenAnswer((_) => Stream.fromIterable(markers));
@@ -132,7 +133,7 @@ main() {
         expect: [
           GpsLocationAcquiring(
               covidPlaces: markers[0], nearbyPlaces: nearbyPlaces),
-          isA<MapViewBoundsChanged>(),
+          isA<GPSAcquired>(),
         ],
         skip: 2,
       );

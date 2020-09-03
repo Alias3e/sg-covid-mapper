@@ -33,7 +33,6 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
         add(WarningChanged(DateTime.now().millisecondsSinceEpoch));
       }
     });
-    await covidRepository.init();
     _subscription = covidRepository.covidLocations.listen((event) {
       covidRepository.covidLocationsCached = event;
       _updateWarningLevels();

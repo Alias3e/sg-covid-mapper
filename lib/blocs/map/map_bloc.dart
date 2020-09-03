@@ -29,7 +29,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   Future<void> subscribe() async {
-    await covidPlacesRepository.init();
     _subscription = covidPlacesRepository.placeMarkers
         .listen((event) => add(HasPlacesData(event)));
   }

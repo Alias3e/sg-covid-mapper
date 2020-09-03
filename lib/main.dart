@@ -30,9 +30,20 @@ import 'blocs/update_opacity/update_opacity.dart';
 
 void main() async {
   runApp(
-    BlocProvider<InitializationBloc>(
-      create: (BuildContext context) => InitializationBloc(),
-      child: MyApp(),
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<CovidPlacesRepository>(
+          create: (BuildContext context) => FirestoreCovidPlacesRepository(
+            locationCollection: Firestore.instance.collection('all_locations'),
+            systemCollection: Firestore.instance.collection('system'),
+          ),
+        ),
+      ],
+      child: BlocProvider<InitializationBloc>(
+        create: (BuildContext context) => InitializationBloc(
+            RepositoryProvider.of<CovidPlacesRepository>(context)),
+        child: MyApp(),
+      ),
     ),
   );
 }
@@ -51,14 +62,6 @@ class MyApp extends StatelessWidget {
               is InitializationComplete
           ? MultiRepositoryProvider(
               providers: [
-                  RepositoryProvider<CovidPlacesRepository>(
-                    create: (BuildContext context) =>
-                        FirestoreCovidPlacesRepository(
-                      locationCollection:
-                          Firestore.instance.collection('all_locations'),
-                      systemCollection: Firestore.instance.collection('system'),
-                    ),
-                  ),
                   RepositoryProvider<GpsRepository>(
                     create: (BuildContext context) => GpsRepository(),
                   ),
