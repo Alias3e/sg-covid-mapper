@@ -5,6 +5,7 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/showcase_container.dart';
 import 'package:showcaseview/showcase.dart';
 import 'package:showcaseview/showcase_widget.dart';
 
@@ -53,11 +54,26 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 16.0),
-                    Showcase(
+                    Showcase.withWidget(
                       key: titleKey,
-                      showcaseBackgroundColor: AppColors.kColorAccentLight,
-                      description:
-                          'Places you visited will be matched against public places\n visited by COVID19 cases using postal code.\n Please verify the postal code before checking in.',
+                      height: 80,
+                      width: 300,
+                      container: ShowcaseContainer(
+                        height: 85,
+                        width: 379.5,
+                        child: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: Text(
+                            'Places you visited will be matched against public places visited '
+                            'by COVID19 cases using postal code. '
+                            'Please verify the postal code before checking in',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
                       child: BlocConsumer<CheckPanelBloc, CheckPanelState>(
                         listenWhen: (previous, current) =>
                             current is CheckPanelLoaded,
@@ -131,11 +147,18 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                       },
                     ),
                     SizedBox(height: 16),
-                    Showcase(
+                    Showcase.withWidget(
                       key: checkoutKey,
-                      showcaseBackgroundColor: AppColors.kColorAccentLight,
-                      description:
+                      width: 300,
+                      height: 80,
+                      container: ShowcaseContainer(
+                        width: 379.5,
+                        height: 80,
+                        child: Text(
                           'You can check out later from the visited places log',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
                       child: BlocBuilder<CheckPanelBloc, CheckPanelState>(
                         condition: (previous, current) =>
                             current is CheckPanelLoaded ||
@@ -182,14 +205,24 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                         },
                       ),
                     ),
-                    Showcase(
+                    Showcase.withWidget(
                       key: tagKey,
-                      showcaseBackgroundColor: AppColors.kColorAccentLight,
+                      height: 80,
+                      width: 300,
                       shapeBorder: CircleBorder(),
-                      description:
+                      container: ShowcaseContainer(
+                        height: 80,
+                        width: 379.5,
+                        child: Text(
                           'Add tags to your visits to provide additional details and contacts.'
-                          '\n For example, if visiting a mall, specify a specific shop within.'
-                          '\n Or tag your family members who was with you',
+                          ' For example, if visiting a mall, specify a specific shop within.'
+                          ' Or tag your family members who was with you.',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                       child: AnimatedSize(
                           vsync: this,
                           duration: Duration(milliseconds: 250),

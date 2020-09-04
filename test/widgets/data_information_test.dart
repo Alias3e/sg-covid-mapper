@@ -55,7 +55,7 @@ main() {
       expect(find.byType(Text), findsOneWidget);
       expect(find.byWidgetPredicate((widget) {
         if (widget is RichText &&
-            widget.text.toPlainText() == 'View moh.gov.sg source data') {
+            widget.text.toPlainText() == 'Source data courtesy of moh.gov.sg') {
           return true;
         }
         return false;
