@@ -14,10 +14,11 @@ class InitializationBloc
     extends Bloc<InitializationEvent, InitializationState> {
   static const String visitBoxName = 'myVisits';
   static const String systemBoxName = 'system';
+  final String isAppFirstOpen = 'isAppFirstOpen';
   final CovidPlacesRepository _covidPlacesRepository;
 
   InitializationBloc(this._covidPlacesRepository) {
-    add(BeginInitialization());
+//    add(BeginInitialization());
   }
 
   @override
@@ -29,13 +30,25 @@ class InitializationBloc
     if (event is BeginInitialization) {
       WidgetsFlutterBinding.ensureInitialized();
       BlocSupervisor.delegate = SimpleBlocDelegate();
-      await Config.loadConfig();
-      await _covidPlacesRepository.init();
-      if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
       AuthResult result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
-      yield InitializationComplete();
+      await Asset.loadConfigurations();
+      if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
+      await _covidPlacesRepository.init();
+      bool showDialog =
+          Hive.box(systemBoxName).get(isAppFirstOpen, defaultValue: true);
+      Map<String, dynamic> splash = {};
+      if (showDialog) {
+        Hive.box(systemBoxName).put(isAppFirstOpen, false);
+        splash = await Asset.loadSplashDialog();
+      }
+      if (splash.isNotEmpty)
+        yield InitializationComplete(true, dialogContent: splash);
+      else
+        yield InitializationComplete(false);
     }
+
+    if (event is OnDialogChanged) yield DialogContentChange(event.nextIndex);
   }
 
   Future<void> _initHive() async {

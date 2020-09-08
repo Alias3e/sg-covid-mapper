@@ -24,11 +24,12 @@ import 'package:sgcovidmapper/screens/splash_screen.dart';
 import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:showcaseview/showcase_widget.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'blocs/update_opacity/update_opacity.dart';
 
 void main() async {
+  HiveService hiveService = HiveService();
   runApp(
     MultiRepositoryProvider(
       providers: [
@@ -38,12 +39,19 @@ void main() async {
             systemCollection: Firestore.instance.collection('system'),
           ),
         ),
+        RepositoryProvider<GpsRepository>(
+          create: (BuildContext context) => GpsRepository(),
+        ),
+        RepositoryProvider<GeolocationRepository>(
+          create: (BuildContext context) =>
+              GeolocationRepository(OneMapApiService(Dio()), hiveService),
+        ),
+        RepositoryProvider<MyVisitedPlaceRepository>(
+          create: (BuildContext context) =>
+              MyVisitedPlaceRepository(hiveService),
+        ),
       ],
-      child: BlocProvider<InitializationBloc>(
-        create: (BuildContext context) => InitializationBloc(
-            RepositoryProvider.of<CovidPlacesRepository>(context)),
-        child: MyApp(),
-      ),
+      child: MyApp(),
     ),
   );
 }
@@ -56,25 +64,33 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    HiveService hiveService = HiveService();
-    return BlocBuilder<InitializationBloc, InitializationState>(
-      builder: (BuildContext context, InitializationState state) => state
-              is InitializationComplete
-          ? MultiRepositoryProvider(
-              providers: [
-                  RepositoryProvider<GpsRepository>(
-                    create: (BuildContext context) => GpsRepository(),
-                  ),
-                  RepositoryProvider<GeolocationRepository>(
-                    create: (BuildContext context) => GeolocationRepository(
-                        OneMapApiService(Dio()), hiveService),
-                  ),
-                  RepositoryProvider<MyVisitedPlaceRepository>(
-                    create: (BuildContext context) =>
-                        MyVisitedPlaceRepository(hiveService),
-                  ),
-                ],
-              child: MultiBlocProvider(
+    return BlocProvider(
+      create: (BuildContext context) => InitializationBloc(
+          RepositoryProvider.of<CovidPlacesRepository>(context)),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: AppColors.kColorPrimary,
+          accentColor: AppColors.kColorAccent,
+          // This makes the visual density adapt to the platform that you run
+          // the app on. For desktop platforms, the controls will be smaller and
+          // closer together (more dense) than on mobile platforms.
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: 'BalooChettan2',
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => SplashScreen(),
+          '/map': (context) => MultiBlocProvider(
                 providers: [
                   BlocProvider<MapBloc>(
                       create: (BuildContext context) => MapBloc(
@@ -143,34 +159,19 @@ class MyApp extends StatelessWidget {
                         RepositoryProvider.of<CovidPlacesRepository>(context)),
                   ),
                 ],
-                child: MaterialApp(
-                  title: 'Flutter Demo',
-                  theme: ThemeData(
-                    // This is the theme of your application.
-                    //
-                    // Try running your application with "flutter run". You'll see the
-                    // application has a blue toolbar. Then, without quitting the app, try
-                    // changing the primarySwatch below to Colors.green and then invoke
-                    // "hot reload" (press "r" in the console where you ran "flutter run",
-                    // or simply save your changes to "hot reload" in a Flutter IDE).
-                    // Notice that the counter didn't reset back to zero; the application
-                    // is not restarted.
-                    primarySwatch: AppColors.kColorPrimary,
-                    accentColor: AppColors.kColorAccent,
-                    // This makes the visual density adapt to the platform that you run
-                    // the app on. For desktop platforms, the controls will be smaller and
-                    // closer together (more dense) than on mobile platforms.
-                    visualDensity: VisualDensity.adaptivePlatformDensity,
-                    fontFamily: 'BalooChettan2',
-                  ),
-                  home: ShowCaseWidget(
-                    builder: Builder(
-                      builder: (context) => MapScreen(),
-                    ),
+                child: ShowCaseWidget(
+                  builder: Builder(
+                    builder: (context) => MapScreen(),
                   ),
                 ),
-              ))
-          : SplashScreen(),
+              ),
+        },
+//                  home: ShowCaseWidget(
+//                    builder: Builder(
+//                      builder: (context) => MapScreen(),
+//                    ),
+//                  ),
+      ),
     );
   }
 }

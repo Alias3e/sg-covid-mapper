@@ -93,6 +93,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/cfg.json
+    - assets/splash.json
 
   fonts:
     - family: FrederickatheGreat

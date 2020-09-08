@@ -8,7 +8,19 @@ class Initializing extends InitializationState {
 }
 
 class InitializationComplete extends InitializationState {
-  InitializationComplete();
+  final bool showDisclaimer;
+  final Map<String, dynamic> dialogContent;
+
+  InitializationComplete(this.showDisclaimer, {this.dialogContent});
   @override
   List<Object> get props => [];
+}
+
+class DialogContentChange extends InitializationState {
+  final int nextIndex;
+
+  DialogContentChange(this.nextIndex);
+
+  @override
+  List<Object> get props => [nextIndex];
 }

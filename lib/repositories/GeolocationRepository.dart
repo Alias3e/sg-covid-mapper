@@ -19,8 +19,8 @@ class GeolocationRepository {
     if (accessToken.isEmpty) {
       OneMapToken newToken;
       newToken = await _geolocationService.authenticate(
-          email: Config.configurations['one_map_api_email'],
-          password: Config.configurations['one_map_api_password']);
+          email: Asset.configurations['one_map_api_email'],
+          password: Asset.configurations['one_map_api_password']);
       _localStorageService.saveOneMapToken(newToken);
       accessToken = newToken.accessToken;
     }

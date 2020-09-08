@@ -44,7 +44,7 @@ class MapConstants {
       case BaseMap.MapTiler:
         return TileLayerOptions(
           urlTemplate: _tileUrl[baseMap],
-          additionalOptions: {'key': Config.configurations['map_tileset_key']},
+          additionalOptions: {'key': Asset.configurations['map_tileset_key']},
           maxZoom: maxZoom,
           minZoom: minZoom,
         );
