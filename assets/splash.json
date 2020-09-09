@@ -6,7 +6,7 @@
     },
     {
       "title" : "Privacy",
-      "body" : "- The app does not store any location or user data to any server.\n\n- All created visits log are stored locally on the device.\n\n- GPS coordinates are sent to OneMap for to provide nearby places information. No personal data of the user is sent during this process. OneMap is the authoritative national map of Singapore with the most detailed and timely updated information developed by the Singapore Land Authority."
+      "body" : "- The app does not store any location or user data to any server.\n\n- All created visits log are stored locally on the device.\n\n- GPS coordinates are sent to OneMap for retrieving nearby places information. No personal data of the user is sent during this process. OneMap is the authoritative national map of Singapore with the most detailed and timely updated information developed by the Singapore Land Authority."
     }
   ],
   "tips" : [

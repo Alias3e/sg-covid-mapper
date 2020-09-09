@@ -17,9 +17,7 @@ class InitializationBloc
   final String isAppFirstOpen = 'isAppFirstOpen';
   final CovidPlacesRepository _covidPlacesRepository;
 
-  InitializationBloc(this._covidPlacesRepository) {
-//    add(BeginInitialization());
-  }
+  InitializationBloc(this._covidPlacesRepository);
 
   @override
   InitializationState get initialState => Initializing();

@@ -2,18 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_bloc.dart';
-import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
-import 'package:sgcovidmapper/blocs/keyboard_visibility/keyboard_visibility.dart';
-import 'package:sgcovidmapper/blocs/log/log.dart';
-import 'package:sgcovidmapper/blocs/map/map.dart';
-import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
+import 'package:sgcovidmapper/blocs/map/map_bloc.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
-import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
-import 'package:sgcovidmapper/blocs/timeline/timeline_bloc.dart';
-import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/repositories/GeolocationRepository.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/firestore_covid_places_repository.dart';
@@ -26,7 +18,15 @@ import 'package:sgcovidmapper/services/one_map_api_service.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import 'blocs/bottom_panel/bottom_panel.dart';
+import 'blocs/check_panel/check_panel.dart';
+import 'blocs/keyboard_visibility/keyboard_visibility.dart';
+import 'blocs/log/log.dart';
+import 'blocs/reverse_geocode/reverse_geocode.dart';
+import 'blocs/search_text_field/search_text_field.dart';
+import 'blocs/timeline/timeline.dart';
 import 'blocs/update_opacity/update_opacity.dart';
+import 'blocs/warning/warning.dart';
 
 void main() async {
   HiveService hiveService = HiveService();
@@ -67,110 +67,108 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => InitializationBloc(
           RepositoryProvider.of<CovidPlacesRepository>(context)),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: AppColors.kColorPrimary,
-          accentColor: AppColors.kColorAccent,
-          // This makes the visual density adapt to the platform that you run
-          // the app on. For desktop platforms, the controls will be smaller and
-          // closer together (more dense) than on mobile platforms.
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: 'BalooChettan2',
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => SplashScreen(),
-          '/map': (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider<MapBloc>(
-                      create: (BuildContext context) => MapBloc(
-                            covidPlacesRepository:
-                                RepositoryProvider.of<CovidPlacesRepository>(
-                                    context),
-                            gpsRepository:
-                                RepositoryProvider.of<GpsRepository>(context),
-                          )),
-                  BlocProvider<ReverseGeocodeBloc>(
-                    create: (BuildContext context) => ReverseGeocodeBloc(
-                      repository:
-                          RepositoryProvider.of<GeolocationRepository>(context),
-                      mapBloc: BlocProvider.of<MapBloc>(context),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<MapBloc>(
+              create: (BuildContext context) => MapBloc(
+                    covidPlacesRepository:
+                        RepositoryProvider.of<CovidPlacesRepository>(context),
+                    gpsRepository:
+                        RepositoryProvider.of<GpsRepository>(context),
+                  )),
+          BlocProvider<ReverseGeocodeBloc>(
+            create: (BuildContext context) => ReverseGeocodeBloc(
+              repository: RepositoryProvider.of<GeolocationRepository>(context),
+              mapBloc: BlocProvider.of<MapBloc>(context),
+            ),
+          ),
+          BlocProvider<CheckPanelBloc>(
+            create: (BuildContext context) => CheckPanelBloc(
+              repository:
+                  RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+            ),
+          ),
+          BlocProvider<SearchBloc>(
+            create: (BuildContext context) => SearchBloc(
+                RepositoryProvider.of<GeolocationRepository>(context)),
+          ),
+          BlocProvider<TimelineBloc>(
+            create: (BuildContext context) => TimelineBloc(
+                visitsRepository:
+                    RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+                covidRepository:
+                    RepositoryProvider.of<CovidPlacesRepository>(context)),
+          ),
+          BlocProvider<BottomPanelBloc>(
+            create: (BuildContext context) =>
+                BottomPanelBloc(BlocProvider.of<ReverseGeocodeBloc>(context)),
+          ),
+          BlocProvider<UpdateOpacityBloc>(
+              create: (BuildContext context) =>
+                  UpdateOpacityBloc(BlocProvider.of<BottomPanelBloc>(context))),
+          BlocProvider<KeyboardVisibilityBloc>(
+            create: (BuildContext context) => KeyboardVisibilityBloc(),
+          ),
+          BlocProvider<SearchTextFieldBloc>(
+            create: (BuildContext context) => SearchTextFieldBloc(),
+          ),
+          BlocProvider<LogBloc>(
+            create: (BuildContext context) => LogBloc(
+                RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+                RepositoryProvider.of<CovidPlacesRepository>(context)),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: AppColors.kColorPrimary,
+            accentColor: AppColors.kColorAccent,
+            // This makes the visual density adapt to the platform that you run
+            // the app on. For desktop platforms, the controls will be smaller and
+            // closer together (more dense) than on mobile platforms.
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            fontFamily: 'BalooChettan2',
+          ),
+          initialRoute: '/',
+          routes: {
+            '/': (context) => SplashScreen(),
+            '/map': (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<WarningBloc>(
+                      lazy: false,
+                      create: (BuildContext context) => WarningBloc(
+                          visitsRepository:
+                              RepositoryProvider.of<MyVisitedPlaceRepository>(
+                                  context),
+                          covidRepository:
+                              RepositoryProvider.of<CovidPlacesRepository>(
+                                  context),
+                          checkPanelBloc:
+                              BlocProvider.of<CheckPanelBloc>(context)),
                     ),
-                  ),
-                  BlocProvider<CheckPanelBloc>(
-                    create: (BuildContext context) => CheckPanelBloc(
-                      repository:
-                          RepositoryProvider.of<MyVisitedPlaceRepository>(
-                              context),
+                  ],
+                  child: ShowCaseWidget(
+                    builder: Builder(
+                      builder: (context) => MapScreen(),
                     ),
-                  ),
-                  BlocProvider<WarningBloc>(
-                    lazy: false,
-                    create: (BuildContext context) => WarningBloc(
-                        visitsRepository:
-                            RepositoryProvider.of<MyVisitedPlaceRepository>(
-                                context),
-                        covidRepository:
-                            RepositoryProvider.of<CovidPlacesRepository>(
-                                context),
-                        checkPanelBloc:
-                            BlocProvider.of<CheckPanelBloc>(context)),
-                  ),
-                  BlocProvider<SearchBloc>(
-                    create: (BuildContext context) => SearchBloc(
-                        RepositoryProvider.of<GeolocationRepository>(context)),
-                  ),
-                  BlocProvider<TimelineBloc>(
-                    create: (BuildContext context) => TimelineBloc(
-                        visitsRepository:
-                            RepositoryProvider.of<MyVisitedPlaceRepository>(
-                                context),
-                        covidRepository:
-                            RepositoryProvider.of<CovidPlacesRepository>(
-                                context)),
-                  ),
-                  BlocProvider<BottomPanelBloc>(
-                    create: (BuildContext context) => BottomPanelBloc(
-                        BlocProvider.of<ReverseGeocodeBloc>(context)),
-                  ),
-                  BlocProvider<UpdateOpacityBloc>(
-                      create: (BuildContext context) => UpdateOpacityBloc(
-                          BlocProvider.of<BottomPanelBloc>(context))),
-                  BlocProvider<KeyboardVisibilityBloc>(
-                    create: (BuildContext context) => KeyboardVisibilityBloc(),
-                  ),
-                  BlocProvider<SearchTextFieldBloc>(
-                    create: (BuildContext context) => SearchTextFieldBloc(),
-                  ),
-                  BlocProvider<LogBloc>(
-                    create: (BuildContext context) => LogBloc(
-                        RepositoryProvider.of<MyVisitedPlaceRepository>(
-                            context),
-                        RepositoryProvider.of<CovidPlacesRepository>(context)),
-                  ),
-                ],
-                child: ShowCaseWidget(
-                  builder: Builder(
-                    builder: (context) => MapScreen(),
                   ),
                 ),
-              ),
-        },
+          },
 //                  home: ShowCaseWidget(
 //                    builder: Builder(
 //                      builder: (context) => MapScreen(),
 //                    ),
 //                  ),
+        ),
       ),
     );
   }

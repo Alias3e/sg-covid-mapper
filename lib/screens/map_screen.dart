@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
@@ -45,7 +47,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
           _panelController.close();
           return false;
         }
-        return true;
+        Platform.isAndroid ? SystemNavigator.pop() : exit(0);
+        return false;
       },
       child: Scaffold(
         // Prevent markers from being shifted by keyboard.

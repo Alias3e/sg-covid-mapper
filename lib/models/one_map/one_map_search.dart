@@ -30,7 +30,7 @@ class OneMapSearch extends Equatable {
     data.forEach((result) {
       CommonOneMapModel model = CommonOneMapModel.fromSearchResultModel(
           OneMapSearchResult.fromJson(result));
-      if (model.postalCode != 'NIL') models.add(model);
+      if (model.postalCode.length == 6) models.add(model);
     });
     return models;
   }

@@ -96,12 +96,12 @@ flutter:
     - assets/splash.json
 
   fonts:
-    - family: FrederickatheGreat
-      fonts:
-      - asset: fonts/FrederickatheGreat-Regular.ttf
     - family: BalooChettan2
       fonts:
       - asset: fonts/BalooChettan2-Regular.ttf
+    - family: FredokaOne
+      fonts:
+      - asset: fonts/FredokaOne-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
