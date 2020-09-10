@@ -65,7 +65,7 @@ class Visit extends HiveObject {
     });
   }
 
-  Future<void> setWarningLevel(List<CovidLocation> items) async {
+  bool setWarningLevel(List<CovidLocation> items) {
     int newWarningLevel = 0;
     for (CovidLocation item in items) {
       if (item.postalCode == postalCode) {
@@ -88,10 +88,18 @@ class Visit extends HiveObject {
         }
       }
     }
+    bool needAlert = false;
+    if (warningLevel == null) {
+      if (newWarningLevel > 0) needAlert = true;
+    } else {
+      if (newWarningLevel > warningLevel) needAlert = true;
+    }
+
     this.warningLevel = newWarningLevel;
     if (this.isInBox) {
-      return this.save();
+      this.save();
     }
+    return true;
   }
 
 //  double checkTitle(String title, Tag tag) {

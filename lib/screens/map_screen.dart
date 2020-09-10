@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -11,8 +12,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/alerts_dialog.dart';
 import 'package:sgcovidmapper/widgets/data_information.dart';
 import 'package:sgcovidmapper/widgets/showcase_container.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
@@ -50,234 +53,243 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         Platform.isAndroid ? SystemNavigator.pop() : exit(0);
         return false;
       },
-      child: Scaffold(
-        // Prevent markers from being shifted by keyboard.
-        resizeToAvoidBottomInset: true,
-        floatingActionButton: MapScreenSpeedDial(),
-        body: Stack(
-          children: [
-            BlocConsumer<BottomPanelBloc, BottomPanelState>(
-              listener: (BuildContext context, BottomPanelState state) {
-                if (state is PanelPositionUpdated) return;
-                if (state is BottomPanelContentChanged) {
-                  _panelController.animatePanelToPosition(
-                    state.maxHeight,
-                    duration: Duration(milliseconds: 250),
-                    curve: Curves.linear,
-                  );
-                }
-                if (state is BottomPanelOpening) {
-                  _panelController.animatePanelToPosition(
-                    1.0,
-                    duration: Duration(milliseconds: 250),
-                    curve: Curves.linear,
-                  );
-                }
-                if (state is BottomPanelClosing) {
-                  _panelController.animatePanelToPosition(0.0,
+      child: BlocListener<WarningBloc, WarningState>(
+        condition: (previous, current) => current is DisplayAlerts,
+        listener: (BuildContext context, state) =>
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+          AlertsDialog.showAlertDialog(
+              (state as DisplayAlerts).alerts, context);
+        }),
+        child: Scaffold(
+          // Prevent markers from being shifted by keyboard.
+          resizeToAvoidBottomInset: true,
+          floatingActionButton: MapScreenSpeedDial(),
+          body: Stack(
+            children: [
+              BlocConsumer<BottomPanelBloc, BottomPanelState>(
+                listener: (BuildContext context, BottomPanelState state) {
+                  if (state is PanelPositionUpdated) return;
+                  if (state is BottomPanelContentChanged) {
+                    _panelController.animatePanelToPosition(
+                      state.maxHeight,
                       duration: Duration(milliseconds: 250),
-                      curve: Curves.linear);
-                }
-              },
-              buildWhen: (previous, current) =>
-                  (current is BottomPanelOpening ||
-                      current is BottomPanelOpened ||
-                      current is BottomPanelCollapsed),
-              builder: (BuildContext context, BottomPanelState state) {
-                return SlidingUpPanel(
-                  color: Theme.of(context).primaryColorLight,
-                  isDraggable:
-                      state.isDraggable != null ? state.isDraggable : false,
-                  panelSnapping: true,
-                  parallaxEnabled: true,
-                  parallaxOffset: 0.5,
-                  controller: _panelController,
-                  backdropEnabled: true,
-                  backdropOpacity: 0.05,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(18.0),
-                      topRight: Radius.circular(18.0)),
-                  backdropTapClosesPanel: true,
-                  minHeight: 0.00,
-                  maxHeight:
-                      MediaQuery.of(context).size.height * state.maxHeight,
-                  onPanelOpened: () {
-                    if (state.data is SearchPanelData)
+                      curve: Curves.linear,
+                    );
+                  }
+                  if (state is BottomPanelOpening) {
+                    _panelController.animatePanelToPosition(
+                      1.0,
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.linear,
+                    );
+                  }
+                  if (state is BottomPanelClosing) {
+                    _panelController.animatePanelToPosition(0.0,
+                        duration: Duration(milliseconds: 250),
+                        curve: Curves.linear);
+                  }
+                },
+                buildWhen: (previous, current) =>
+                    (current is BottomPanelOpening ||
+                        current is BottomPanelOpened ||
+                        current is BottomPanelCollapsed),
+                builder: (BuildContext context, BottomPanelState state) {
+                  return SlidingUpPanel(
+                    color: Theme.of(context).primaryColorLight,
+                    isDraggable:
+                        state.isDraggable != null ? state.isDraggable : false,
+                    panelSnapping: true,
+                    parallaxEnabled: true,
+                    parallaxOffset: 0.5,
+                    controller: _panelController,
+                    backdropEnabled: true,
+                    backdropOpacity: 0.05,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18.0),
+                        topRight: Radius.circular(18.0)),
+                    backdropTapClosesPanel: true,
+                    minHeight: 0.00,
+                    maxHeight:
+                        MediaQuery.of(context).size.height * state.maxHeight,
+                    onPanelOpened: () {
+                      if (state.data is SearchPanelData)
+                        BlocProvider.of<BottomPanelBloc>(context)
+                            .add(SearchPanelOpened());
+                      if (state.data is PlacePanelData)
+                        BlocProvider.of<BottomPanelBloc>(context)
+                            .add(PlacePanelOpened());
+                      if (state.data is GeocodePanelData)
+                        BlocProvider.of<MapBloc>(context)
+                            .add(DisplayUserLocation());
+                    },
+                    onPanelClosed: () {
                       BlocProvider.of<BottomPanelBloc>(context)
-                          .add(SearchPanelOpened());
-                    if (state.data is PlacePanelData)
-                      BlocProvider.of<BottomPanelBloc>(context)
-                          .add(PlacePanelOpened());
-                    if (state.data is GeocodePanelData)
-                      BlocProvider.of<MapBloc>(context)
-                          .add(DisplayUserLocation());
-                  },
-                  onPanelClosed: () {
-                    BlocProvider.of<BottomPanelBloc>(context)
-                        .add(OnBottomPanelClosed());
-                    if (state.data is SearchPanelData ||
-                        state.data is GeocodePanelData)
-                      BlocProvider.of<MapBloc>(context)
-                          .add(ClearOneMapPlacesMarker());
-                  },
-                  onPanelSlide: (position) {
-                    BlocProvider.of<BottomPanelBloc>(context).add(
-                        PanelPositionChanged(
-                            position: position, data: state.data));
-                  },
+                          .add(OnBottomPanelClosed());
+                      if (state.data is SearchPanelData ||
+                          state.data is GeocodePanelData)
+                        BlocProvider.of<MapBloc>(context)
+                            .add(ClearOneMapPlacesMarker());
+                    },
+                    onPanelSlide: (position) {
+                      BlocProvider.of<BottomPanelBloc>(context).add(
+                          PanelPositionChanged(
+                              position: position, data: state.data));
+                    },
 //                    state is BottomPanelOpened && state.data is PlacePanelData
 //                        ? _onBottomPanelSlide
 //                        : null,
-                  panelBuilder: (sc) => BottomPanel(
-                    state: state,
-                    scrollController: sc,
-                  ),
-                  body: BlocConsumer<MapBloc, MapState>(
-                    listenWhen: (previous, current) =>
-                        current is MapViewBoundsChanged ||
-                        (previous is PlacesLoading && current is MapUpdated),
-                    listener: (context, state) async {
-                      if (state is MapViewBoundsChanged) {
-                        _animatedMapMove(state.mapCenter, MapConstants.maxZoom);
-                      }
-                      if (state is MapUpdated) {
-                        LatLngBounds bounds = LatLngBounds.fromPoints(
-                            state.covidPlaces.map((e) => e.point).toList());
-                        _mapController.fitBounds(bounds);
-                      }
-                    },
-                    builder: (BuildContext context, MapState state) {
-                      return FlutterMap(
-                        mapController: _mapController,
-                        options: MapOptions(
-                          center: MapConstants.mapCenter,
-                          zoom: MapConstants.zoom,
-                          maxZoom: MapConstants.maxZoom,
-                          minZoom: MapConstants.minZoom,
-                          plugins: [
-                            MarkerClusterPlugin(),
-                          ],
-                        ),
-                        layers: [
-                          MapConstants.tileLayerOptions,
-                          MarkerLayerOptions(markers: state.nearbyPlaces),
-                          MarkerClusterLayerOptions(
-                            maxClusterRadius: 60,
-                            size: Size(50, 50),
-                            anchor: AnchorPos.align(AnchorAlign.center),
-                            showPolygon: false,
-                            fitBoundsOptions: FitBoundsOptions(
-                              padding: EdgeInsets.all(50),
+                    panelBuilder: (sc) => BottomPanel(
+                      state: state,
+                      scrollController: sc,
+                    ),
+                    body: BlocConsumer<MapBloc, MapState>(
+                      listenWhen: (previous, current) =>
+                          current is MapViewBoundsChanged ||
+                          (previous is PlacesLoading && current is MapUpdated),
+                      listener: (context, state) async {
+                        if (state is MapViewBoundsChanged) {
+                          _animatedMapMove(
+                              state.mapCenter, MapConstants.maxZoom);
+                        }
+                        if (state is MapUpdated) {
+                          LatLngBounds bounds = LatLngBounds.fromPoints(
+                              state.covidPlaces.map((e) => e.point).toList());
+                          _mapController.fitBounds(bounds);
+                        }
+                      },
+                      builder: (BuildContext context, MapState state) {
+                        return FlutterMap(
+                          mapController: _mapController,
+                          options: MapOptions(
+                            center: MapConstants.mapCenter,
+                            zoom: MapConstants.zoom,
+                            maxZoom: MapConstants.maxZoom,
+                            minZoom: MapConstants.minZoom,
+                            plugins: [
+                              MarkerClusterPlugin(),
+                            ],
+                          ),
+                          layers: [
+                            MapConstants.tileLayerOptions,
+                            MarkerLayerOptions(markers: state.nearbyPlaces),
+                            MarkerClusterLayerOptions(
+                              maxClusterRadius: 60,
+                              size: Size(50, 50),
+                              anchor: AnchorPos.align(AnchorAlign.center),
+                              showPolygon: false,
+                              fitBoundsOptions: FitBoundsOptions(
+                                padding: EdgeInsets.all(50),
+                              ),
+                              onMarkerTap: (Marker marker) =>
+                                  BlocProvider.of<BottomPanelBloc>(context)
+                                      .add(PlacePanelDisplayed([marker])),
+                              onClusterTap: (node) {
+                                BlocProvider.of<BottomPanelBloc>(context).add(
+                                    PlacePanelDisplayed(node.markers
+                                        .map((e) => e.marker as PlaceMarker)
+                                        .toList()));
+                              },
+                              computeSize: (markers) {
+                                double size = (log(markers.length)) * 25.0 + 15;
+                                return Size(size, size);
+                              },
+                              markers: state.covidPlaces,
+                              builder: (context, markers) {
+                                return ClusterWidget(
+                                  markers: markers,
+                                );
+                              },
                             ),
-                            onMarkerTap: (Marker marker) =>
-                                BlocProvider.of<BottomPanelBloc>(context)
-                                    .add(PlacePanelDisplayed([marker])),
-                            onClusterTap: (node) {
-                              BlocProvider.of<BottomPanelBloc>(context).add(
-                                  PlacePanelDisplayed(node.markers
-                                      .map((e) => e.marker as PlaceMarker)
-                                      .toList()));
-                            },
-                            computeSize: (markers) {
-                              double size = (log(markers.length)) * 25.0 + 15;
-                              return Size(size, size);
-                            },
-                            markers: state.covidPlaces,
-                            builder: (context, markers) {
-                              return ClusterWidget(
-                                markers: markers,
-                              );
-                            },
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+//          SearchResultSheet(),
+              DataInformation(
+                keys: [searchKey],
+              ),
+              Positioned(
+                top: 12.0,
+                left: 24.0,
+                right: 24.0,
+                child: SafeArea(
+                  child: Showcase.withWidget(
+                    key: searchKey,
+                    height: 200,
+                    width: 250,
+                    shapeBorder: CircleBorder(),
+                    container: ShowcaseContainer(
+                      height: 160,
+                      width: 379.5,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8),
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'Search building, addresses or postal code. '
+                                  'Clicking on a result will zoom to the location. '
+                                  'Search is powered by OneMap.sg.',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8),
+                                child: Icon(
+                                  FontAwesomeIcons.signInAlt,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  'You can add a location to your visit log by '
+                                  'clicking on the check in button in the search result.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-//          SearchResultSheet(),
-            DataInformation(
-              keys: [searchKey],
-            ),
-            Positioned(
-              top: 12.0,
-              left: 24.0,
-              right: 24.0,
-              child: SafeArea(
-                child: Showcase.withWidget(
-                  key: searchKey,
-                  height: 200,
-                  width: 250,
-                  shapeBorder: CircleBorder(),
-                  container: ShowcaseContainer(
-                    height: 160,
-                    width: 379.5,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Search building, addresses or postal code. '
-                                'Clicking on a result will zoom to the location. '
-                                'Search is powered by OneMap.sg.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Icon(
-                                FontAwesomeIcons.signInAlt,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Expanded(
-                              child: Text(
-                                'You can add a location to your visit log by '
-                                'clicking on the check in button in the search result.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
+                    child: SearchTextField(),
                   ),
-                  child: SearchTextField(),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

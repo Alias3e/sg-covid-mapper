@@ -31,13 +31,13 @@ main() {
     checkPanelBloc = MockCheckPanelBloc();
     myVisitedPlaceRepository = MockMyVisitedPlaceRepository();
     covidPlacesRepository = MockCovidPlacesRepository();
+    when(covidPlacesRepository.covidLocations)
+        .thenAnswer((realInvocation) => Stream.fromIterable(covidPlaces));
+    when(myVisitedPlaceRepository.loadVisits()).thenReturn(visits);
     warningBloc = WarningBloc(
         checkPanelBloc: checkPanelBloc,
         visitsRepository: myVisitedPlaceRepository,
         covidRepository: covidPlacesRepository);
-    when(covidPlacesRepository.covidLocations)
-        .thenAnswer((realInvocation) => Stream.fromIterable(covidPlaces));
-    when(myVisitedPlaceRepository.loadVisits()).thenReturn(visits);
   });
 
   tearDown(() {
@@ -94,5 +94,11 @@ main() {
         act: (bloc) =>
             bloc.add(WarningChanged(DateTime.now().millisecondsSinceEpoch)),
         expect: [isA<WarningLevelUpdated>()]);
+
+    blocTest(
+        'emits DisplayAlerts when user visited a place where cases has also visited',
+        build: () async => warningBloc,
+        act: (bloc) => bloc.add(OnAlertFound([])),
+        expect: [isA<DisplayAlerts>()]);
   });
 }

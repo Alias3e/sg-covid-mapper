@@ -41,10 +41,13 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
 
   void _updateWarningLevels() {
     List<Visit> visits = visitsRepository.loadVisits();
+    List<Visit> alerts = [];
     visits.forEach((visit) {
-      visit.setWarningLevel(covidRepository.covidLocationsCached);
+      if (visit.setWarningLevel(covidRepository.covidLocationsCached))
+        alerts.add(visit);
     });
     add(WarningChanged(DateTime.now().millisecondsSinceEpoch));
+    if (alerts.length > 0) add(OnAlertFound(alerts));
   }
 
   @override
@@ -53,6 +56,8 @@ class WarningBloc extends Bloc<WarningEvent, WarningState> {
   @override
   Stream<WarningState> mapEventToState(WarningEvent event) async* {
     if (event is WarningChanged) yield WarningLevelUpdated(event.timestamp);
+
+    if(event is OnAlertFound) yield DisplayAlerts(event.alerts);
   }
 
   @override
