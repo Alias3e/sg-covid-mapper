@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class TagsWidget extends StatefulWidget {
   final Function onTagAdd;
@@ -27,7 +28,7 @@ class _TagsWidgetState extends State<TagsWidget> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 250),
+      duration: Duration(milliseconds: kAnimationDuration),
       child: _axisSize == MainAxisSize.min && !widget.hasInitialTags
           ? RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

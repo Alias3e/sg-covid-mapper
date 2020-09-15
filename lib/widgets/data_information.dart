@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 import 'package:showcaseview/showcase_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +21,7 @@ class DataInformation extends StatelessWidget {
         builder: (context, state) => Visibility(
           visible: state.opacity != 0,
           child: AnimatedOpacity(
-            duration: Duration(milliseconds: 250),
+            duration: Duration(milliseconds: kAnimationDuration),
             opacity: state.opacity,
             child: Container(
               decoration: BoxDecoration(

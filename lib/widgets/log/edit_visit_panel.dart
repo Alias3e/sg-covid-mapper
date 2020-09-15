@@ -94,7 +94,8 @@ class _EditVisitPanelState extends State<EditVisitPanel>
                         if (state is CheckOutPickerDisplayed)
                           return AnimatedSize(
                             vsync: this,
-                            duration: Duration(milliseconds: 200),
+                            duration:
+                                Duration(milliseconds: kAnimationDuration),
                             child: Container(
                               height: height,
                               child: Text(
@@ -119,7 +120,7 @@ class _EditVisitPanelState extends State<EditVisitPanel>
                         if (state is CheckOutPickerDisplayed)
                           widget.visit.checkOutTime = state.dateTime;
                         return AnimatedSwitcher(
-                          duration: Duration(milliseconds: 200),
+                          duration: Duration(milliseconds: kAnimationDuration),
                           transitionBuilder: (child, animation) =>
                               FadeTransition(
                             child: child,
@@ -133,7 +134,7 @@ class _EditVisitPanelState extends State<EditVisitPanel>
                     ),
                     AnimatedSize(
                         vsync: this,
-                        duration: Duration(milliseconds: 250),
+                        duration: Duration(milliseconds: kAnimationDuration),
                         child: BlocBuilder<LogBloc, LogState>(
                           condition: (previous, current) =>
                               current is TagsUpdated,

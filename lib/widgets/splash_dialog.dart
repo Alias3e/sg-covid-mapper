@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class SplashDialog extends StatelessWidget {
   final List<dynamic> dialogContents;
@@ -23,7 +24,7 @@ class SplashDialog extends StatelessWidget {
             if (state is DialogContentChange) index = state.nextIndex;
             if (index >= dialogContents.length) return Container();
             return AnimatedSwitcher(
-              duration: Duration(milliseconds: 1000),
+              duration: Duration(milliseconds: kAnimationDuration),
               child: DialogBody(
                 title: dialogContents[index]['title'],
                 content: dialogContents[index]['body'],

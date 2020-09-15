@@ -32,7 +32,7 @@ class _ReverseGeocodeLocationPanelState
           (BuildContext context, BottomPanelState<BottomPanelStateData> state) {
         return widget.data.results.length > 0
             ? AnimatedSwitcher(
-                duration: Duration(milliseconds: 500),
+                duration: Duration(milliseconds: kAnimationDuration),
                 child: state is BottomPanelContentChanged &&
                         BlocProvider.of<BottomPanelBloc>(context).panelType ==
                             PanelType.log
@@ -53,11 +53,13 @@ class _ReverseGeocodeLocationPanelState
                                       .copyWith(
                                           color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.w600),
-                              duration: Duration(milliseconds: 200),
+                              duration:
+                                  Duration(milliseconds: kAnimationDuration),
                               child: Text(model.title),
                             ),
                             subtitle: AnimatedDefaultTextStyle(
-                              duration: Duration(milliseconds: 200),
+                              duration:
+                                  Duration(milliseconds: kAnimationDuration),
                               style: selected != index
                                   ? Theme.of(context)
                                       .textTheme

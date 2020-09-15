@@ -22,7 +22,7 @@ class MapScreenSpeedDial extends StatelessWidget {
         visible: state.opacity != 0,
         child: AnimatedOpacity(
           opacity: state.opacity,
-          duration: Duration(milliseconds: 250),
+          duration: Duration(milliseconds: kAnimationDuration),
           child: BlocBuilder<ReverseGeocodeBloc, ReverseGeocodeState>(
             builder: (BuildContext context, state) => SpeedDial(
               animatedIcon: state is GeocodingInProgress

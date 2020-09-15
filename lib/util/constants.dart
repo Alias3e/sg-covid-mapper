@@ -105,3 +105,5 @@ class AppColors {
   static final Color kColorRed = Colors.red;
   static final Color kColorGreen = Colors.teal;
 }
+
+int kAnimationDuration = 225;

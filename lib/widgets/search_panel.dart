@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/search_results_panel.dart';
 
 import 'check/check_panel.dart';
@@ -28,7 +29,7 @@ class _SearchPanelState extends State<SearchPanel> {
                   (BuildContext context, BottomPanelState bottomPanelState) {
                 return AnimatedSwitcher(
                   duration: Duration(
-                    milliseconds: 500,
+                    milliseconds: kAnimationDuration,
                   ),
                   child: BlocProvider.of<BottomPanelBloc>(context).panelType ==
                           PanelType.log

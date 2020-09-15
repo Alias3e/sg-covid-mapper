@@ -4,6 +4,7 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 
 class SearchTextField extends StatefulWidget {
   @override
@@ -42,7 +43,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             visible: state.opacity != 0,
             child: AnimatedOpacity(
               opacity: state.opacity,
-              duration: Duration(milliseconds: 250),
+              duration: Duration(milliseconds: kAnimationDuration),
               child: Focus(
                 onFocusChange: (value) {
                   if (value) {

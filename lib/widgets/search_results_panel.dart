@@ -36,11 +36,11 @@ class SearchResultsPanel extends StatelessWidget {
                       : Theme.of(context).textTheme.subtitle1.copyWith(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.w600),
-                  duration: Duration(milliseconds: 200),
+                  duration: Duration(milliseconds: kAnimationDuration),
                   child: Text(result.title),
                 ),
                 subtitle: AnimatedDefaultTextStyle(
-                    duration: Duration(milliseconds: 200),
+                    duration: Duration(milliseconds: kAnimationDuration),
                     style: searchState.selected != index
                         ? Theme.of(context).textTheme.bodyText2.copyWith(
                             color: Theme.of(context).textTheme.caption.color)

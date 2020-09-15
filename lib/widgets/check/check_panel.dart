@@ -135,7 +135,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                           dateTime = state.dateTime;
                         return AnimatedSize(
                           vsync: this,
-                          duration: Duration(milliseconds: 200),
+                          duration: Duration(milliseconds: kAnimationDuration),
                           child: Container(
                             height: height,
                             child: Text(
@@ -166,7 +166,8 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                             current is CheckOutDateTimeUpdated,
                         builder: (BuildContext context, CheckPanelState state) {
                           return AnimatedSwitcher(
-                            duration: Duration(milliseconds: 200),
+                            duration:
+                                Duration(milliseconds: kAnimationDuration),
                             transitionBuilder: (child, animation) =>
                                 FadeTransition(
                               child: child,
@@ -225,7 +226,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                       ),
                       child: AnimatedSize(
                           vsync: this,
-                          duration: Duration(milliseconds: 250),
+                          duration: Duration(milliseconds: kAnimationDuration),
                           child: TagsWidget(
                             hasInitialTags: false,
                             onTagAdd: (tag) =>

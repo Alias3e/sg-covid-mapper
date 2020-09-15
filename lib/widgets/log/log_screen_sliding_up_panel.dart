@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
+import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/log/check_out_panel.dart';
 import 'package:sgcovidmapper/widgets/log/delete_confirmation_panel.dart';
 import 'package:sgcovidmapper/widgets/log/edit_visit_panel.dart';
@@ -31,7 +32,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
         if (state is LogPanelShowingState) {
           _panelController.animatePanelToPosition(
             1.0,
-            duration: Duration(milliseconds: 150),
+            duration: Duration(milliseconds: kAnimationDuration),
             curve: Curves.linear,
           );
         }
@@ -39,7 +40,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
         if (state is LogPanelClosing) {
           _panelController.animatePanelToPosition(
             0.0,
-            duration: Duration(milliseconds: 150),
+            duration: Duration(milliseconds: kAnimationDuration),
             curve: Curves.linear,
           );
         }

@@ -127,7 +127,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return showGeneralDialog(
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: Duration(milliseconds: 400),
       context: context,
       pageBuilder: (_, anim1, anim2) {
         return Align(
