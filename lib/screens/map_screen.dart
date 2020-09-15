@@ -56,7 +56,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       child: BlocListener<WarningBloc, WarningState>(
         condition: (previous, current) => current is DisplayAlerts,
         listener: (BuildContext context, state) =>
-            SchedulerBinding.instance.addPostFrameCallback((_) {
+            SchedulerBinding.instance.addPostFrameCallback((_) async {
+          await Future.delayed(Duration(milliseconds: 500));
           AlertsDialog.showAlertDialog(
               (state as DisplayAlerts).alerts, context);
         }),

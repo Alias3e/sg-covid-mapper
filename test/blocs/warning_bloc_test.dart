@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
+import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
@@ -14,6 +15,8 @@ class MockWarningBloc extends MockBloc<WarningEvent, WarningState>
 class MockCheckPanelBloc extends MockBloc<CheckPanelEvent, CheckPanelState>
     implements CheckPanelBloc {}
 
+class MockLogBloc extends MockBloc<LogEvent, LogState> implements LogBloc {}
+
 class MockMyVisitedPlaceRepository extends Mock
     implements MyVisitedPlaceRepository {}
 
@@ -23,12 +26,14 @@ main() {
   MockCheckPanelBloc checkPanelBloc;
   MockMyVisitedPlaceRepository myVisitedPlaceRepository;
   MockCovidPlacesRepository covidPlacesRepository;
+  MockLogBloc logBloc;
   List<List<CovidLocation>> covidPlaces = [[]];
   List<Visit> visits = [];
   WarningBloc warningBloc;
 
   setUp(() {
     checkPanelBloc = MockCheckPanelBloc();
+    logBloc = MockLogBloc();
     myVisitedPlaceRepository = MockMyVisitedPlaceRepository();
     covidPlacesRepository = MockCovidPlacesRepository();
     when(covidPlacesRepository.covidLocations)
@@ -37,6 +42,7 @@ main() {
     warningBloc = WarningBloc(
         checkPanelBloc: checkPanelBloc,
         visitsRepository: myVisitedPlaceRepository,
+        logBloc: logBloc,
         covidRepository: covidPlacesRepository);
   });
 
@@ -51,6 +57,7 @@ main() {
           () => WarningBloc(
                 covidRepository: covidPlacesRepository,
                 visitsRepository: myVisitedPlaceRepository,
+                logBloc: logBloc,
                 checkPanelBloc: null,
               ),
           throwsAssertionError);
@@ -62,6 +69,7 @@ main() {
                 covidRepository: null,
                 visitsRepository: myVisitedPlaceRepository,
                 checkPanelBloc: checkPanelBloc,
+                logBloc: logBloc,
               ),
           throwsAssertionError);
     });
@@ -72,6 +80,18 @@ main() {
                 covidRepository: covidPlacesRepository,
                 visitsRepository: null,
                 checkPanelBloc: checkPanelBloc,
+                logBloc: logBloc,
+              ),
+          throwsAssertionError);
+    });
+
+    test('throw AssertionError when LogBloc is null', () {
+      expect(
+          () => WarningBloc(
+                covidRepository: covidPlacesRepository,
+                visitsRepository: myVisitedPlaceRepository,
+                checkPanelBloc: checkPanelBloc,
+                logBloc: null,
               ),
           throwsAssertionError);
     });
@@ -80,9 +100,9 @@ main() {
       WarningBloc bloc = WarningBloc(
           covidRepository: covidPlacesRepository,
           visitsRepository: myVisitedPlaceRepository,
+          logBloc: logBloc,
           checkPanelBloc: checkPanelBloc);
 
-      await untilCalled(covidPlacesRepository.init());
       expect(bloc.initialState, WarningLevelUnchanged());
       bloc.close();
     });

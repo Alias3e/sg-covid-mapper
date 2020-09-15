@@ -92,14 +92,14 @@ class Visit extends HiveObject {
     if (warningLevel == null) {
       if (newWarningLevel > 0) needAlert = true;
     } else {
-      if (newWarningLevel > warningLevel) needAlert = true;
+      if (newWarningLevel > warningLevel && warningLevel == 0) needAlert = true;
     }
 
     this.warningLevel = newWarningLevel;
     if (this.isInBox) {
       this.save();
     }
-    return true;
+    return needAlert;
   }
 
 //  double checkTitle(String title, Tag tag) {

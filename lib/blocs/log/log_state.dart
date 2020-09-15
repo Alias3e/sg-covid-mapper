@@ -74,8 +74,11 @@ class VisitDeleteCompleted extends LogPanelClosing {
 }
 
 class VisitUpdateInProgress extends LogState {
+  final Visit visit;
+
+  VisitUpdateInProgress(this.visit);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [visit];
 }
 
 class VisitUpdateCompleted extends LogPanelClosing {
@@ -114,4 +117,12 @@ class TagsUpdated extends LogState {
 
   @override
   List<Object> get props => [tag];
+}
+
+class VisitNeedAlert extends LogState {
+  final Visit visit;
+
+  VisitNeedAlert(this.visit);
+  @override
+  List<Object> get props => [visit];
 }

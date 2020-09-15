@@ -40,10 +40,7 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     }
 
     if (event is OnVisitUpdated) {
-      yield VisitUpdateInProgress();
-      await event.visit
-          .setWarningLevel(_covidPlacesRepository.covidLocationsCached);
-//      await _myVisitedPlacesRepository.updateVisit(event.visit);
+      yield VisitUpdateInProgress(event.visit);
       yield VisitUpdateCompleted(maxHeight: 0.33);
     }
 

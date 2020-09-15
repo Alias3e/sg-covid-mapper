@@ -1,7 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sgcovidmapper/models/covid_location.dart';
-import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 
 main() {
@@ -167,29 +166,86 @@ main() {
       expect(visit.warningLevel, 1);
     });
   });
-
-  group('Tags warning tests', () {
-    test('Level 2 warning tag match', () {
+  group('Alerts test', () {
+    test('New visit with warning level > 0 returns true when set warning', () {
       String postalCode = faker.randomGenerator.integer(100).toString();
       Visit visit = Visit();
-      Tag tag1 = Tag('Kampung Admiralty');
-      visit.title = 'Pioneer Mall';
+      visit.title = faker.lorem.sentence();
       visit.postalCode = postalCode;
       visit.checkInTime = DateTime(2020, 6, 21, 9);
       visit.checkOutTime = DateTime(2020, 6, 21, 10);
-      visit.tags = [tag1];
 
       CovidLocation location = CovidLocation(
         postalCode: postalCode,
-        title: 'Kampung Admiralty Hawker Centre (676 Woodlands Drive 71)',
-        subtitle: '',
+        title: faker.lorem.sentence(),
         startTime: DateTime(2020, 6, 21, 9),
         endTime: DateTime(2020, 6, 21, 10),
       );
 
-      visit.setWarningLevel([location]);
-//      expect(visit.warningLevel, 1);
-//      expect(tag1.isVisitedByInfected, true);
+      expect(visit.setWarningLevel([location]), true);
+    });
+
+    test('New visit with warning level == 0 return false when set warning', () {
+      String postalCode = faker.randomGenerator.integer(100).toString();
+      Visit visit = Visit();
+      visit.title = faker.lorem.sentence();
+      visit.postalCode = postalCode;
+      visit.checkInTime = DateTime(2020, 6, 21, 9);
+      visit.checkOutTime = DateTime(2020, 6, 21, 10);
+
+      CovidLocation location = CovidLocation(
+        postalCode: faker.randomGenerator.integer(200, min: 101).toString(),
+        title: faker.lorem.sentence(),
+        startTime: DateTime(2020, 6, 21, 9),
+        endTime: DateTime(2020, 6, 21, 10),
+      );
+
+      expect(visit.setWarningLevel([location]), false);
+    });
+
+    test('Visit with warning level == 1 return false when new warning > 1', () {
+      String postalCode = faker.randomGenerator.integer(100).toString();
+      Visit visit = Visit();
+      visit.title = faker.lorem.sentence();
+      visit.postalCode = postalCode;
+      visit.checkInTime = DateTime(2020, 6, 21, 9);
+      visit.checkOutTime = DateTime(2020, 6, 21, 10);
+      visit.warningLevel = 1;
+
+      CovidLocation location = CovidLocation(
+        postalCode: postalCode,
+        title: faker.lorem.sentence(),
+        startTime: DateTime(2020, 6, 21, 9),
+        endTime: DateTime(2020, 6, 21, 10),
+      );
+
+      expect(visit.setWarningLevel([location]), false);
+      expect(visit.warningLevel, 1);
     });
   });
+
+//  group('Tags warning tests', () {
+//    test('Level 2 warning tag match', () {
+//      String postalCode = faker.randomGenerator.integer(100).toString();
+//      Visit visit = Visit();
+//      Tag tag1 = Tag('Kampung Admiralty');
+//      visit.title = 'Pioneer Mall';
+//      visit.postalCode = postalCode;
+//      visit.checkInTime = DateTime(2020, 6, 21, 9);
+//      visit.checkOutTime = DateTime(2020, 6, 21, 10);
+//      visit.tags = [tag1];
+//
+//      CovidLocation location = CovidLocation(
+//        postalCode: postalCode,
+//        title: 'Kampung Admiralty Hawker Centre (676 Woodlands Drive 71)',
+//        subtitle: '',
+//        startTime: DateTime(2020, 6, 21, 9),
+//        endTime: DateTime(2020, 6, 21, 10),
+//      );
+//
+//      visit.setWarningLevel([location]);
+////      expect(visit.warningLevel, 1);
+////      expect(tag1.isVisitedByInfected, true);
+//    });
+//  });
 }

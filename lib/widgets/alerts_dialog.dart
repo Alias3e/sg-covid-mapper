@@ -9,7 +9,7 @@ class AlertsDialog {
     showGeneralDialog(
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: Duration(milliseconds: 300),
       pageBuilder: (context, animation, secondaryAnimation) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         backgroundColor: Theme.of(context).primaryColorLight,
@@ -25,14 +25,14 @@ class AlertsDialog {
                   Icon(
                     FontAwesomeIcons.exclamation,
                     size: 28,
-                    color: Theme.of(context).accentColor,
+                    color: AppColors.kColorRed,
                   ),
                   SizedBox(
                     width: 8,
                   ),
                   Expanded(
                     child: Text(
-                      'Following location was visited by cases while you were also in the vicinity',
+                      'Following locations was visited by cases while you were in the vicinity',
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 18,
@@ -53,15 +53,29 @@ class AlertsDialog {
                   );
                 },
               ),
+              Text(
+                'As a precautionary measure, you should monitor your health closely for 14 days from your date of visit',
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'Ok',
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor, fontSize: 24),
+                ),
+              )
             ],
           ),
         ),
       ),
       context: context,
       transitionBuilder: (context, anim1, anim2, child) {
-        return SlideTransition(
-          position:
-              Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(anim1),
+        return Transform.scale(
+          scale: anim1.value,
           child: child,
         );
       },

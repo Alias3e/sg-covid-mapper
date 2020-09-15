@@ -146,14 +146,16 @@ class MyApp extends StatelessWidget {
                     BlocProvider<WarningBloc>(
                       lazy: false,
                       create: (BuildContext context) => WarningBloc(
-                          visitsRepository:
-                              RepositoryProvider.of<MyVisitedPlaceRepository>(
-                                  context),
-                          covidRepository:
-                              RepositoryProvider.of<CovidPlacesRepository>(
-                                  context),
-                          checkPanelBloc:
-                              BlocProvider.of<CheckPanelBloc>(context)),
+                        visitsRepository:
+                            RepositoryProvider.of<MyVisitedPlaceRepository>(
+                                context),
+                        covidRepository:
+                            RepositoryProvider.of<CovidPlacesRepository>(
+                                context),
+                        checkPanelBloc:
+                            BlocProvider.of<CheckPanelBloc>(context),
+                        logBloc: BlocProvider.of<LogBloc>(context),
+                      ),
                     ),
                   ],
                   child: ShowCaseWidget(
