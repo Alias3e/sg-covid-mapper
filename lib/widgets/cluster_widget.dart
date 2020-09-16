@@ -19,7 +19,7 @@ class ClusterWidget extends StatelessWidget {
           markers.length.toString(),
           style: TextStyle(
             fontSize: 24,
-            color: Colors.white,
+            color: Theme.of(context).primaryColorLight,
             fontWeight: FontWeight.w900,
           ),
         ),

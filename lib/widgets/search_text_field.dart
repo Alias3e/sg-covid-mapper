@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
@@ -99,7 +100,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                             child: Material(
                               color: Colors.transparent,
                               child: Icon(
-                                Icons.close,
+                                FontAwesomeIcons.times,
                                 color: Theme.of(context).accentColor,
                               ),
                             ),

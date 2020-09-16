@@ -62,9 +62,12 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       try {
         LocationData position = await gpsRepository.getCurrentLocation();
         if (_myPlaces.isNotEmpty) _myPlaces.clear();
-        _lastGpsLocation = _makeMarker(position.latitude, position.longitude,
-            iconData: FontAwesomeIcons.streetView,
-            color: AppColors.kColorPrimary);
+        _lastGpsLocation = _makeMarker(
+          position.latitude,
+          position.longitude,
+          iconData: FontAwesomeIcons.mapPin,
+          color: AppColors.kColorPrimary,
+        );
         yield GPSAcquired(
           mapCenter: LatLng(position.latitude, position.longitude),
           nearbyPlaces: _myPlaces,
@@ -122,12 +125,12 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     return Marker(
       point: LatLng(latitude, longitude),
       anchorPos: AnchorPos.align(AnchorAlign.top),
-      height: 50,
-      width: 50,
+      height: 25,
+      width: 25,
       builder: (context) => FaIcon(
         iconData == null ? FontAwesomeIcons.mapMarkerAlt : iconData,
         color: color == null ? AppColors.kColorAccent : color,
-        size: 50,
+        size: 25,
       ),
     );
   }
