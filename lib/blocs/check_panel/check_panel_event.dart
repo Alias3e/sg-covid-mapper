@@ -36,6 +36,11 @@ class CheckOutDateTimeDisplayed extends CheckPanelEvent {
   List<Object> get props => [];
 }
 
+class CancelCheckOut extends CheckPanelEvent {
+  @override
+  List<Object> get props => throw UnimplementedError();
+}
+
 class AddTag extends CheckPanelEvent {
   final Tag tag;
 

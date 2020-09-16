@@ -6,6 +6,7 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
+// TODO: Add bloc tests
 class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
   final MyVisitedPlaceRepository repository;
   Visit visit;
@@ -38,6 +39,11 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
     if (event is CheckOutDateTimeDisplayed) {
       yield CheckOutDateTimeWidgetLoaded();
       visit.checkOutTime = DateTime.now();
+    }
+
+    if (event is CancelCheckOut) {
+      visit.checkOutTime = null;
+      yield CheckOutDateTimeWidgetHidden();
     }
 
     if (event is DisplayLocationCheckInPanel) {

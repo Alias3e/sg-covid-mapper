@@ -8,6 +8,5 @@ class KeyboardVisibilityChanged extends KeyboardVisibilityEvent {
   KeyboardVisibilityChanged(this.visibility);
 
   @override
-  // TODO: implement props
   List<Object> get props => [visibility];
 }

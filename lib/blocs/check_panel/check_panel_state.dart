@@ -40,8 +40,11 @@ class CheckOutDateTimeTextRefreshed extends CheckPanelState {
 }
 
 class CheckOutDateTimeWidgetLoaded extends CheckPanelState {
-  CheckOutDateTimeWidgetLoaded();
+  @override
+  List<Object> get props => [];
+}
 
+class CheckOutDateTimeWidgetHidden extends CheckPanelState {
   @override
   List<Object> get props => [];
 }

@@ -120,15 +120,21 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                     SizedBox(height: 16),
                     BlocConsumer<CheckPanelBloc, CheckPanelState>(
                       listenWhen: (previous, current) =>
-                          current is CheckOutDateTimeWidgetLoaded,
+                          current is CheckOutDateTimeWidgetLoaded ||
+                          current is CheckOutDateTimeWidgetHidden,
                       listener: (BuildContext context, CheckPanelState state) {
-                        final RenderBox renderBox =
-                            key.currentContext.findRenderObject();
-                        height = renderBox.size.height;
+                        if (state is CheckOutDateTimeWidgetLoaded) {
+                          final RenderBox renderBox =
+                              key.currentContext.findRenderObject();
+                          height = renderBox.size.height;
+                        } else {
+                          height = 0;
+                        }
                       },
                       buildWhen: (previous, current) =>
                           current is CheckOutDateTimeTextRefreshed ||
-                          current is CheckOutDateTimeWidgetLoaded,
+                          current is CheckOutDateTimeWidgetLoaded ||
+                          current is CheckOutDateTimeWidgetHidden,
                       builder: (BuildContext context, CheckPanelState state) {
                         DateTime dateTime = DateTime.now();
                         if (state is CheckOutDateTimeTextRefreshed)
@@ -137,10 +143,32 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                           vsync: this,
                           duration: Duration(milliseconds: kAnimationDuration),
                           child: Container(
-                            height: height,
-                            child: Text(
-                              'Check out : ${Styles.kStartDateFormat.format(dateTime)}',
-                              style: Styles.kDetailsTextStyle,
+                            height: height > 0 ? height + 8 : height,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Check out : ${Styles.kStartDateFormat.format(dateTime)}',
+                                  style: Styles.kDetailsTextStyle,
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                AnimatedOpacity(
+                                    opacity: height == 0 ? 0.0 : 1.0,
+                                    duration: Duration(
+                                        milliseconds: kAnimationDuration),
+                                    child: GestureDetector(
+                                        onTap: () =>
+                                            BlocProvider.of<CheckPanelBloc>(
+                                                    context)
+                                                .add(CancelCheckOut()),
+                                        child: FaIcon(
+                                          FontAwesomeIcons.timesCircle,
+                                          color: Theme.of(context).accentColor,
+                                        )))
+                              ],
                             ),
                           ),
                         );
@@ -163,6 +191,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                         condition: (previous, current) =>
                             current is CheckPanelLoaded ||
                             current is CheckOutDateTimeWidgetLoaded ||
+                            current is CheckOutDateTimeWidgetHidden ||
                             current is CheckOutDateTimeUpdated,
                         builder: (BuildContext context, CheckPanelState state) {
                           return AnimatedSwitcher(
@@ -175,7 +204,8 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                             ),
                             layoutBuilder: (currentChild, previousChildren) =>
                                 currentChild,
-                            child: state is CheckPanelLoaded
+                            child: state is CheckPanelLoaded ||
+                                    state is CheckOutDateTimeWidgetHidden
                                 ? Column(
                                     children: <Widget>[
                                       CheckPanelButton(
