@@ -6,3 +6,8 @@ class FocusSearchTextField extends SearchTextFieldEvent {
   @override
   List<Object> get props => [];
 }
+
+class SearchTextFieldLoseFocus extends SearchTextFieldEvent {
+  @override
+  List<Object> get props => [];
+}

@@ -10,5 +10,7 @@ class SearchTextFieldBloc
   Stream<SearchTextFieldState> mapEventToState(
       SearchTextFieldEvent event) async* {
     if (event is FocusSearchTextField) yield SearchTextFieldFocused();
+
+    if (event is SearchTextFieldLoseFocus) yield SearchTextFieldNotFocused();
   }
 }

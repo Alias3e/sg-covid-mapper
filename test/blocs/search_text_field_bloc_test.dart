@@ -20,5 +20,17 @@ main() {
       },
       expect: [SearchTextFieldFocused()],
     );
+
+    blocTest(
+      'emits [SearchTextFieldFocused, SearchTextFieldNotFocused] after an search field is typed on and then lost focus due to other elements being pressed',
+      build: () async {
+        return SearchTextFieldBloc();
+      },
+      act: (bloc) async {
+        bloc.add(FocusSearchTextField());
+        bloc.add(SearchTextFieldLoseFocus());
+      },
+      expect: [SearchTextFieldFocused(), SearchTextFieldNotFocused()],
+    );
   });
 }

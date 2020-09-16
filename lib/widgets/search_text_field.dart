@@ -33,8 +33,9 @@ class _SearchTextFieldState extends State<SearchTextField> {
     return BlocListener<SearchTextFieldBloc, SearchTextFieldState>(
       listener: (BuildContext context, state) {
         if (state is SearchTextFieldFocused) _focusNode.requestFocus();
-        if (state is SearchTextFieldNotFocused)
+        if (state is SearchTextFieldNotFocused) {
           FocusScope.of(context).requestFocus(FocusNode());
+        }
       },
       child: BlocBuilder<UpdateOpacityBloc, UpdateOpacityState>(
         condition: (previous, current) => current is! SpeedDialOpacityUpdating,
@@ -47,7 +48,12 @@ class _SearchTextFieldState extends State<SearchTextField> {
               child: Focus(
                 onFocusChange: (value) {
                   if (value) {
+                    BlocProvider.of<SearchTextFieldBloc>(context)
+                        .add(FocusSearchTextField());
                     BlocProvider.of<SearchBloc>(context).add(BeginSearch());
+                  } else {
+                    BlocProvider.of<SearchBloc>(context).add(SearchStopped());
+                    _textEditingController.clear();
                   }
                 },
                 child: TextField(
