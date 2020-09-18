@@ -8,6 +8,7 @@ import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
+import 'package:sgcovidmapper/services/firestore_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
 class InitializationBloc
@@ -16,8 +17,9 @@ class InitializationBloc
   static const String systemBoxName = 'system';
   final String isAppFirstOpen = 'isAppFirstOpen';
   final CovidPlacesRepository _covidPlacesRepository;
+  final FirestoreService _firestoreService;
 
-  InitializationBloc(this._covidPlacesRepository);
+  InitializationBloc(this._covidPlacesRepository, this._firestoreService);
 
   @override
   InitializationState get initialState => Initializing();
@@ -27,12 +29,13 @@ class InitializationBloc
       InitializationEvent event) async* {
     if (event is BeginInitialization) {
       WidgetsFlutterBinding.ensureInitialized();
+      _firestoreService.init();
       BlocSupervisor.delegate = SimpleBlocDelegate();
       AuthResult result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
       await Asset.loadConfigurations();
       if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
-      await _covidPlacesRepository.init();
+//      await _covidPlacesRepository.init();
       bool showDialog =
           Hive.box(systemBoxName).get(isAppFirstOpen, defaultValue: true);
       Map<String, dynamic> splash = {};

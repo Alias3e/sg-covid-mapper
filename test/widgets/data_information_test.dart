@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:sgcovidmapper/blocs/data_information/data_information.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
-import 'package:sgcovidmapper/widgets/data_information.dart';
+import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/data_information_widget.dart';
 
 import '../blocs/map_bloc_test.dart';
 
@@ -17,17 +19,24 @@ class MockUpdateOpacityBloc
     extends MockBloc<UpdateOpacityEvent, UpdateOpacityState>
     implements UpdateOpacityBloc {}
 
+class MockDataInformationBloc
+    extends MockBloc<DataInformationEvent, DataInformationState>
+    implements DataInformationBloc {}
+
 main() {
   UpdateOpacityBloc bloc;
+  MockDataInformationBloc dataInformationBloc;
   CovidPlacesRepository repository;
   setUp(() {
     bloc = MockUpdateOpacityBloc();
     repository = MockVisitedPlaceRepository();
+    dataInformationBloc = MockDataInformationBloc();
     when(bloc.state).thenAnswer((realInvocation) => WidgetFullyOpaque());
   });
 
   tearDown(() {
     bloc.close();
+    dataInformationBloc.close();
   });
 
   group('information container in map', () {
@@ -36,14 +45,17 @@ main() {
         MaterialApp(
           home: RepositoryProvider(
             create: (BuildContext context) => repository,
-            child: BlocProvider<UpdateOpacityBloc>(
-              create: (BuildContext context) => bloc,
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: Stack(
-                  children: [
-                    DataInformation(),
-                  ],
+            child: BlocProvider<DataInformationBloc>(
+              create: (context) => dataInformationBloc,
+              child: BlocProvider<UpdateOpacityBloc>(
+                create: (BuildContext context) => bloc,
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Stack(
+                    children: [
+                      DataInformationWidget(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -64,20 +76,28 @@ main() {
 
     testWidgets('Test display updated time correctly',
         (WidgetTester tester) async {
-      String fakeDateTimeString = Faker().date.time();
-      when(repository.dataUpdated).thenReturn(fakeDateTimeString);
+      Faker faker = Faker();
+      String date = Styles.kUpdatedDateFormat.format(faker.date.dateTime());
+      when(dataInformationBloc.state).thenAnswer((_) => DataInformationUpdated({
+            'version': faker.lorem.word(),
+            'source': faker.internet.httpsUrl(),
+            'updated': date,
+          }));
       await tester.pumpWidget(
         MaterialApp(
           home: RepositoryProvider(
             create: (BuildContext context) => repository,
-            child: BlocProvider<UpdateOpacityBloc>(
-              create: (BuildContext context) => bloc,
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: Stack(
-                  children: [
-                    DataInformation(),
-                  ],
+            child: BlocProvider<DataInformationBloc>(
+              create: (BuildContext context) => dataInformationBloc,
+              child: BlocProvider<UpdateOpacityBloc>(
+                create: (BuildContext context) => bloc,
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Stack(
+                    children: [
+                      DataInformationWidget(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -85,7 +105,7 @@ main() {
         ),
       );
       await tester.pump();
-      expect(find.text('App updated on $fakeDateTimeString'), findsOneWidget);
+      expect(find.text('App data updated on $date'), findsOneWidget);
     });
   });
 }

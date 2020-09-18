@@ -16,7 +16,7 @@ import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/alerts_dialog.dart';
-import 'package:sgcovidmapper/widgets/data_information.dart';
+import 'package:sgcovidmapper/widgets/data_information_widget.dart';
 import 'package:sgcovidmapper/widgets/showcase_container.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
 import 'package:showcaseview/showcase.dart';
@@ -209,7 +209,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                 },
               ),
 //          SearchResultSheet(),
-              DataInformation(
+              DataInformationWidget(
                 keys: [searchKey],
               ),
               Positioned(

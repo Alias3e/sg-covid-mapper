@@ -50,7 +50,6 @@ main() {
 
     setUp(() {
       mockVisitedPlaceRepository = MockVisitedPlaceRepository();
-      mockVisitedPlaceRepository.init();
       mockGpsRepository = MockGpsRepository();
       when(mockVisitedPlaceRepository.placeMarkers)
           .thenAnswer((_) => Stream.fromIterable(markers));
@@ -73,7 +72,6 @@ main() {
       MapBloc mapBloc = MapBloc(
           covidPlacesRepository: mockVisitedPlaceRepository,
           gpsRepository: mockGpsRepository);
-      await untilCalled(mockVisitedPlaceRepository.init());
       expect(mapBloc.initialState, PlacesLoading());
       mapBloc.close();
     });
@@ -109,7 +107,6 @@ main() {
             gpsRepository: mockGpsRepository);
       },
       act: (bloc) async {
-        await untilCalled(mockVisitedPlaceRepository.init());
         bloc.add(CenterOnLocation(location: latLng));
       },
       expect: [isA<MapViewBoundsChanged>()],
@@ -127,7 +124,6 @@ main() {
               covidPlacesRepository: mockVisitedPlaceRepository);
         },
         act: (bloc) async {
-          await untilCalled(mockVisitedPlaceRepository.init());
           bloc.add(GetGPS());
         },
         expect: [
@@ -149,7 +145,6 @@ main() {
             covidPlacesRepository: mockVisitedPlaceRepository);
       },
       act: (bloc) async {
-        await untilCalled(mockVisitedPlaceRepository.init());
         bloc.add(GetGPS());
       },
       expect: [

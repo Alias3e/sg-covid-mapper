@@ -77,7 +77,6 @@ main() {
       TimelineBloc bloc = TimelineBloc(
           covidRepository: covidPlacesRepository,
           visitsRepository: visitedPlaceRepository);
-      await untilCalled(covidPlacesRepository.init());
       expect(bloc.initialState, TimelineEmpty());
       bloc.close();
     });
@@ -91,7 +90,6 @@ main() {
         );
       },
       act: (bloc) async {
-        await untilCalled(covidPlacesRepository.init());
         await Future.delayed(Duration(seconds: 1));
         bloc.add(HasTimelineData(mockLocationTimelineItem[0]));
       },

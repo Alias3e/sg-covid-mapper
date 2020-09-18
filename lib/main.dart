@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sgcovidmapper/blocs/data_information/data_information.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/map/map_bloc.dart';
@@ -13,8 +13,10 @@ import 'package:sgcovidmapper/repositories/gps_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
 import 'package:sgcovidmapper/screens/splash_screen.dart';
+import 'package:sgcovidmapper/services/firestore_service.dart';
 import 'package:sgcovidmapper/services/hive_service.dart';
 import 'package:sgcovidmapper/services/one_map_api_service.dart';
+import 'package:sgcovidmapper/services/remote_database_service.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -30,13 +32,13 @@ import 'blocs/warning/warning.dart';
 
 void main() async {
   HiveService hiveService = HiveService();
+  FirestoreService firestoreService = FirestoreService();
   runApp(
     MultiRepositoryProvider(
       providers: [
         RepositoryProvider<CovidPlacesRepository>(
           create: (BuildContext context) => FirestoreCovidPlacesRepository(
-            locationCollection: Firestore.instance.collection('all_locations'),
-            systemCollection: Firestore.instance.collection('system'),
+            remoteDatabaseService: firestoreService,
           ),
         ),
         RepositoryProvider<GpsRepository>(
@@ -51,7 +53,9 @@ void main() async {
               MyVisitedPlaceRepository(hiveService),
         ),
       ],
-      child: MyApp(),
+      child: MyApp(
+        remoteDatabaseService: firestoreService,
+      ),
     ),
   );
 }
@@ -61,12 +65,16 @@ void main() async {
 //? MapScreen()
 //    : SplashScreen()))
 class MyApp extends StatelessWidget {
+  final RemoteDatabaseService remoteDatabaseService;
+
+  const MyApp({@required this.remoteDatabaseService});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => InitializationBloc(
-          RepositoryProvider.of<CovidPlacesRepository>(context)),
+          RepositoryProvider.of<CovidPlacesRepository>(context),
+          remoteDatabaseService),
       child: MultiBlocProvider(
         providers: [
           BlocProvider<MapBloc>(
@@ -116,6 +124,9 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => LogBloc(
                 RepositoryProvider.of<MyVisitedPlaceRepository>(context),
                 RepositoryProvider.of<CovidPlacesRepository>(context)),
+          ),
+          BlocProvider<DataInformationBloc>(
+            create: (context) => DataInformationBloc(remoteDatabaseService),
           ),
         ],
         child: MaterialApp(
