@@ -59,8 +59,6 @@ class Tag extends HiveObject {
   double findStringSimilarity(String titleToken) {
     double dice = StringSimilarity.compareTwoStrings(
         titleToken.toLowerCase(), label.toLowerCase());
-
-    print('${label.toLowerCase()}, ${titleToken.toLowerCase()} : $dice');
     return dice;
   }
 

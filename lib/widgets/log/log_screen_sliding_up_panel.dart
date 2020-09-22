@@ -27,51 +27,65 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LogBloc, LogState>(
-      listener: (BuildContext context, state) {
-        if (state is LogPanelShowingState) {
-          _panelController.animatePanelToPosition(
-            1.0,
-            duration: Duration(milliseconds: kAnimationDuration),
-            curve: Curves.linear,
-          );
+    return WillPopScope(
+      onWillPop: () async {
+        if (_panelController.isPanelOpen) {
+          if (BlocProvider.of<LogBloc>(context).isEditVisitPanelShowing) {
+            BlocProvider.of<LogBloc>(context).add(OnEditCancelled());
+          } else
+            BlocProvider.of<LogBloc>(context).add(OnCancelButtonPressed());
+          return false;
         }
-
-        if (state is LogPanelClosing) {
-          _panelController.animatePanelToPosition(
-            0.0,
-            duration: Duration(milliseconds: kAnimationDuration),
-            curve: Curves.linear,
-          );
-        }
+        return true;
       },
-      buildWhen: (previous, current) => current is LogPanelState,
-      builder: (BuildContext context, state) => SlidingUpPanel(
-        isDraggable: false,
-        color: Theme.of(context).primaryColorLight,
-        minHeight: 0,
-        maxHeight: state is LogPanelState
-            ? MediaQuery.of(context).size.height * state.maxHeight
-            : 0,
-        backdropTapClosesPanel: false,
-        controller: _panelController,
-        panelBuilder: (sc) {
-          if (state is DeleteConfirmationPanelShowing) {
-            return DeleteConfirmationPanel(
-              visit: state.visit,
+      child: BlocConsumer<LogBloc, LogState>(
+        listener: (BuildContext context, state) {
+          if (state is LogPanelShowingState) {
+            _panelController.animatePanelToPosition(
+              1.0,
+              duration: Duration(milliseconds: kAnimationDuration),
+              curve: Curves.linear,
             );
           }
-          if (state is CheckOutPanelShowing) {
-            return CheckOutPanel(state.visit);
-          }
-          if (state is EditVisitPanelShowing) {
-            return EditVisitPanel(
-              visit: state.visit,
-              scrollController: sc,
+
+          if (state is LogPanelClosing) {
+            _panelController.animatePanelToPosition(
+              0.0,
+              duration: Duration(milliseconds: kAnimationDuration),
+              curve: Curves.linear,
             );
           }
-          return Container();
         },
+        buildWhen: (previous, current) => current is LogPanelState,
+        builder: (BuildContext context, state) => SlidingUpPanel(
+          isDraggable: false,
+          color: Theme.of(context).primaryColorLight,
+          minHeight: 0,
+          maxHeight: state is LogPanelState
+              ? (MediaQuery.of(context).size.height -
+                      Scaffold.of(context).appBarMaxHeight) *
+                  state.maxHeight
+              : 0,
+          backdropTapClosesPanel: false,
+          controller: _panelController,
+          panelBuilder: (sc) {
+            if (state is DeleteConfirmationPanelShowing) {
+              return DeleteConfirmationPanel(
+                visit: state.visit,
+              );
+            }
+            if (state is CheckOutPanelShowing) {
+              return CheckOutPanel(state.visit);
+            }
+            if (state is EditVisitPanelShowing) {
+              return EditVisitPanel(
+                visit: state.visit,
+                scrollController: sc,
+              );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }

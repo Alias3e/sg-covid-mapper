@@ -17,8 +17,9 @@ class ClusterWidget extends StatelessWidget {
       child: Center(
         child: Text(
           markers.length.toString(),
+          textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: markers.length * 1.5 + 14.0,
             color: Theme.of(context).primaryColorLight,
             fontWeight: FontWeight.w900,
           ),

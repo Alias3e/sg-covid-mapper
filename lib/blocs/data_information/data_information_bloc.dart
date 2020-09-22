@@ -17,7 +17,6 @@ class DataInformationBloc
           .format((snapshot.data['updated'] as Timestamp).toDate());
       data['source'] = snapshot.data['source'];
       add(OnDataInformationUpdated(data: data));
-      print('hello');
     });
   }
 

@@ -28,7 +28,6 @@ class BottomPanel extends StatelessWidget {
       if (data is GeocodePanelData &&
           BlocProvider.of<BottomPanelBloc>(context).panelType ==
               PanelType.geocode) {
-        print(data.geocode.results.length);
         return ReverseGeocodeLocationPanel(
           data: data.geocode,
         );

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
+import 'package:sgcovidmapper/screens/log_screen.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/showcase_container.dart';
 import 'package:showcaseview/showcase.dart';
@@ -76,11 +77,19 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                       ),
                       child: BlocConsumer<CheckPanelBloc, CheckPanelState>(
                         listenWhen: (previous, current) =>
-                            current is CheckPanelLoaded,
+                            current is CheckPanelLoaded ||
+                            current is VisitSaved,
                         listener:
                             (BuildContext context, CheckPanelState state) {
                           // Safe cast because of listenWhen.
-                          location = (state as CheckPanelLoaded).data?.location;
+                          if (state is CheckPanelLoaded)
+                            location = (state).data?.location;
+                          if (state is VisitSaved)
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        LogScreen(hiveKey: state.hiveKey)));
                         },
                         buildWhen: (previous, current) =>
                             current is CheckPanelLoaded,
@@ -164,9 +173,12 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                                             BlocProvider.of<CheckPanelBloc>(
                                                     context)
                                                 .add(CancelCheckOut()),
-                                        child: FaIcon(
-                                          FontAwesomeIcons.timesCircle,
-                                          color: Theme.of(context).accentColor,
+                                        child: Center(
+                                          child: FaIcon(
+                                            FontAwesomeIcons.timesCircle,
+                                            color:
+                                                Theme.of(context).accentColor,
+                                          ),
                                         )))
                               ],
                             ),

@@ -41,7 +41,7 @@ class CheckOutPanelShowing extends LogPanelShowingState {
 class EditVisitPanelShowing extends LogPanelShowingState {
   final Visit visit;
 
-  EditVisitPanelShowing(this.visit) : super(maxHeight: 1.0);
+  EditVisitPanelShowing(this.visit) : super(maxHeight: 0.7);
 
   @override
   List<Object> get props => [visit];
@@ -125,4 +125,9 @@ class VisitNeedAlert extends LogState {
   VisitNeedAlert(this.visit);
   @override
   List<Object> get props => [visit];
+}
+
+class UndoVisitEdits extends LogState {
+  @override
+  List<Object> get props => [];
 }

@@ -46,7 +46,7 @@ void main() async {
         ),
         RepositoryProvider<GeolocationRepository>(
           create: (BuildContext context) =>
-              GeolocationRepository(OneMapApiService(Dio()), hiveService),
+              GeolocationRepository(OneMapApiService(Dio()), firestoreService),
         ),
         RepositoryProvider<MyVisitedPlaceRepository>(
           create: (BuildContext context) =>

@@ -110,3 +110,9 @@ class OnTagAdded extends LogEvent {
   @override
   List<Object> get props => [tag];
 }
+
+class OnEditCancelled extends LogEvent {
+  OnEditCancelled();
+  @override
+  List<Object> get props => [];
+}

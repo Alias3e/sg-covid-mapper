@@ -60,8 +60,9 @@ class TagListUpdated extends CheckPanelState {
 
 class VisitSaved extends CheckPanelState {
   final Visit visit;
+  final dynamic hiveKey;
 
-  VisitSaved(this.visit);
+  VisitSaved(this.visit, this.hiveKey);
 
   @override
   List<Object> get props => [visit];

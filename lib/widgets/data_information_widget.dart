@@ -7,10 +7,17 @@ import 'package:sgcovidmapper/util/constants.dart';
 import 'package:showcaseview/showcase_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DataInformationWidget extends StatelessWidget {
+class DataInformationWidget extends StatefulWidget {
   final List<GlobalKey> keys;
 
   const DataInformationWidget({this.keys});
+
+  @override
+  _DataInformationWidgetState createState() => _DataInformationWidgetState();
+}
+
+class _DataInformationWidgetState extends State<DataInformationWidget> {
+  String url = 'https://www.moh.gov.sg/';
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -32,7 +39,8 @@ class DataInformationWidget extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => ShowCaseWidget.of(context).startShowCase(keys),
+                    onTap: () =>
+                        ShowCaseWidget.of(context).startShowCase(widget.keys),
                     child: Icon(
                       Icons.info_outline,
                       color: Theme.of(context).accentColor.withAlpha(150),
@@ -44,37 +52,34 @@ class DataInformationWidget extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BlocBuilder<DataInformationBloc, DataInformationState>(
-                        condition: (previous, current) =>
-                            current is DataInformationUpdated,
-                        builder: (BuildContext context, state) {
-                          DataInformationUpdated updatedState = state;
-                          return RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Source data courtesy of moh.gov.sg',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .accentColor
-                                          .withAlpha(150),
-                                      decoration: TextDecoration.underline),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      // do something here
-                                      if (await canLaunch(
-                                          updatedState.map['source'])) {
-                                        await launch(
-                                            updatedState.map['source']);
-                                      } else {
-                                        throw 'Could not launch ${updatedState.map['source']}';
-                                      }
-                                    },
-                                ),
-                              ],
-                            ),
-                          );
+                      BlocListener<DataInformationBloc, DataInformationState>(
+                        listener: (context, state) {
+                          if (state is DataInformationUpdated)
+                            url = state.map['source'];
                         },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Source data courtesy of moh.gov.sg',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withAlpha(150),
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    // do something here
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      throw 'Could not launch $url}';
+                                    }
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       BlocBuilder<DataInformationBloc, DataInformationState>(
                         builder: (context, state) => Text(
@@ -84,10 +89,6 @@ class DataInformationWidget extends StatelessWidget {
                           style: TextStyle(color: Colors.black.withAlpha(150)),
                         ),
                       ),
-//                      Text(
-//                        'Expiry : ${DateTime.fromMillisecondsSinceEpoch(HiveService().oneMapTokenExpiry * 1000)}',
-//                        style: TextStyle(color: Colors.black.withAlpha(150)),
-//                      )
                     ],
                   ),
                 ],

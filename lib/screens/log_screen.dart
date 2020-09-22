@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sgcovidmapper/widgets/log/log.dart';
 
 class LogScreen extends StatelessWidget {
+  final dynamic hiveKey;
+
+  const LogScreen({this.hiveKey});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +15,9 @@ class LogScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          LogVisitsList(),
+          LogVisitsList(
+            hiveKey: hiveKey,
+          ),
           LogScreenSlidingUpPanel(),
         ],
       ),

@@ -49,6 +49,7 @@ dependencies:
   showcaseview: ^0.1.6
   url_launcher: ^5.5.2
   timeago: ^2.0.27
+  scrollable_positioned_list: ^0.1.7
 
   flutter_map_marker_cluster:
     path: external/flutter_map_marker_cluster

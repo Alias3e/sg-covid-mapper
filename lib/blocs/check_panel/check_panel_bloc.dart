@@ -71,9 +71,9 @@ class CheckPanelBloc extends Bloc<CheckPanelEvent, CheckPanelState> {
     if (event is SaveVisit) {
       visit.addTags(_labels.toList());
 
-      await repository.saveVisit(visit);
+      int hiveKey = await repository.saveVisit(visit);
       _labels.clear();
-      yield VisitSaved(visit);
+      yield VisitSaved(visit, hiveKey);
 //      Hive.box<Visit>(boxName).put(Visit.getHiveKey(visit), visit).then((_) {
 //        _labels.clear();
 //      });

@@ -7,13 +7,21 @@ import 'package:sgcovidmapper/util/constants.dart';
 
 class LogVisitTile extends StatelessWidget {
   final Visit visit;
+  final bool isNew;
 
-  const LogVisitTile({this.visit});
+  const LogVisitTile({this.visit, this.isNew});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
+      shape: isNew
+          ? new RoundedRectangleBorder(
+              side: new BorderSide(
+                  color: Theme.of(context).accentColor, width: 4.0),
+              borderRadius: BorderRadius.circular(4.0))
+          : new RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0)),
       color: visit.warningLevel > 0
           ? AppColors.kColorAccentLight
           : AppColors.kColorPrimaryLight,

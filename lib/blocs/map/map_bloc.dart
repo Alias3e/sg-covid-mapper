@@ -127,10 +127,12 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       anchorPos: AnchorPos.align(AnchorAlign.top),
       height: 25,
       width: 25,
-      builder: (context) => FaIcon(
-        iconData == null ? FontAwesomeIcons.mapMarkerAlt : iconData,
-        color: color == null ? AppColors.kColorAccent : color,
-        size: 25,
+      builder: (context) => Center(
+        child: FaIcon(
+          iconData == null ? FontAwesomeIcons.mapMarkerAlt : iconData,
+          color: color == null ? AppColors.kColorAccent : color,
+          size: 25,
+        ),
       ),
     );
   }
