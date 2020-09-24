@@ -5,36 +5,59 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:latlong/latlong.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/gps/gps.dart';
+import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
+import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
 
-class MockMapBloc extends MockBloc<MapEvent, MapState> implements MapBloc {}
+class MockGpsBloc extends MockBloc<GpsEvent, GpsState> implements GpsBloc {}
+
+class MockUpdateOpacityBloc
+    extends MockBloc<UpdateOpacityEvent, UpdateOpacityState>
+    implements UpdateOpacityBloc {}
+
+class MockReverseGeocodeBloc
+    extends MockBloc<ReverseGeocodeEvent, ReverseGeocodeState>
+    implements ReverseGeocodeBloc {}
 
 main() {
   group('Map screen speed dial', () {
-    MapBloc bloc;
+    GpsBloc gpsBloc;
+    UpdateOpacityBloc updateOpacityBloc;
+    ReverseGeocodeBloc reverseGeocodeBloc;
 
     setUp(() {
-      bloc = MockMapBloc();
+      gpsBloc = MockGpsBloc();
+      updateOpacityBloc = MockUpdateOpacityBloc();
+      reverseGeocodeBloc = MockReverseGeocodeBloc();
+      when(updateOpacityBloc.state)
+          .thenAnswer((realInvocation) => OpacityUpdating(1.0));
     });
 
     tearDown(() {
-      bloc.close();
+      gpsBloc.close();
+      updateOpacityBloc.close();
+      reverseGeocodeBloc.close();
     });
+
     testWidgets(
-      'Display spinner when MapState is GpsLocationAcquiring',
+      'Display spinner when ReverseGeocodeState is GeocodingInProgress',
       (WidgetTester tester) async {
-        when(bloc.state).thenAnswer(
-            (_) => GpsLocationAcquiring(covidPlaces: [], nearbyPlaces: []));
+        when(reverseGeocodeBloc.state).thenAnswer((_) => GeocodingInProgress());
         await tester.pumpWidget(
-          BlocProvider<MapBloc>(
-            create: (BuildContext context) => bloc,
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: MapScreenSpeedDial(),
+          BlocProvider<ReverseGeocodeBloc>(
+            create: (BuildContext context) => reverseGeocodeBloc,
+            child: BlocProvider<UpdateOpacityBloc>(
+              create: (context) => updateOpacityBloc,
+              child: BlocProvider<GpsBloc>(
+                create: (BuildContext context) => gpsBloc,
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: MapScreenSpeedDial(),
+                ),
+              ),
             ),
           ),
         );
@@ -45,22 +68,26 @@ main() {
     );
 
     testWidgets(
-        'Displayed animated menu close icon when MapState is GPSLocationUpdated',
+        'Displayed animated menu close icon when ReverseGeocodeState is GeocodingCompleted',
         (WidgetTester tester) async {
       List<PlaceMarker> covidMarkers = [];
       List<Marker> nearbyMarkers = [];
 
-      when(bloc.state).thenAnswer((_) => MapViewBoundsChanged(
-            mapCenter: LatLng(1.2, 103.0),
-            nearbyPlaces: nearbyMarkers,
-            covidPlaces: covidMarkers,
+      when(reverseGeocodeBloc.state).thenAnswer((_) => GeocodingCompleted(
+            null,
           ));
       await tester.pumpWidget(
-        BlocProvider<MapBloc>(
-          create: (BuildContext context) => bloc,
-          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: MapScreenSpeedDial(),
+        BlocProvider<ReverseGeocodeBloc>(
+          create: (BuildContext context) => reverseGeocodeBloc,
+          child: BlocProvider<UpdateOpacityBloc>(
+            create: (context) => updateOpacityBloc,
+            child: BlocProvider<GpsBloc>(
+              create: (BuildContext context) => gpsBloc,
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: MapScreenSpeedDial(),
+              ),
+            ),
           ),
         ),
       );
@@ -70,16 +97,21 @@ main() {
     });
 
     testWidgets(
-        'Displayed animated menu close icon when MapState is GPSLocationUpdated',
+        'Displayed animated menu close icon when MapState is GeocodingFailed',
         (WidgetTester tester) async {
-      when(bloc.state).thenAnswer(
-          (_) => GpsLocationFailed(covidPlaces: [], nearbyPlaces: []));
+      when(reverseGeocodeBloc.state).thenAnswer((_) => GeocodingFailed());
       await tester.pumpWidget(
-        BlocProvider<MapBloc>(
-          create: (BuildContext context) => bloc,
-          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: MapScreenSpeedDial(),
+        BlocProvider<ReverseGeocodeBloc>(
+          create: (BuildContext context) => reverseGeocodeBloc,
+          child: BlocProvider<UpdateOpacityBloc>(
+            create: (context) => updateOpacityBloc,
+            child: BlocProvider<GpsBloc>(
+              create: (BuildContext context) => gpsBloc,
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: MapScreenSpeedDial(),
+              ),
+            ),
           ),
         ),
       );

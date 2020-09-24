@@ -37,27 +37,6 @@ class PlacesError extends MapState {
   List<Object> get props => [];
 }
 
-class GpsLocationAcquiring extends MapState {
-  const GpsLocationAcquiring(
-      {List<PlaceMarker> covidPlaces, List<Marker> nearbyPlaces})
-      : super(covidPlaces, nearbyPlaces);
-
-  @override
-  List<Object> get props => [];
-}
-
-class GPSAcquired extends MapState {
-  final LatLng mapCenter;
-  const GPSAcquired(
-      {@required this.mapCenter,
-      @required List<PlaceMarker> covidPlaces,
-      @required List<Marker> nearbyPlaces})
-      : super(covidPlaces, nearbyPlaces);
-
-  @override
-  List<Object> get props => [mapCenter];
-}
-
 class MapViewBoundsChanged extends MapState {
   final LatLng mapCenter;
 

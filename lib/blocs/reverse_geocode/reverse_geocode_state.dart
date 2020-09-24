@@ -21,3 +21,8 @@ class GeocodingCompleted extends ReverseGeocodeState {
   @override
   List<Object> get props => [result];
 }
+
+class GeocodingFailed extends ReverseGeocodeState {
+  @override
+  List<Object> get props => [];
+}

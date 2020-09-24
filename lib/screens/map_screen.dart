@@ -121,7 +121,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                             .add(PlacePanelOpened());
                       if (state.data is GeocodePanelData)
                         BlocProvider.of<MapBloc>(context)
-                            .add(DisplayUserLocation());
+                            .add(DisplayUserAndNearbyMarkers());
                     },
                     onPanelClosed: () {
                       BlocProvider.of<BottomPanelBloc>(context)

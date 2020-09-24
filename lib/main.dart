@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/data_information/data_information.dart';
+import 'package:sgcovidmapper/blocs/gps/gps.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization_bloc.dart';
 import 'package:sgcovidmapper/blocs/map/map_bloc.dart';
@@ -77,19 +78,24 @@ class MyApp extends StatelessWidget {
           remoteDatabaseService),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<MapBloc>(
-              create: (BuildContext context) => MapBloc(
-                    covidPlacesRepository:
-                        RepositoryProvider.of<CovidPlacesRepository>(context),
-                    gpsRepository:
-                        RepositoryProvider.of<GpsRepository>(context),
-                  )),
+          BlocProvider<GpsBloc>(
+            create: (context) =>
+                GpsBloc(RepositoryProvider.of<GpsRepository>(context)),
+          ),
           BlocProvider<ReverseGeocodeBloc>(
             create: (BuildContext context) => ReverseGeocodeBloc(
               repository: RepositoryProvider.of<GeolocationRepository>(context),
-              mapBloc: BlocProvider.of<MapBloc>(context),
+              gpsBloc: BlocProvider.of<GpsBloc>(context),
             ),
           ),
+          BlocProvider<MapBloc>(
+              create: (BuildContext context) => MapBloc(
+                    gpsBloc: BlocProvider.of<GpsBloc>(context),
+                    covidPlacesRepository:
+                        RepositoryProvider.of<CovidPlacesRepository>(context),
+                    reverseGeocodeBloc:
+                        BlocProvider.of<ReverseGeocodeBloc>(context),
+                  )),
           BlocProvider<CheckPanelBloc>(
             create: (BuildContext context) => CheckPanelBloc(
               repository:

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sgcovidmapper/blocs/map/map.dart';
+import 'package:sgcovidmapper/blocs/gps/gps.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
 import 'package:sgcovidmapper/blocs/timeline/timeline.dart';
@@ -45,7 +45,7 @@ class MapScreenSpeedDial extends StatelessWidget {
 //                    labelStyle: TextStyle(
 //                        color: Colors.white, fontWeight: FontWeight.bold),
                     onTap: () =>
-                        BlocProvider.of<MapBloc>(context).add(GetGPS())),
+                        BlocProvider.of<GpsBloc>(context).add(GetGps())),
                 SpeedDialChild(
                   labelWidget: LabelCard(
                     label: 'Log of places you visited',

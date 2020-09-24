@@ -2,6 +2,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:latlong/latlong.dart';
+import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/place_marker.dart';
 
 abstract class MapEvent extends Equatable {
@@ -18,14 +19,18 @@ class HasPlacesData extends MapEvent {
   List<Object> get props => [visitedPlaces];
 }
 
-class GetGPS extends MapEvent {
+class DisplayUserAndNearbyMarkers extends MapEvent {
   @override
   List<Object> get props => [];
 }
 
-class DisplayUserLocation extends MapEvent {
+class OnGpsLocationAcquired extends MapEvent {
+  final LatLng location;
+
+  OnGpsLocationAcquired({this.location});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [location];
 }
 
 class CenterOnLocation extends MapEvent {
@@ -49,5 +54,13 @@ class GeoCodeLocationSelected extends MapEvent {
 class ClearOneMapPlacesMarker extends MapEvent {
   @override
   List<Object> get props => [];
+}
+
+class OnNearbyLocationRetrieved extends MapEvent {
+  final List<CommonOneMapModel> locations;
+
+  OnNearbyLocationRetrieved(this.locations);
+  @override
+  List<Object> get props => [locations];
 }
 //endregion
