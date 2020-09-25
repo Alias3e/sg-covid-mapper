@@ -50,10 +50,14 @@ class MapScreenSpeedDial extends StatelessWidget {
                   labelWidget: LabelCard(
                     label: 'Log of places you visited',
                   ),
-                  child: OpenContainerSpeedDial(
-                      color: Theme.of(context).accentColor,
-                      icon: FontAwesomeIcons.clipboard,
-                      openBuilder: openLogScreen),
+                  child: Icon(
+                    FontAwesomeIcons.clipboard,
+                  ),
+                  backgroundColor: Theme.of(context).accentColor,
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LogScreen())),
                 ),
                 SpeedDialChild(
                   labelWidget:

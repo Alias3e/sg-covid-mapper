@@ -38,15 +38,6 @@ class CheckOutPanelShowing extends LogPanelShowingState {
   List<Object> get props => [visit];
 }
 
-class EditVisitPanelShowing extends LogPanelShowingState {
-  final Visit visit;
-
-  EditVisitPanelShowing(this.visit) : super(maxHeight: 0.7);
-
-  @override
-  List<Object> get props => [visit];
-}
-
 class LogPanelClosing extends LogPanelState {
   LogPanelClosing({@required maxHeight}) : super(maxHeight: maxHeight);
 
@@ -125,9 +116,4 @@ class VisitNeedAlert extends LogState {
   VisitNeedAlert(this.visit);
   @override
   List<Object> get props => [visit];
-}
-
-class UndoVisitEdits extends LogState {
-  @override
-  List<Object> get props => [];
 }

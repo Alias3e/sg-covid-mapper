@@ -67,15 +67,6 @@ class EditLogEntry extends LogEvent {
   List<Object> get props => [visit];
 }
 
-class OnEditButtonPressed extends LogEvent {
-  final Visit visit;
-
-  OnEditButtonPressed(this.visit);
-
-  @override
-  List<Object> get props => throw UnimplementedError();
-}
-
 class OnCheckOutDateTimeSpinnerChanged extends LogEvent {
   final DateTime dateTime;
 
@@ -109,10 +100,4 @@ class OnTagAdded extends LogEvent {
 
   @override
   List<Object> get props => [tag];
-}
-
-class OnEditCancelled extends LogEvent {
-  OnEditCancelled();
-  @override
-  List<Object> get props => [];
 }

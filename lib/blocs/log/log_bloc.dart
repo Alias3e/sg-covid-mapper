@@ -7,7 +7,6 @@ import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 class LogBloc extends Bloc<LogEvent, LogState> {
   final MyVisitedPlaceRepository _myVisitedPlacesRepository;
   final CovidPlacesRepository _covidPlacesRepository;
-  bool isEditVisitPanelShowing = false;
 
   LogBloc(this._myVisitedPlacesRepository, this._covidPlacesRepository)
       : assert(_myVisitedPlacesRepository != null &&
@@ -43,12 +42,6 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     if (event is OnVisitUpdated) {
       yield VisitUpdateInProgress(event.visit);
       yield VisitUpdateCompleted(maxHeight: 0.33);
-      isEditVisitPanelShowing = false;
-    }
-
-    if (event is OnEditButtonPressed) {
-      isEditVisitPanelShowing = true;
-      yield EditVisitPanelShowing(event.visit);
     }
 
     if (event is OnEditPanelCheckOutButtonPressed) {
@@ -69,12 +62,6 @@ class LogBloc extends Bloc<LogEvent, LogState> {
 
     if (event is OnTagAdded) {
       yield TagsUpdated(event.tag);
-    }
-
-    if (event is OnEditCancelled) {
-      yield UndoVisitEdits();
-      yield LogPanelClosing(maxHeight: 0.25);
-      isEditVisitPanelShowing = false;
     }
   }
 }

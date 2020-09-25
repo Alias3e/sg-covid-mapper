@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/log/edit_visit_panel.dart';
 
 class LogVisitTile extends StatelessWidget {
   final Visit visit;
@@ -22,96 +23,134 @@ class LogVisitTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(4.0))
           : new RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0)),
-      color: visit.warningLevel > 0
-          ? AppColors.kColorAccentLight
-          : AppColors.kColorPrimaryLight,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Hero(
+              tag: 'container ${visit.key}',
+              child: Container(
+                color: visit.warningLevel > 0
+                    ? AppColors.kColorAccentLight
+                    : AppColors.kColorPrimaryLight,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                DateTimeText(
-                  dateTime: visit.checkInTime,
-                  text: 'IN',
-                  textColor: Colors.black,
-                  textColorDarker: Theme.of(context).primaryColor,
-                ),
-                SizedBox(
-                  width: 16.0,
-                ),
-                visit.checkOutTime != null
-                    ? DateTimeText(
-                        dateTime: visit.checkOutTime,
-                        text: 'OUT',
-                        textColor: Colors.black,
-                        textColorDarker: Theme.of(context).primaryColor,
-                      )
-                    : IconButton(
-                        icon: Icon(
-                          FontAwesomeIcons.signOutAlt,
-                          color: visit.warningLevel == 0
-                              ? Theme.of(context).accentColor
-                              : AppColors.kColorAccentDark,
-                        ),
-                        onPressed: () => BlocProvider.of<LogBloc>(context)
-                            .add(OnCheckOutButtonPressed(visit: visit)),
-                      ),
-                SizedBox(
-                  width: 16.0,
-                ),
-                Flexible(
-                  child: Text(
-                    visit.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black,
+                Row(
+                  children: <Widget>[
+                    DateTimeText(
+                      dateTime: visit.checkInTime,
+                      text: 'IN',
+                      textColor: Colors.black,
+                      textColorDarker: Theme.of(context).primaryColor,
                     ),
-                  ),
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    visit.checkOutTime != null
+                        ? DateTimeText(
+                            dateTime: visit.checkOutTime,
+                            text: 'OUT',
+                            textColor: Colors.black,
+                            textColorDarker: Theme.of(context).primaryColor,
+                          )
+                        : IconButton(
+                            icon: Icon(
+                              FontAwesomeIcons.signOutAlt,
+                              color: visit.warningLevel == 0
+                                  ? Theme.of(context).accentColor
+                                  : AppColors.kColorAccentDark,
+                            ),
+                            onPressed: () => BlocProvider.of<LogBloc>(context)
+                                .add(OnCheckOutButtonPressed(visit: visit)),
+                          ),
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Expanded(
+                      child: Hero(
+                        tag: 'title ${visit.key}',
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            visit.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Wrap(
-              children: visit.getChips(),
-              spacing: 4.0,
-              runSpacing: -8.0,
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    FontAwesomeIcons.trashAlt,
-                    color: Theme.of(context).accentColor,
-                    size: 20,
-                  ),
-                  onPressed: () => BlocProvider.of<LogBloc>(context)
-                      .add(OnDeleteButtonPressed(visit)),
+                SizedBox(
+                  height: 8.0,
                 ),
-                IconButton(
-                  icon: Icon(
-                    FontAwesomeIcons.edit,
-                    color: Theme.of(context).accentColor,
-                    size: 20,
-                  ),
-                  onPressed: () => BlocProvider.of<LogBloc>(context)
-                      .add(OnEditButtonPressed(visit)),
+                Wrap(
+                  children: visit.getChips(),
+                  spacing: 4.0,
+                  runSpacing: -8.0,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.trashAlt,
+                        color: Theme.of(context).accentColor,
+                        size: 20,
+                      ),
+                      onPressed: () => BlocProvider.of<LogBloc>(context)
+                          .add(OnDeleteButtonPressed(visit)),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.edit,
+                        color: Theme.of(context).accentColor,
+                        size: 20,
+                      ),
+                      onPressed: () => Navigator.of(context).push(
+                        PageRouteBuilder(
+                          fullscreenDialog: true,
+                          transitionDuration: Duration(
+                            milliseconds: 500,
+                          ),
+                          pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            return EditVisitPanel(visit: visit);
+                          },
+                          transitionsBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child) {
+                            return FadeTransition(
+                              opacity:
+                                  animation, // CurvedAnimation(parent: animation, curve: Curves.elasticInOut),
+                              child: child,
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

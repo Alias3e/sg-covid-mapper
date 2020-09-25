@@ -5,7 +5,6 @@ import 'package:sgcovidmapper/blocs/log/log.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/log/check_out_panel.dart';
 import 'package:sgcovidmapper/widgets/log/delete_confirmation_panel.dart';
-import 'package:sgcovidmapper/widgets/log/edit_visit_panel.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class LogScreenSlidingUpPanel extends StatefulWidget {
@@ -30,10 +29,7 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
     return WillPopScope(
       onWillPop: () async {
         if (_panelController.isPanelOpen) {
-          if (BlocProvider.of<LogBloc>(context).isEditVisitPanelShowing) {
-            BlocProvider.of<LogBloc>(context).add(OnEditCancelled());
-          } else
-            BlocProvider.of<LogBloc>(context).add(OnCancelButtonPressed());
+          BlocProvider.of<LogBloc>(context).add(OnCancelButtonPressed());
           return false;
         }
         return true;
@@ -67,6 +63,8 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
                   state.maxHeight
               : 0,
           backdropTapClosesPanel: false,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
           controller: _panelController,
           panelBuilder: (sc) {
             if (state is DeleteConfirmationPanelShowing) {
@@ -76,12 +74,6 @@ class _LogScreenSlidingUpPanelState extends State<LogScreenSlidingUpPanel> {
             }
             if (state is CheckOutPanelShowing) {
               return CheckOutPanel(state.visit);
-            }
-            if (state is EditVisitPanelShowing) {
-              return EditVisitPanel(
-                visit: state.visit,
-                scrollController: sc,
-              );
             }
             return Container();
           },

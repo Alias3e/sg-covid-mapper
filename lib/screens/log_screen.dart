@@ -9,6 +9,7 @@ class LogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).primaryColorDark,
       appBar: AppBar(
         title: Text('My Visits Log'),

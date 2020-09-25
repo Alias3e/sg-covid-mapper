@@ -95,18 +95,6 @@ main() {
     );
 
     blocTest(
-      'emits [EditVisitPanelShowing] after user pressed edit button',
-      build: () async {
-        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
-      },
-      wait: Duration(milliseconds: 100),
-      act: (bloc) async {
-        bloc.add(OnEditButtonPressed(visit));
-      },
-      expect: [isA<EditVisitPanelShowing>()],
-    );
-
-    blocTest(
       'emits [CheckOutPickerDisplayed] after user pressed check out button in edit visit panel',
       build: () async {
         return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
