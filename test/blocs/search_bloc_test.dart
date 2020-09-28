@@ -13,7 +13,6 @@ main() {
   group('Search Bloc', () {
     GeolocationRepository repository;
     List<CommonOneMapModel> results;
-    List<CommonOneMapModel> resultsTwo;
     OneMapSearch search;
     OneMapSearch searchTwo;
 

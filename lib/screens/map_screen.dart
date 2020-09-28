@@ -150,7 +150,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                       listener: (context, state) async {
                         if (state is MapViewBoundsChanged) {
                           _animatedMapMove(
-                              state.mapCenter, MapConstants.maxZoom);
+                              state.mapCenter,
+                              state.zoomLevel == 0
+                                  ? MapConstants.maxZoom
+                                  : state.zoomLevel);
                         }
                         if (state is MapUpdated) {
                           LatLngBounds bounds = LatLngBounds.fromPoints(

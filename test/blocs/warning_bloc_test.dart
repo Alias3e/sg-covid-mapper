@@ -49,6 +49,7 @@ main() {
   tearDown(() {
     checkPanelBloc.close();
     warningBloc.close();
+    logBloc.close();
   });
 
   group('instantiation tests', () {

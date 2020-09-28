@@ -20,12 +20,12 @@ class CovidLocation extends Equatable {
   List<Object> get props => [postalCode, title, subtitle];
 
   factory CovidLocation.fromFirestoreSnapshot(DocumentSnapshot snapshot) {
-    Timestamp start = snapshot['start_time'];
-    Timestamp end = snapshot['end_time'];
+    Timestamp start = snapshot.data()['start_time'];
+    Timestamp end = snapshot.data()['end_time'];
     return CovidLocation(
-        postalCode: snapshot['postal_code'],
-        title: snapshot['title'],
-        subtitle: snapshot['subtitle'],
+        postalCode: snapshot.data()['postal_code'],
+        title: snapshot.data()['title'],
+        subtitle: snapshot.data()['subtitle'],
         startTime: start.toDate(),
         endTime: end.toDate());
   }

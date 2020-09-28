@@ -12,10 +12,10 @@ class DataInformationBloc
   DataInformationBloc(this._service) : assert(_service != null) {
     (_service as FirestoreService).systems.listen((snapshot) {
       Map<String, dynamic> data = {};
-      data['version'] = snapshot['current_version'];
+      data['version'] = snapshot.data()['current_version'];
       data['updated'] = Styles.kUpdatedDateFormat
-          .format((snapshot.data['updated'] as Timestamp).toDate());
-      data['source'] = snapshot.data['source'];
+          .format((snapshot.data()['updated'] as Timestamp).toDate());
+      data['source'] = snapshot.data()['source'];
       add(OnDataInformationUpdated(data: data));
     });
   }

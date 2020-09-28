@@ -42,20 +42,12 @@ class _SplashScreenState extends State<SplashScreen> {
     iconData = icons[index];
   }
 
-  void _switchAnimation() {
-    setState(() {
-      isForward = !isForward;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<InitializationBloc, InitializationState>(
       listener: (ctx, state) async {
-        Map<String, dynamic> content = {};
         if (state is InitializationComplete) {
           if (state.showDisclaimer) {
-            content = state.dialogContent;
             await showSplashDialog(state.dialogContent, 0);
           }
           Navigator.pushNamed(context, '/map');

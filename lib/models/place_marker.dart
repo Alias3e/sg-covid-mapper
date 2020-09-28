@@ -26,11 +26,12 @@ class PlaceMarker extends Marker with EquatableMixin {
 
   static PlaceMarker fromFireStoreSnapshot(DocumentSnapshot snapshot) {
     return PlaceMarker(
-      title: snapshot['title'],
-      subtitle: snapshot['subtitle'],
-      startTime: snapshot['start_time'],
-      endTime: snapshot['end_time'],
-      point: LatLng(snapshot['geo'].latitude, snapshot['geo'].longitude),
+      title: snapshot.data()['title'],
+      subtitle: snapshot.data()['subtitle'],
+      startTime: snapshot.data()['start_time'],
+      endTime: snapshot.data()['end_time'],
+      point: LatLng(
+          snapshot.data()['geo'].latitude, snapshot.data()['geo'].longitude),
       builder: (BuildContext context) => FaIcon(
         FontAwesomeIcons.virus,
         color: AppColors.kColorPrimary,

@@ -27,8 +27,8 @@ dependencies:
   flutter_map: ^0.10.1+1
   equatable: ^1.2.5
   flutter_bloc: ^4.0.0
-  firebase_core: ^0.4.5
-  cloud_firestore: ^0.13.6
+  firebase_core: ^0.5.0
+  cloud_firestore: ^0.14.0+2
   font_awesome_flutter: ^8.8.1
   location: ^3.0.2
   flutter_spinkit: ^4.1.2+1
@@ -42,7 +42,7 @@ dependencies:
   flutter_tagging: ^2.2.0+3
   timeline_tile: ^0.1.2
   animations: ^1.1.2
-  firebase_auth: ^0.16.1
+  firebase_auth: ^0.18.0+1
   string_similarity: ^1.1.0
   flutter_keyboard_visibility: ^3.2.2
   showcaseview: ^0.1.6

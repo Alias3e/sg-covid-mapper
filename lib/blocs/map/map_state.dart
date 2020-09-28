@@ -39,11 +39,13 @@ class PlacesError extends MapState {
 
 class MapViewBoundsChanged extends MapState {
   final LatLng mapCenter;
+  final double zoomLevel;
 
   const MapViewBoundsChanged({
     @required this.mapCenter,
     @required List<PlaceMarker> covidPlaces,
     @required List<Marker> nearbyPlaces,
+    this.zoomLevel = 0,
   }) : super(covidPlaces, nearbyPlaces);
 
   @override

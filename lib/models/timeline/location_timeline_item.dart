@@ -35,14 +35,14 @@ class LocationTimelineItem extends ChildTimelineItem with TimelineIndicator {
 
   factory LocationTimelineItem.fromFirestoreSnapshot(
       DocumentSnapshot snapshot) {
-    Timestamp startTimestamp = snapshot['start_time'];
-    Timestamp endTimestamp = snapshot['end_time'];
+    Timestamp startTimestamp = snapshot.data()['start_time'];
+    Timestamp endTimestamp = snapshot.data()['end_time'];
 
     return LocationTimelineItem(
       startTime: startTimestamp.toDate(),
       endTime: endTimestamp.toDate(),
-      title: snapshot['title'],
-      subtitle: snapshot['subtitle'],
+      title: snapshot.data()['title'],
+      subtitle: snapshot.data()['subtitle'],
       lineX: 0.15,
     );
   }

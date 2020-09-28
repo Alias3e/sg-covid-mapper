@@ -15,8 +15,8 @@ class GeolocationRepository {
       : assert(_geolocationService != null && _remoteDatabaseService != null) {
     if (_remoteDatabaseService is FirestoreService) {
       _remoteDatabaseService.oneMap.listen((event) {
-        accessToken = event.data['token'];
-        int expiry = event.data['expiry'];
+        accessToken = event.data()['token'];
+        int expiry = event.data()['expiry'];
         if (accessToken.isEmpty || expiry == 0) _getToken();
         DateTime expiryDateTime =
             DateTime.fromMillisecondsSinceEpoch(expiry * 1000);
@@ -50,7 +50,7 @@ class GeolocationRepository {
   Future<ReverseGeocode> reverseGeocode(
       double latitude, double longitude) async {
     ReverseGeocode reverseGeocode = await _geolocationService.reverseGeocode(
-        token: accessToken, location: '$latitude,$longitude', buffer: '50');
+        token: accessToken, location: '$latitude,$longitude', buffer: '75');
     return reverseGeocode;
   }
 }

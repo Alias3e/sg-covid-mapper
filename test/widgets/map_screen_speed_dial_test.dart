@@ -2,14 +2,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/gps/gps.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
-import 'package:sgcovidmapper/models/place_marker.dart';
 import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
 
 class MockGpsBloc extends MockBloc<GpsEvent, GpsState> implements GpsBloc {}
@@ -70,9 +68,6 @@ main() {
     testWidgets(
         'Displayed animated menu close icon when ReverseGeocodeState is GeocodingCompleted',
         (WidgetTester tester) async {
-      List<PlaceMarker> covidMarkers = [];
-      List<Marker> nearbyMarkers = [];
-
       when(reverseGeocodeBloc.state).thenAnswer((_) => GeocodingCompleted(
             null,
           ));

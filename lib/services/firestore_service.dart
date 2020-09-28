@@ -9,26 +9,27 @@ class FirestoreService extends RemoteDatabaseService {
 
   @override
   Stream<DocumentSnapshot> get systems =>
-      _systemCollection.document('moh').snapshots();
+      _systemCollection.doc('moh').snapshots();
 
   @override
   Stream<QuerySnapshot> get covidLocations => _locationCollection
-      .document(covidDbVersion)
+      .doc(covidDbVersion)
       .collection('locations')
       .snapshots();
 
   @override
   Stream<DocumentSnapshot> get oneMap =>
-      _systemCollection.document('one_map').snapshots();
+      _systemCollection.doc('one_map').snapshots();
 
   @override
   void init() {
-    _locationCollection = Firestore.instance.collection('all_locations');
-    _systemCollection = Firestore.instance.collection('system');
+    _locationCollection =
+        FirebaseFirestore.instance.collection('all_locations');
+    _systemCollection = FirebaseFirestore.instance.collection('system');
     systems.listen((snapshot) {
-      covidDbVersion = snapshot['current_version'];
-      updated = (snapshot.data['updated'] as Timestamp).toDate();
-      source = snapshot.data['source'];
+      covidDbVersion = snapshot.data()['current_version'];
+      updated = (snapshot.data()['updated'] as Timestamp).toDate();
+      source = snapshot.data()['source'];
     });
   }
 
@@ -38,11 +39,11 @@ class FirestoreService extends RemoteDatabaseService {
 
   @override
   void updateOneMapToken(OneMapToken token) {
-    DocumentReference docRef = _systemCollection.document('one_map');
+    DocumentReference docRef = _systemCollection.doc('one_map');
 
     docRef.get().then((doc) {
       if (doc.exists) {
-        docRef.updateData({
+        docRef.update({
           'token': token.accessToken,
           'expiry': int.parse(token.expiryTimestamp)
         });

@@ -1,16 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sgcovidmapper/blocs/log/log.dart';
-import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/repositories/my_visited_place_repository.dart';
 
 class LogBloc extends Bloc<LogEvent, LogState> {
   final MyVisitedPlaceRepository _myVisitedPlacesRepository;
-  final CovidPlacesRepository _covidPlacesRepository;
 
-  LogBloc(this._myVisitedPlacesRepository, this._covidPlacesRepository)
-      : assert(_myVisitedPlacesRepository != null &&
-            _covidPlacesRepository != null);
+  LogBloc(this._myVisitedPlacesRepository)
+      : assert(_myVisitedPlacesRepository != null);
 
   @override
   LogState get initialState => LogStateInitial();

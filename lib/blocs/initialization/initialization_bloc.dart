@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +8,6 @@ import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/blocs/simple_bloc_delegate.dart';
 import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
-import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/services/firestore_service.dart';
 import 'package:sgcovidmapper/util/config.dart';
 
@@ -16,10 +16,9 @@ class InitializationBloc
   static const String visitBoxName = 'myVisits';
   static const String systemBoxName = 'system';
   final String isAppFirstOpen = 'isAppFirstOpen';
-  final CovidPlacesRepository _covidPlacesRepository;
   final FirestoreService _firestoreService;
 
-  InitializationBloc(this._covidPlacesRepository, this._firestoreService);
+  InitializationBloc(this._firestoreService);
 
   @override
   InitializationState get initialState => Initializing();
@@ -29,9 +28,10 @@ class InitializationBloc
       InitializationEvent event) async* {
     if (event is BeginInitialization) {
       WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp();
       _firestoreService.init();
       BlocSupervisor.delegate = SimpleBlocDelegate();
-      AuthResult result = await FirebaseAuth.instance.signInAnonymously();
+      UserCredential result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
       await Asset.loadConfigurations();
       if (!Hive.isBoxOpen(visitBoxName)) await _initHive();

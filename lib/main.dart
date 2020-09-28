@@ -73,9 +73,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => InitializationBloc(
-          RepositoryProvider.of<CovidPlacesRepository>(context),
-          remoteDatabaseService),
+      create: (BuildContext context) =>
+          InitializationBloc(remoteDatabaseService),
       child: MultiBlocProvider(
         providers: [
           BlocProvider<GpsBloc>(
@@ -128,8 +127,8 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<LogBloc>(
             create: (BuildContext context) => LogBloc(
-                RepositoryProvider.of<MyVisitedPlaceRepository>(context),
-                RepositoryProvider.of<CovidPlacesRepository>(context)),
+              RepositoryProvider.of<MyVisitedPlaceRepository>(context),
+            ),
           ),
           BlocProvider<DataInformationBloc>(
             create: (context) => DataInformationBloc(remoteDatabaseService),

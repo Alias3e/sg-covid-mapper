@@ -18,7 +18,7 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
   Stream<List<PlaceMarker>> get placeMarkers {
     Stream<QuerySnapshot> querySnapshot = remoteDatabaseService.covidLocations;
     return querySnapshot.map((snapshot) {
-      return snapshot.documents
+      return snapshot.docs
           .map((place) => PlaceMarker.fromFireStoreSnapshot(place))
           .toList();
     });
@@ -28,7 +28,7 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
   Stream<List<ChildTimelineItem>> get timelineTiles {
     Stream<QuerySnapshot> querySnapshot = remoteDatabaseService.covidLocations;
     return querySnapshot.map((snapshot) {
-      return snapshot.documents
+      return snapshot.docs
           .map((place) => LocationTimelineItem.fromFirestoreSnapshot(place))
           .toList();
     });
@@ -37,11 +37,8 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
   @override
   Stream<List<CovidLocation>> get covidLocations {
     Stream<QuerySnapshot> querySnapshot = remoteDatabaseService.covidLocations;
-    return querySnapshot.map((snapshot) => snapshot.documents
+    return querySnapshot.map((snapshot) => snapshot.docs
         .map((place) => CovidLocation.fromFirestoreSnapshot(place))
         .toList());
   }
-
-  @override
-  String get source => remoteDatabaseService.source;
 }

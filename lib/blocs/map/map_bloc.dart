@@ -97,6 +97,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
             _lastGpsLocation.point.latitude, _lastGpsLocation.point.longitude),
         nearbyPlaces: _myPlaces..addAll(_nearbyPlaces),
         covidPlaces: covidPlacesRepository.placeMarkersCached,
+        zoomLevel: MapConstants.maxZoom - 0.5,
       );
     }
 
