@@ -18,6 +18,7 @@ class TagsWidget extends StatefulWidget {
 class _TagsWidgetState extends State<TagsWidget> {
   MainAxisSize _axisSize = MainAxisSize.min;
   TextEditingController _textEditingController;
+  bool isTagValid = false;
 
   @override
   void initState() {
@@ -73,31 +74,43 @@ class _TagsWidgetState extends State<TagsWidget> {
                     children: <Widget>[
                       Expanded(
                         child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              isTagValid = value.isNotEmpty;
+                            });
+                          },
+                          autofocus: true,
                           controller: _textEditingController,
                           style: TextStyle(
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
-                              hintText: 'NTUC, KFC, Mom',
+                              hintText: 'Add stores or other info to customize',
                               hintStyle: TextStyle(
                                 color: Colors.white,
                               ),
                               border: InputBorder.none),
                         ),
                       ),
-                      FlatButton(
-                        shape: CircleBorder(),
-                        onPressed: () {
-                          widget.onTagAdd(Tag(_textEditingController.text));
+                      isTagValid
+                          ? FlatButton(
+                              shape: CircleBorder(),
+                              onPressed: () {
+                                widget
+                                    .onTagAdd(Tag(_textEditingController.text));
 //                            BlocProvider.of<CheckPanelBloc>(context).add(
 //                                AddTag(tagName: _textEditingController.text));
-                          _textEditingController.clear();
-                        },
-                        child: Icon(
-                          FontAwesomeIcons.plus,
-                          color: Colors.white,
-                        ),
-                      )
+                                _textEditingController.clear();
+                              },
+                              child: Icon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Container(
+                              width: 0,
+                              height: 0,
+                            )
                     ],
                   ),
                 ),

@@ -136,24 +136,33 @@ class Visit extends HiveObject {
 //    return dice;
 //  }
 
-  List<Widget> getChips({Function onDeleted}) {
+  List<Widget> getChips({Function onDeleted, Function onChipTap}) {
     List<Widget> chips = [];
     for (Tag tag in tags) {
-      Widget chip = Container(
-        margin: EdgeInsets.only(bottom: 3, right: 3),
-        child: Chip(
-          elevation: 2,
-          shadowColor: Colors.deepPurple,
-          onDeleted: onDeleted != null ? () => onDeleted(tag) : null,
-          deleteIconColor: Colors.white,
-          label: Text(
-            '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
-            style: TextStyle(
-              color: Colors.white,
+      Widget chip = Hero(
+        tag: 'edit tag ${tag.label}',
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 3, right: 3),
+            child: GestureDetector(
+              onTap: onChipTap != null ? () => onChipTap(tag) : null,
+              child: Chip(
+                elevation: 2,
+                shadowColor: Colors.deepPurple,
+                onDeleted: onDeleted != null ? () => onDeleted(tag) : null,
+                deleteIconColor: Colors.white,
+                label: Text(
+                  '${tag.label}${tag.similarity != 1.0 && tag.similarity != 0.0 ? tag.similarityPercentage : ''}',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                backgroundColor: Color.lerp(
+                    Colors.deepPurple, AppColors.kColorRed, tag.similarity),
+              ),
             ),
           ),
-          backgroundColor: Color.lerp(
-              Colors.deepPurple, AppColors.kColorRed, tag.similarity),
         ),
       );
       chips.add(chip);

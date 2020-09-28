@@ -63,5 +63,9 @@ class LogBloc extends Bloc<LogEvent, LogState> {
     if (event is OnTagAdded) {
       yield TagsUpdated(event.tag);
     }
+
+    if (event is OnTagEdited) {
+      yield TagsUpdated(event.tag);
+    }
   }
 }

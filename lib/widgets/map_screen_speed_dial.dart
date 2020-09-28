@@ -1,9 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sgcovidmapper/anim/shared_axis_page_route.dart';
 import 'package:sgcovidmapper/blocs/gps/gps.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
@@ -12,7 +14,6 @@ import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/screens/log_screen.dart';
 import 'package:sgcovidmapper/screens/timeline_screen.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/open_container_speed_dial.dart';
 
 class MapScreenSpeedDial extends StatelessWidget {
   @override
@@ -47,26 +48,36 @@ class MapScreenSpeedDial extends StatelessWidget {
                     onTap: () =>
                         BlocProvider.of<GpsBloc>(context).add(GetGps())),
                 SpeedDialChild(
-                  labelWidget: LabelCard(
-                    label: 'Log of places you visited',
-                  ),
-                  child: Icon(
-                    FontAwesomeIcons.clipboard,
-                  ),
-                  backgroundColor: Theme.of(context).accentColor,
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LogScreen())),
-                ),
+                    labelWidget: LabelCard(
+                      label: 'Log of places you visited',
+                    ),
+                    child: Icon(
+                      FontAwesomeIcons.clipboard,
+                    ),
+                    backgroundColor: Theme.of(context).accentColor,
+                    onTap: () => Navigator.of(context).push(SharedAxisPageRoute(
+                        page: LogScreen(),
+                        transitionType: SharedAxisTransitionType.scaled))),
                 SpeedDialChild(
-                  labelWidget:
-                      LabelCard(label: 'Display locations in a timeline'),
-                  child: OpenContainerSpeedDial(
-                      color: Theme.of(context).accentColor,
-                      icon: Icons.timeline,
-                      openBuilder: timelineWidget),
-                ),
+                    labelWidget:
+                        LabelCard(label: 'Display locations in a timeline'),
+                    child: Icon(
+                      Icons.timeline,
+                    ),
+                    backgroundColor: Theme.of(context).accentColor,
+                    onTap: () => Navigator.of(context).push(SharedAxisPageRoute(
+                        page: BlocBuilder<TimelineBloc, TimelineState>(
+                          builder: (BuildContext context, TimelineState state) {
+                            return state is TimelineLoaded
+                                ? TimelineScreen(
+                                    timelineModel: state.model,
+                                  )
+                                : Container(
+                                    color: AppColors.kColorRed,
+                                  );
+                          },
+                        ),
+                        transitionType: SharedAxisTransitionType.scaled))),
               ],
               child: SpinKitDualRing(
                 key: Keys.kKeyFABSpinner,
@@ -119,9 +130,4 @@ Widget timelineWidget(
             );
     },
   );
-}
-
-Widget openLogScreen(
-    BuildContext context, void Function({Object returnValue}) action) {
-  return LogScreen();
 }

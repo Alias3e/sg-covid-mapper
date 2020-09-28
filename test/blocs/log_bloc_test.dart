@@ -153,5 +153,17 @@ main() {
       },
       expect: [isA<TagsUpdated>()],
     );
+
+    blocTest(
+      'emits [TagsUpdated] after user edit existing tag',
+      build: () async {
+        return LogBloc(myVisitedPlacesRepository, covidPlacesRepository);
+      },
+      wait: Duration(milliseconds: 100),
+      act: (bloc) async {
+        bloc.add(OnTagEdited(Tag(Faker().lorem.word())));
+      },
+      expect: [isA<TagsUpdated>()],
+    );
   });
 }

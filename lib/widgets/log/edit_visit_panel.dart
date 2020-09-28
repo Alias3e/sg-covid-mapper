@@ -6,6 +6,7 @@ import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/check/check.dart';
+import 'package:sgcovidmapper/widgets/edit_tag_dialog.dart';
 import 'package:sgcovidmapper/widgets/log/bottom_panel_button.dart';
 
 class EditVisitPanel extends StatefulWidget {
@@ -27,6 +28,7 @@ class _EditVisitPanelState extends State<EditVisitPanel>
   DateTime initialCheckInTime;
   DateTime initialCheckOutTime;
   List<Tag> initialTags = [];
+  List<String> originalTagLabel = [];
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _EditVisitPanelState extends State<EditVisitPanel>
 
     initialCheckInTime = widget.visit.checkInTime;
     initialCheckOutTime = widget.visit.checkOutTime;
+    widget.visit.tags.forEach((tag) => originalTagLabel.add(tag.label));
     initialTags.addAll(widget.visit.tags);
   }
 
@@ -50,7 +53,7 @@ class _EditVisitPanelState extends State<EditVisitPanel>
         appBar: AppBar(
           title: Text('Edit'),
         ),
-//      backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Theme.of(context).primaryColorLight,
         body: Stack(
           fit: StackFit.expand,
           children: [
@@ -189,7 +192,27 @@ class _EditVisitPanelState extends State<EditVisitPanel>
                                       },
                                       chipsBox: Wrap(
                                         children: widget.visit.getChips(
-                                            onDeleted: (Tag tag) {
+                                            onChipTap: (Tag tag) async {
+                                          String editedTag =
+                                              await Navigator.of(context).push(
+                                            PageRouteBuilder(
+                                              opaque: false,
+                                              barrierColor: Colors.black54,
+                                              barrierDismissible: true,
+                                              pageBuilder:
+                                                  (BuildContext context, _,
+                                                      __) {
+                                                return EditTagDialog(
+                                                    tag: tag.label);
+                                              },
+                                            ),
+                                          );
+                                          if (editedTag != null) {
+                                            tag.label = editedTag;
+                                            BlocProvider.of<LogBloc>(context)
+                                                .add(OnTagEdited(tag));
+                                          }
+                                        }, onDeleted: (Tag tag) {
                                           widget.visit.tags.remove(tag);
                                           BlocProvider.of<LogBloc>(context).add(
                                               OnTagDeleteButtonPressed(tag));
@@ -245,6 +268,9 @@ class _EditVisitPanelState extends State<EditVisitPanel>
     widget.visit.checkInTime = initialCheckInTime;
     widget.visit.checkOutTime = initialCheckOutTime;
     widget.visit.tags = initialTags;
+    for (int i = 0; i < widget.visit.tags.length; i++) {
+      widget.visit.tags[i].label = originalTagLabel[i];
+    }
   }
 
   Widget makeCheckOutWidget(Visit visit) {
