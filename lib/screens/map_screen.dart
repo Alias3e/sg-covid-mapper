@@ -15,8 +15,9 @@ import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/alerts_dialog.dart';
 import 'package:sgcovidmapper/widgets/data_information_widget.dart';
+import 'package:sgcovidmapper/widgets/dialog/dialog.dart';
+import 'package:sgcovidmapper/widgets/dialog/info_dialog.dart';
 import 'package:sgcovidmapper/widgets/showcase_container.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
 import 'package:showcaseview/showcase.dart';
@@ -58,8 +59,9 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         listener: (BuildContext context, state) =>
             SchedulerBinding.instance.addPostFrameCallback((_) async {
           await Future.delayed(Duration(milliseconds: 500));
-          AlertsDialog.showAlertDialog(
-              (state as DisplayAlerts).alerts, context);
+          CustomDialog.show(
+              AlertsDialogWidget(visits: (state as DisplayAlerts).alerts),
+              context);
         }),
         child: Scaffold(
           // Prevent markers from being shifted by keyboard.
@@ -145,9 +147,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                     ),
                     body: BlocConsumer<MapBloc, MapState>(
                       listenWhen: (previous, current) =>
+                          current is NoPlacesToDisplay ||
                           current is MapViewBoundsChanged ||
                           (previous is PlacesLoading && current is MapUpdated),
                       listener: (context, state) async {
+                        if (state is NoPlacesToDisplay) {
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) async {
+                            await Future.delayed(Duration(milliseconds: 500));
+                            CustomDialog.show(InfoDialog(), context);
+                          });
+                        }
                         if (state is MapViewBoundsChanged) {
                           _animatedMapMove(
                               state.mapCenter,

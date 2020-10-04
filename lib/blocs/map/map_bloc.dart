@@ -57,8 +57,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Stream<MapState> mapEventToState(MapEvent event) async* {
     if (event is HasPlacesData) {
       covidPlacesRepository.placeMarkersCached = event.visitedPlaces;
-      yield MapUpdated(
-          covidPlaces: event.visitedPlaces, nearbyPlaces: _myPlaces);
+      if (event.visitedPlaces.length > 0)
+        yield MapUpdated(
+            covidPlaces: event.visitedPlaces, nearbyPlaces: _myPlaces);
+      else
+        yield NoPlacesToDisplay([], _myPlaces);
     }
 
     if (event is CenterOnLocation) {

@@ -63,4 +63,12 @@ class GpsLocationFailed extends MapState {
   List<Object> get props => [];
 }
 
+class NoPlacesToDisplay extends MapState {
+  NoPlacesToDisplay(List<PlaceMarker> covidPlaces, List<Marker> nearbyPlaces)
+      : super(covidPlaces, nearbyPlaces);
+
+  @override
+  List<Object> get props => [];
+}
+
 //endregion

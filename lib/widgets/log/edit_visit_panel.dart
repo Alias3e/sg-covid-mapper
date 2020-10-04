@@ -197,7 +197,8 @@ class _EditVisitPanelState extends State<EditVisitPanel>
                                               await Navigator.of(context).push(
                                             PageRouteBuilder(
                                               opaque: false,
-                                              barrierColor: Colors.black54,
+                                              barrierColor:
+                                                  Colors.black.withOpacity(0.5),
                                               barrierDismissible: true,
                                               pageBuilder:
                                                   (BuildContext context, _,
