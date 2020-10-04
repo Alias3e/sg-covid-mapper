@@ -29,11 +29,11 @@ class InitializationBloc
     if (event is BeginInitialization) {
       WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp();
-      _firestoreService.init();
-      BlocSupervisor.delegate = SimpleBlocDelegate();
       UserCredential result = await FirebaseAuth.instance.signInAnonymously();
       if (result != null) print('Sign In Successfully');
+      await _firestoreService.init();
       await Asset.loadConfigurations();
+      BlocSupervisor.delegate = SimpleBlocDelegate();
       if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
 //      await _covidPlacesRepository.init();
       bool showDialog =

@@ -22,14 +22,18 @@ class FirestoreService extends RemoteDatabaseService {
       _systemCollection.doc('one_map').snapshots();
 
   @override
-  void init() {
+  Future<void> init() async {
     _locationCollection =
         FirebaseFirestore.instance.collection('all_locations');
     _systemCollection = FirebaseFirestore.instance.collection('system');
-    systems.listen((snapshot) {
-      covidDbVersion = snapshot.data()['current_version'];
-      updated = (snapshot.data()['updated'] as Timestamp).toDate();
-      source = snapshot.data()['source'];
+
+    await _systemCollection.doc('moh').get().then((doc) {
+      if (doc.exists) {
+        covidDbVersion = doc.data()['current_version'];
+        updated = (doc.data()['updated'] as Timestamp).toDate();
+        source = doc.data()['source'];
+        print("doc version : ${doc.data()['current_version']}");
+      }
     });
   }
 

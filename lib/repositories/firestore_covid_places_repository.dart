@@ -16,6 +16,7 @@ class FirestoreCovidPlacesRepository extends CovidPlacesRepository {
 
   @override
   Stream<List<PlaceMarker>> get placeMarkers {
+    print('Getting place markers');
     Stream<QuerySnapshot> querySnapshot = remoteDatabaseService.covidLocations;
     return querySnapshot.map((snapshot) {
       return snapshot.docs
