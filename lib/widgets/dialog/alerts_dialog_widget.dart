@@ -27,7 +27,7 @@ class AlertsDialogWidget extends StatelessWidget {
                 color: AppColors.kColorRed,
               ),
               SizedBox(
-                width: 8,
+                width: 16,
               ),
               Expanded(
                 child: Text(
@@ -40,24 +40,32 @@ class AlertsDialogWidget extends StatelessWidget {
               ),
             ],
           ),
-          ListView.builder(
-            itemCount: visits.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              Visit visit = visits[index];
-              return ListTile(
-                title: Text(visit.title),
-                subtitle: Text(
-                    '${timeago.format(visit.checkInTime)} on ${Styles.kUpdatedDateFormat.format(visit.checkInTime)} ${visit.checkOutTime == null ? '' : 'to ${Styles.kUpdatedDateFormat.format(visit.checkOutTime)}'}'),
-              );
-            },
+          MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: ListView.builder(
+              itemCount: visits.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                Visit visit = visits[index];
+                return ListTile(
+                  title: Text(visit.title),
+                  subtitle: Text(
+                      '${timeago.format(visit.checkInTime)} on ${Styles.kUpdatedDateFormat.format(visit.checkInTime)} ${visit.checkOutTime == null ? '' : 'to ${Styles.kUpdatedDateFormat.format(visit.checkOutTime)}'}'),
+                );
+              },
+            ),
           ),
           Text(
             'As a precautionary measure, you should monitor your health closely for 14 days from your date of visit',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontStyle: FontStyle.italic,
               color: Theme.of(context).primaryColor,
             ),
+          ),
+          SizedBox(
+            height: 16,
           ),
           FlatButton(
             onPressed: () => Navigator.pop(context),

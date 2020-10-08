@@ -84,7 +84,7 @@ class _DataInformationWidgetState extends State<DataInformationWidget> {
                       BlocBuilder<DataInformationBloc, DataInformationState>(
                         builder: (context, state) => Text(
                           state is DataInformationUpdated
-                              ? 'App data updated on ${state.map['updated']}'
+                              ? 'COVID data updated on ${state.map['updated']}'
                               : '',
                           style: TextStyle(color: Colors.black.withAlpha(150)),
                         ),

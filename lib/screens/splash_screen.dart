@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               SizedBox(height: 64),
               Text(
-                'CovidMapper@SG',
+                'TrackCovid@Sg',
                 style: TextStyle(
                     fontFamily: 'FredokaOne',
                     fontSize: 44,
