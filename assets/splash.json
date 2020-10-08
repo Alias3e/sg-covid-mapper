@@ -3,17 +3,6 @@
     {
       "title" : "Disclaimer",
       "body" : "This is a free app that visualizes the 'public places visited by cases during infectious period' public data provided by the Ministry of Health.\n\nThe developer DOES NOT guarantee that the data displayed within \n1) is without errors \n2) is always up to date\n\nThe developer is not an employee of any government organization nor is the developer associated with any government organization."
-    },
-    {
-      "title" : "Privacy",
-      "body" : "The app does not store any location or user data on the cloud.\n\nAll data input from user are stored locally on your device.\n\nOneMap.sg is the provider for nearby places based on user's GPS coordinates. No personal data(except GPS coordinates) of the user is sent during this process. OneMap is the authoritative national map of Singapore with the most detailed and timely updated information developed by the Singapore Land Authority."
     }
-  ],
-  "tips" : [
-    "Wear a mask when you leave your house",
-    "Wash your hands frequently with soap or hand sanitizer",
-    "Keep a safe distance of at least 1 metre",
-    "See a doctor if you feel sick",
-    "Avoid touching your eyes, nose and mouth"
   ]
 }

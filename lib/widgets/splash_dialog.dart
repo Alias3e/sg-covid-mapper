@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SplashDialog extends StatelessWidget {
   final List<dynamic> dialogContents;
@@ -82,10 +83,28 @@ class DialogBody extends StatelessWidget {
                 height: 16,
               ),
               FlatButton(
+                onPressed: () async {
+                  String url = 'https://sg-covid-mapper.web.app/privacy.html';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url}';
+                  }
+                },
+                child: Text(
+                  'View Privacy Policy',
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor, fontSize: 24),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              FlatButton(
                 onPressed: () => BlocProvider.of<InitializationBloc>(context)
                     .add(OnDialogChanged(index + 1)),
                 child: Text(
-                  index == 0 ? 'Next' : 'Done',
+                  'Done',
                   style: TextStyle(
                       color: Theme.of(context).accentColor, fontSize: 24),
                 ),

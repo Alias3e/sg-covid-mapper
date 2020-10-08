@@ -35,7 +35,6 @@ class InitializationBloc
       await Asset.loadConfigurations();
       BlocSupervisor.delegate = SimpleBlocDelegate();
       if (!Hive.isBoxOpen(visitBoxName)) await _initHive();
-//      await _covidPlacesRepository.init();
       bool showDialog =
           Hive.box(systemBoxName).get(isAppFirstOpen, defaultValue: true);
       Map<String, dynamic> splash = {};
