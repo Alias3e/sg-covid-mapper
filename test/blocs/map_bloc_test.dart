@@ -58,7 +58,8 @@ main() {
     });
 
     test('throws Exception when Firestore CollectionReference is null', () {
-      expect(() => FirestoreCovidPlacesRepository(), throwsAssertionError);
+      expect(() => FirestoreCovidPlacesRepository(remoteDatabaseService: null),
+          throwsAssertionError);
     });
 
     test('throws AssertionError when visitedPlaceRepository is null', () {
