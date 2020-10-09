@@ -22,15 +22,15 @@ main() {
         CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
-          longitudeString: faker.address.buildingNumber(),
-          latitudeString: faker.address.countryCode(),
+          longitudeString: faker.randomGenerator.decimal().toString(),
+          latitudeString: faker.randomGenerator.decimal().toString(),
           address: faker.address.streetAddress(),
         )),
         CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
-          longitudeString: faker.address.buildingNumber(),
-          latitudeString: faker.address.countryCode(),
+          longitudeString: faker.randomGenerator.decimal().toString(),
+          latitudeString: faker.randomGenerator.decimal().toString(),
           address: faker.address.streetAddress(),
         ))
       ];
@@ -39,8 +39,8 @@ main() {
         CommonOneMapModel.fromSearchResultModel(OneMapSearchResult(
           searchValue: faker.address.streetName(),
           postalCode: faker.address.zipCode(),
-          longitudeString: faker.address.buildingNumber(),
-          latitudeString: faker.address.countryCode(),
+          longitudeString: faker.randomGenerator.decimal().toString(),
+          latitudeString: faker.randomGenerator.decimal().toString(),
           address: faker.address.streetAddress(),
         ))
       ]);
@@ -129,10 +129,10 @@ main() {
     );
 
     blocTest<SearchBloc, SearchEvent, SearchState>(
-      'emits [] when user clicks on a list tile',
-      build: null,
-      act: null,
-      expect: null,
+      'emits [SearchResultLoaded] when user clicks on a list tile',
+      build: () async => SearchBloc(repository),
+      act: (SearchBloc bloc) async => bloc.add(SearchLocationTapped(0)),
+      expect: [isA<SearchResultLoaded>()],
     );
   });
 }

@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
+import 'package:sgcovidmapper/blocs/search_text_field/search_text_field.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
@@ -15,11 +16,16 @@ import 'package:sgcovidmapper/widgets/map/map.dart';
 class MockSearchBloc extends MockBloc<SearchEvent, SearchState>
     implements SearchBloc {}
 
-class MockSearchBoxBloc extends MockBloc<UpdateOpacityEvent, UpdateOpacityState>
+class MockUpdateOpacityBloc
+    extends MockBloc<UpdateOpacityEvent, UpdateOpacityState>
     implements UpdateOpacityBloc {}
 
 class MockBottomPanelBloc extends MockBloc<BottomPanelEvent, BottomPanelState>
     implements BottomPanelBloc {}
+
+class MockSearchTextFieldBloc
+    extends MockBloc<SearchTextFieldEvent, SearchTextFieldState>
+    implements SearchTextFieldBloc {}
 
 main() {
   Faker faker;
@@ -27,31 +33,37 @@ main() {
 
   group('Search TextField', () {
     SearchBloc searchBloc;
-    UpdateOpacityBloc searchBoxBloc;
+    UpdateOpacityBloc updateOpacityBloc;
     BottomPanelBloc bottomPanelBloc;
+    SearchTextFieldBloc searchTextFieldBloc;
 
     setUp(() {
       searchBloc = MockSearchBloc();
-      searchBoxBloc = MockSearchBoxBloc();
+      updateOpacityBloc = MockUpdateOpacityBloc();
+      when(updateOpacityBloc.state)
+          .thenAnswer((realInvocation) => OpacityUpdating(1.0));
       bottomPanelBloc = MockBottomPanelBloc();
+      searchTextFieldBloc = MockSearchTextFieldBloc();
       faker = Faker();
     });
 
     tearDown(() {
       searchBloc.close();
-      searchBoxBloc.close();
+      updateOpacityBloc.close();
       bottomPanelBloc.close();
+      searchTextFieldBloc.close();
     });
 
     testWidgets(
-        'Search TextField does not display close icon when search box is not focused',
+        'Search TextField does display search icon when search box is not focused',
         (WidgetTester tester) async {
       when(searchBloc.state).thenAnswer((_) => SearchEmpty());
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: updateOpacityBloc),
+            BlocProvider<SearchTextFieldBloc>.value(value: searchTextFieldBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -65,7 +77,8 @@ main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsOneWidget);
-      expect(find.byType(Icon), findsNothing);
+      expect(find.byIcon(Icons.close), findsNothing);
+      expect(find.byIcon(Icons.search), findsOneWidget);
     });
 
     testWidgets(
@@ -76,7 +89,8 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: updateOpacityBloc),
+            BlocProvider<SearchTextFieldBloc>.value(value: searchTextFieldBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -102,7 +116,8 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: updateOpacityBloc),
+            BlocProvider<SearchTextFieldBloc>.value(value: searchTextFieldBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -116,7 +131,8 @@ main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsOneWidget);
-      expect(find.byType(Icon), findsOneWidget);
+      expect(find.byIcon(Icons.close), findsOneWidget);
+      expect(find.byIcon(Icons.search), findsNothing);
     });
 
     testWidgets(
@@ -136,7 +152,8 @@ main() {
         MultiBlocProvider(
           providers: [
             BlocProvider<SearchBloc>.value(value: searchBloc),
-            BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
+            BlocProvider<UpdateOpacityBloc>.value(value: updateOpacityBloc),
+            BlocProvider<SearchTextFieldBloc>.value(value: searchTextFieldBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -150,7 +167,8 @@ main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(TextField), findsOneWidget);
-      expect(find.byType(Icon), findsOneWidget);
+      expect(find.byIcon(Icons.close), findsOneWidget);
+      expect(find.byIcon(Icons.search), findsNothing);
     });
 
     group('Search text field interactions', () {
@@ -162,8 +180,10 @@ main() {
           MultiBlocProvider(
             providers: [
               BlocProvider<SearchBloc>.value(value: searchBloc),
-              BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
+              BlocProvider<UpdateOpacityBloc>.value(value: updateOpacityBloc),
               BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
+              BlocProvider<SearchTextFieldBloc>.value(
+                  value: searchTextFieldBloc),
             ],
             child: MaterialApp(
               home: Scaffold(
@@ -192,7 +212,9 @@ main() {
           MultiBlocProvider(
             providers: [
               BlocProvider<SearchBloc>.value(value: searchBloc),
-              BlocProvider<UpdateOpacityBloc>.value(value: searchBoxBloc),
+              BlocProvider<UpdateOpacityBloc>.value(value: updateOpacityBloc),
+              BlocProvider<SearchTextFieldBloc>.value(
+                  value: searchTextFieldBloc),
             ],
             child: MaterialApp(
               home: Scaffold(

@@ -105,7 +105,7 @@ main() {
         ),
       );
       await tester.pump();
-      expect(find.text('App data updated on $date'), findsOneWidget);
+      expect(find.text('COVID data updated on $date'), findsOneWidget);
     });
   });
 }

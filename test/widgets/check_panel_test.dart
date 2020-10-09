@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -9,6 +10,7 @@ import 'package:sgcovidmapper/blocs/check_panel/check_panel.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
 import 'package:sgcovidmapper/widgets/check/check.dart';
+import 'package:showcaseview/showcase_widget.dart';
 
 class MockCheckPanelBloc extends MockBloc<CheckPanelEvent, CheckPanelLoaded>
     implements CheckPanelBloc {}
@@ -42,16 +44,23 @@ main() {
       when(bloc.state).thenAnswer((_) => CheckPanelLoaded(data));
       await tester.pumpWidget(BlocProvider<CheckPanelBloc>.value(
         value: bloc,
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: CheckPanel(
-            switchOutEvent: ReverseGeocodePanelSwitched(),
+        child: MaterialApp(
+          home: Directionality(
+            textDirection: TextDirection.ltr,
+            child: ShowCaseWidget(
+              builder: Builder(
+                builder: (BuildContext context) => CheckPanel(
+                  switchOutEvent: ReverseGeocodePanelSwitched(),
+                ),
+              ),
+            ),
           ),
         ),
       ));
 
       // Check title
-      expect(find.text(data.location.title), findsOneWidget);
+      expect(find.text('${data.location.title} (${data.location.postalCode})'),
+          findsOneWidget);
       // check in date time text
       expect(
           find.byWidgetPredicate((widget) =>
@@ -73,10 +82,16 @@ main() {
       when(bloc.state).thenAnswer((_) => CheckOutDateTimeWidgetLoaded());
       await tester.pumpWidget(BlocProvider<CheckPanelBloc>.value(
         value: bloc,
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: CheckPanel(
-            switchOutEvent: ReverseGeocodePanelSwitched(),
+        child: MaterialApp(
+          home: Directionality(
+            textDirection: TextDirection.ltr,
+            child: ShowCaseWidget(
+              builder: Builder(
+                builder: (BuildContext context) => CheckPanel(
+                  switchOutEvent: ReverseGeocodePanelSwitched(),
+                ),
+              ),
+            ),
           ),
         ),
       ));
@@ -118,10 +133,16 @@ main() {
           DateTime.now())));
       await tester.pumpWidget(BlocProvider<CheckPanelBloc>.value(
         value: bloc,
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: CheckPanel(
-            switchOutEvent: ReverseGeocodePanelSwitched(),
+        child: MaterialApp(
+          home: Directionality(
+            textDirection: TextDirection.ltr,
+            child: ShowCaseWidget(
+              builder: Builder(
+                builder: (BuildContext context) => CheckPanel(
+                  switchOutEvent: ReverseGeocodePanelSwitched(),
+                ),
+              ),
+            ),
           ),
         ),
       ));
