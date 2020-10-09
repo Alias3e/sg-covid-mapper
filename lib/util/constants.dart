@@ -44,7 +44,7 @@ class MapConstants {
       case BaseMap.MapTiler:
         return TileLayerOptions(
           urlTemplate: _tileUrl[baseMap],
-          additionalOptions: {'key': Config.configurations['map_tileset_key']},
+          additionalOptions: {'key': Asset.configurations['map_tileset_key']},
           maxZoom: maxZoom,
           minZoom: minZoom,
         );
@@ -63,22 +63,47 @@ class MapConstants {
 
 class Styles {
   static const TextStyle kTitleTextStyle = TextStyle(
-    fontSize: 28,
-    color: Colors.teal,
-    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  );
+
+  static const TextStyle kSelectedTitleTextStyle = TextStyle(
+    color: AppColors.kColorPrimary,
+    fontWeight: FontWeight.w900,
   );
 
   static const TextStyle kDetailsTextStyle = TextStyle(
-    fontSize: 16,
-    color: Colors.white,
+    color: Colors.black54,
+  );
+
+  static final TextStyle kSelectedDetailsTextStyle = TextStyle(
+    color: AppColors.kColorPrimaryLight, // Teal[200]
   );
 
   static final DateFormat kStartDateFormat = DateFormat("dd/MM/yyyy HH:mm");
 
   static final DateFormat kEndTimeFormat = DateFormat("HH:mm");
+
+  static final DateFormat kLogTileDateFormat = DateFormat("dd MMM");
+
+  static final DateFormat kUpdatedDateFormat = DateFormat("dd MMM HH:mm");
+
+  static final Color kSearchTextFieldGrayColor =
+      Color.fromARGB(Color.getAlphaFromOpacity(0.6), 111, 111, 111);
 }
 
 class Keys {
   static const Key kKeyFABSpinner = Key('key_fab_spinner');
   static const Key kKeySubLocationText = Key('key_sub_location_text');
 }
+
+class AppColors {
+  static const MaterialColor kColorPrimary = Colors.deepPurple;
+  static const MaterialColor kColorAccent = Colors.deepOrange;
+  static final Color kColorPrimaryLight = Colors.deepPurple[200];
+  static final Color kColorAccentLight = Colors.deepOrange[200];
+  static final Color kColorAccentDark = Colors.deepOrange[600];
+  static final Color kColorRed = Colors.red;
+  static final Color kColorGreen = Colors.teal;
+}
+
+int kAnimationDuration = 225;

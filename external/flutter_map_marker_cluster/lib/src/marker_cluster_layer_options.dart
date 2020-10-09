@@ -88,6 +88,9 @@ class MarkerClusterLayerOptions extends LayerOptions {
   /// Increase to increase the distance away that circle spiderfied markers appear from the center
   final int spiderfyCircleRadius;
 
+  /// If set, at this zoom level and below, markers will not be clustered. This defaults to 20 (max zoom)
+  final int disableClusteringAtZoom;
+
   /// Increase to increase the distance away that spiral spiderfied markers appear from the center
   final int spiderfySpiralDistanceMultiplier;
 
@@ -126,6 +129,7 @@ class MarkerClusterLayerOptions extends LayerOptions {
     this.computeSize,
     this.anchor,
     this.maxClusterRadius = 80,
+    this.disableClusteringAtZoom = 20,
     this.animationsOptions = const AnimationsOptions(),
     this.fitBoundsOptions =
         const FitBoundsOptions(padding: EdgeInsets.all(12.0)),
