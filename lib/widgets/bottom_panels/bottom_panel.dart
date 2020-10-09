@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
-import 'package:sgcovidmapper/widgets/reverse_geocode_location_panel.dart';
-import 'package:sgcovidmapper/widgets/widgets.dart';
+
+import 'bottom_panels.dart';
 
 class BottomPanel extends StatelessWidget {
   final BottomPanelState state;

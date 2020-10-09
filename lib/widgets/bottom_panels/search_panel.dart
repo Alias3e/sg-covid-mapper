@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/search_results_panel.dart';
-
-import 'check/check_panel.dart';
+import 'package:sgcovidmapper/widgets/bottom_panels/search_results_panel.dart';
+import 'package:sgcovidmapper/widgets/check/check.dart';
 
 class SearchPanel extends StatefulWidget {
   @override

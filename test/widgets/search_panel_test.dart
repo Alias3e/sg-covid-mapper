@@ -7,11 +7,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong/latlong.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
+import 'package:sgcovidmapper/blocs/keyboard_visibility/keyboard_visibility.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
-import 'package:sgcovidmapper/widgets/widgets.dart';
+import 'package:sgcovidmapper/widgets/bottom_panels/bottom_panels.dart';
 
 class MockSearchBloc extends MockBloc<SearchEvent, SearchState>
     implements SearchBloc {}
@@ -21,17 +22,23 @@ class MockMapBloc extends MockBloc<MapEvent, MapState> implements MapBloc {}
 class MockBottomPanelBloc extends MockBloc<BottomPanelBloc, BottomPanelState>
     implements BottomPanelBloc {}
 
+class MockKeyboardVisibilityBloc
+    extends MockBloc<KeyboardVisibilityEvent, KeyboardVisibilityState>
+    implements KeyboardVisibilityBloc {}
+
 main() {
   group('Search Panel Test', () {
     SearchBloc searchBloc;
     MapBloc mapBloc;
     BottomPanelBloc bottomPanelBloc;
+    KeyboardVisibilityBloc keyboardVisibilityBloc;
     Faker faker;
 
     setUp(() {
       searchBloc = MockSearchBloc();
       mapBloc = MockMapBloc();
       bottomPanelBloc = MockBottomPanelBloc();
+      keyboardVisibilityBloc = MockKeyboardVisibilityBloc();
       faker = Faker();
     });
 
@@ -39,6 +46,7 @@ main() {
       searchBloc.close();
       mapBloc.close();
       bottomPanelBloc.close();
+      keyboardVisibilityBloc.close();
     });
 
     testWidgets('search panel populates one search result properly',
@@ -62,6 +70,8 @@ main() {
           providers: [
             BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
             BlocProvider<SearchBloc>.value(value: searchBloc),
+            BlocProvider<KeyboardVisibilityBloc>.value(
+                value: keyboardVisibilityBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -113,6 +123,8 @@ main() {
           providers: [
             BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
             BlocProvider<SearchBloc>.value(value: searchBloc),
+            BlocProvider<KeyboardVisibilityBloc>.value(
+                value: keyboardVisibilityBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -146,6 +158,8 @@ main() {
           providers: [
             BlocProvider<BottomPanelBloc>.value(value: bottomPanelBloc),
             BlocProvider<SearchBloc>.value(value: searchBloc),
+            BlocProvider<KeyboardVisibilityBloc>.value(
+                value: keyboardVisibilityBloc),
           ],
           child: MaterialApp(
             home: Scaffold(
@@ -188,7 +202,9 @@ main() {
             ),
             BlocProvider<SearchBloc>.value(
               value: searchBloc,
-            )
+            ),
+            BlocProvider<KeyboardVisibilityBloc>.value(
+                value: keyboardVisibilityBloc),
           ],
           child: MaterialApp(
             home: Scaffold(

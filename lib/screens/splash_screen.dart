@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sgcovidmapper/blocs/initialization/initialization.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/splash_dialog.dart';
+import 'package:sgcovidmapper/widgets/dialog/splash_dialog.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

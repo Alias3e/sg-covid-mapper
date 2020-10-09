@@ -6,7 +6,7 @@ import 'package:sgcovidmapper/models/hive/tag.dart';
 import 'package:sgcovidmapper/models/hive/visit.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/check/check.dart';
-import 'package:sgcovidmapper/widgets/edit_tag_dialog.dart';
+import 'package:sgcovidmapper/widgets/dialog/dialog.dart';
 import 'package:sgcovidmapper/widgets/log/bottom_panel_button.dart';
 
 class EditVisitPanel extends StatefulWidget {

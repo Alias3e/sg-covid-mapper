@@ -9,7 +9,7 @@ import 'package:sgcovidmapper/blocs/data_information/data_information.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
 import 'package:sgcovidmapper/repositories/covid_places_repository.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/data_information_widget.dart';
+import 'package:sgcovidmapper/widgets/map/map.dart';
 
 import '../blocs/map_bloc_test.dart';
 
@@ -105,7 +105,7 @@ main() {
         ),
       );
       await tester.pump();
-      expect(find.text('App data updated on $date'), findsOneWidget);
+      expect(find.text('COVID data updated on $date'), findsOneWidget);
     });
   });
 }

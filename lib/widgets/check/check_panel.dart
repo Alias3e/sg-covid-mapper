@@ -95,7 +95,7 @@ class _CheckPanelState extends State<CheckPanel> with TickerProviderStateMixin {
                             current is CheckPanelLoaded,
                         builder: (context, CheckPanelState state) {
                           String title = state is CheckPanelLoaded
-                              ? '${state.data.location.title} ( ${state.data.location.postalCode})'
+                              ? '${state.data.location.title} (${state.data.location.postalCode})'
                               : '';
                           return Text(
                             title,
