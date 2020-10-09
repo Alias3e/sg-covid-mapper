@@ -11,7 +11,7 @@ import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/models/one_map/common_one_map_model.dart';
 import 'package:sgcovidmapper/models/one_map/one_map.dart';
-import 'package:sgcovidmapper/widgets/widgets.dart';
+import 'package:sgcovidmapper/widgets/bottom_panels/bottom_panels.dart';
 
 class MockSearchBloc extends MockBloc<SearchEvent, SearchState>
     implements SearchBloc {}

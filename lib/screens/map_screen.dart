@@ -15,6 +15,7 @@ import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
+import 'package:sgcovidmapper/widgets/bottom_panels/bottom_panels.dart';
 import 'package:sgcovidmapper/widgets/data_information_widget.dart';
 import 'package:sgcovidmapper/widgets/dialog/dialog.dart';
 import 'package:sgcovidmapper/widgets/dialog/info_dialog.dart';

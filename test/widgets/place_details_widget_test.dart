@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong/latlong.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
-import 'package:sgcovidmapper/widgets/places_panel.dart';
+import 'package:sgcovidmapper/widgets/bottom_panels/bottom_panels.dart';
 
 main() {
   group('Place details widget', () {

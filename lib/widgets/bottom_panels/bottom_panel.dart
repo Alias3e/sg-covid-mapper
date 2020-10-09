@@ -5,6 +5,8 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel_state.dart';
 import 'package:sgcovidmapper/widgets/reverse_geocode_location_panel.dart';
 import 'package:sgcovidmapper/widgets/widgets.dart';
 
+import 'bottom_panels.dart';
+
 class BottomPanel extends StatelessWidget {
   final BottomPanelState state;
   final ScrollController scrollController;
