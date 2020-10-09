@@ -16,11 +16,9 @@ import 'package:sgcovidmapper/blocs/warning/warning.dart';
 import 'package:sgcovidmapper/models/models.dart';
 import 'package:sgcovidmapper/util/constants.dart';
 import 'package:sgcovidmapper/widgets/bottom_panels/bottom_panels.dart';
-import 'package:sgcovidmapper/widgets/data_information_widget.dart';
 import 'package:sgcovidmapper/widgets/dialog/dialog.dart';
-import 'package:sgcovidmapper/widgets/dialog/info_dialog.dart';
+import 'package:sgcovidmapper/widgets/map/map.dart';
 import 'package:sgcovidmapper/widgets/showcase_container.dart';
-import 'package:sgcovidmapper/widgets/widgets.dart';
 import 'package:showcaseview/showcase.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 

@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:sgcovidmapper/blocs/gps/gps.dart';
 import 'package:sgcovidmapper/blocs/reverse_geocode/reverse_geocode.dart';
 import 'package:sgcovidmapper/blocs/update_opacity/update_opacity.dart';
-import 'package:sgcovidmapper/widgets/map_screen_speed_dial.dart';
+import 'package:sgcovidmapper/widgets/map/map_screen_speed_dial.dart';
 
 class MockGpsBloc extends MockBloc<GpsEvent, GpsState> implements GpsBloc {}
 

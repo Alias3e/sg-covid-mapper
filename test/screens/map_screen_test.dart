@@ -9,7 +9,7 @@ import 'package:sgcovidmapper/blocs/bottom_panel/bottom_panel.dart';
 import 'package:sgcovidmapper/blocs/map/map.dart';
 import 'package:sgcovidmapper/blocs/search/search.dart';
 import 'package:sgcovidmapper/screens/map_screen.dart';
-import 'package:sgcovidmapper/widgets/search_text_field.dart';
+import 'package:sgcovidmapper/widgets/map/map.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MockMapBloc extends MockBloc<MapEvent, MapState> implements MapBloc {}
